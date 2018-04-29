@@ -1,0 +1,4 @@
+#Wed Apr 25 20:37:16 WEST 2018
+base.0=/home/pedro/git/LPOO1718_T1G1/GroundControl/android/build/intermediates/transforms/dex/debug/folders/1000/5/slice_8
+renamed.0=classes.dex
+file.0=/home/pedro/git/LPOO1718_T1G1/GroundControl/android/build/intermediates/transforms/dex/debug/folders/1000/5/slice_8/classes.dex
