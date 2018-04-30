@@ -1,10 +1,19 @@
 # Ground-Control
 
+|Table of Contents|
+|:---------------:|
+|[Package and class diagram (UML)](#package-and-class-diagram-uml)|
+|[Design Patterns](#design-patterns)|
+|[GUI Design](#gui-design)|
+|[Test Design](#test-design)|
+
+
 ## Package and class diagram (UML)
 
 ### MVC 
 
-![MVC schema](/Images/mvc.png)<br>
+![MVC schema](/Images/mvc.png)
+
 
 
 ### Model
