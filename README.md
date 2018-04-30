@@ -21,6 +21,9 @@
 
 ![Controller schema](/Images/controller.png)
 
+## Design of behavioural aspects
+
+![State machine](/Images/statemachine.png)
 
 ## Design Patterns
 
@@ -37,7 +40,6 @@
   It will be updated by the controller, a physics engine, which receives user inputs and the update times through the view, serving as a bridge between the model and view. At each frame, the view will obtain all the useful information from the model to draw the elements. This way, every package is loosely coupled. 
   
   It also makes it easier to test our game logic, since the connections to View can be eliminated and we can call the controller with specified inputs and times.
-  
   
 
 ### Observer 
@@ -75,7 +77,7 @@
   
   
 
-### FliWeight 
+### FlyWeight 
 
 ![Flyweight pattern](/Images/flyweight.png)
 
@@ -115,7 +117,68 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
   
   Participating classes: GameView; GameController; GameModel.
 
+## GUI Design 
 
+### Main Menu
+
+![Main menu mock up](/Images/mainmenu.png)
+
+#### Main Functionalities
+
+* Enter a single player game
+* Enter a multi player game
+* Configure game 
+* Exit game
+
+
+### Game (First Player)
+
+![Game mock-up](/Images/firstPlayer.png)
+
+#### Main Functionalities
+
+This screen corresponds to a single player game or the screen from the first player in multiplayer.
+
+* Play the game, walking left/right and jumping 
+* Pause the game and enter the pause screen
+
+### Game (Second Player)
+
+![Game mock-up](/Images/secondPlayer.png)
+
+#### Main Functionalities
+
+This screen corresponds to the second player in a multi player game.
+
+* This player affects the game of the first player by using the accelerometer to change the gravity of the game.
+
+### Pause
+
+![Pause mock-up](/Images/pause.png)
+
+#### Main Functionalities
+
+* Exit to main menu
+* Restart the game
+* Continue the game
+* Change the game options
+
+## Test Design
+
+* Player moves correctly in all directions.
+* Gravity correctly changes with input.
+* Planet velocity correcly changes with gravity changes.
+* Player behaves correctly while getting closer to one planet (gravity).
+* Player behaves correctly while getting closer to more than one planet.
+* Player rotation while getting closer to a planet behaves as expected.
+* Jump behaves accordingly to the user input.
+* Game variables develop as expected.
+* Collision with planets.
+* Game ending when player falls of the map.
+* Correct spawning of planets.
+* Game restart acctualy resets map.
+* Server can send and receive information while game develops.
+* Client can send and receive information while game develops.
 
 
 
