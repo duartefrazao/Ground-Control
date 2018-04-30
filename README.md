@@ -3,8 +3,9 @@
 |Table of Contents|
 |:---------------:|
 |[Package and class diagram (UML)](#package-and-class-diagram-uml)|
+|[Design of behavioural aspects](#design-of-behavioural-aspects)|
 |[Design Patterns](#design-patterns)|
-|[GUI Design](#gui-design)|
+|[GUI Design and Main Functionalities](#gui-design-and-main-functionalities)|
 |[Test Design](#test-design)|
 
 
@@ -126,7 +127,7 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
   
   Participating classes: GameView; GameController; GameModel.
 
-## GUI Design 
+## GUI Design and Main Functionalities 
 
 ### Main Menu
 
