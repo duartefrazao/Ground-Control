@@ -113,7 +113,7 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
 
   The game runs in a loop that controls everything, but we have no control over the speed of it. If the CPU is too slow or too fast, some fundamental steps from the physics engine can be missed by the user.
   
-  We achieve it by decoupling the progression of the game from the CPU speed and/or user input. (Native LibGDX implementation.)
+  We achieve it by decoupling the progression of the game from the CPU speed and/or user input. 
   
   Participating classes: GameView; GameController; GameModel.
 
