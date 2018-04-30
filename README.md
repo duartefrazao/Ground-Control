@@ -121,7 +121,7 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
 
 ### Main Menu
 
-![Main menu mock up](/Images/mainmenu.png)
+![Main menu mock up](/Images/menu.png)
 
 #### Main Functionalities
 
