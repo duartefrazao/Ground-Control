@@ -1,7 +1,0 @@
-#Sat Apr 28 20:32:00 WEST 2018
-base.0=/home/pedro/git/LPOO1718_T1G1/GroundControl/android/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_4f9668098bc7cd4a74fcb8f60c951427d4b2d4d8
-renamed.1=classes2.dex
-renamed.0=classes.dex
-file.1=/home/pedro/git/LPOO1718_T1G1/GroundControl/android/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e4f6acd8d91f1c5b0a19220c4e3564d7b5f06659/classes.dex
-base.1=/home/pedro/git/LPOO1718_T1G1/GroundControl/android/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_e4f6acd8d91f1c5b0a19220c4e3564d7b5f06659
-file.0=/home/pedro/git/LPOO1718_T1G1/GroundControl/android/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_4f9668098bc7cd4a74fcb8f60c951427d4b2d4d8/classes.dex
