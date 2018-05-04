@@ -34,7 +34,7 @@ public class GameView extends ScreenAdapter {
 
     private GameModel gameModel;
 
-    private static final boolean DEBUG_PHYSICS = false;
+    private static final boolean DEBUG_PHYSICS = true;
 
     private Box2DDebugRenderer debugRenderer;
 

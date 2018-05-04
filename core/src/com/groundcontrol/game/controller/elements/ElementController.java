@@ -80,8 +80,6 @@ public abstract class ElementController {
         return body.getAngle();
     }
 
-
-
     public void setTransform(float x, float y, float angle) {
         body.setTransform(x, y, angle);
     }
