@@ -93,9 +93,6 @@ public class GameController implements ContactListener {
 
         double distanceSquared = planet.getPosition().dst2(playerController.getPosition());
 
-        if (distanceSquared < 5)
-            return new Vector2(0, 0);
-
         double planet_mass = planet.getMass();
 
         double player_mass = playerController.getMass();
@@ -106,7 +103,7 @@ public class GameController implements ContactListener {
 
         force.setLength((float) force_module);
 
-        force.limit(PULL_LIMIT);
+        //force.limit(PULL_LIMIT);
 
         return force;
     }
@@ -123,31 +120,31 @@ public class GameController implements ContactListener {
 
     private void limitVelocities(Body body) {
 
+        float x = limitV(body.getLinearVelocity().x);
+        float y = limitV(body.getLinearVelocity().y);
 
-        float x = body.getLinearVelocity().x;
+        float omega = limitOmega(body.getAngularVelocity());
 
-        if (x > VELOCITY_LIMIT)
-            x = VELOCITY_LIMIT;
-        else if (x < (-VELOCITY_LIMIT))
-            x = -VELOCITY_LIMIT;
+        body.setLinearVelocity(x, y);
+        body.setAngularVelocity(omega);
+    }
 
-        float y = body.getLinearVelocity().y;
+    private float limitV(float v) {
+        if (v > VELOCITY_LIMIT)
+            v = VELOCITY_LIMIT;
+        else if (v < (-VELOCITY_LIMIT))
+            v = -VELOCITY_LIMIT;
 
-        if (y > VELOCITY_LIMIT)
-            y = VELOCITY_LIMIT;
-        else if (y < (-VELOCITY_LIMIT))
-            y = -VELOCITY_LIMIT;
+        return v;
+    }
 
-
-        float omega = body.getAngularVelocity();
-
+    private float limitOmega(float omega) {
         if (omega > ANGULAR_LIMIT)
             omega = ANGULAR_LIMIT;
         else if (omega < (-ANGULAR_LIMIT))
             omega = -ANGULAR_LIMIT;
 
-        body.setLinearVelocity(x, y);
-        body.setAngularVelocity(omega);
+        return omega;
     }
 
 
@@ -193,12 +190,11 @@ public class GameController implements ContactListener {
 
             if (distance < 8) {
 
-                double degrees = (Math.toDegrees(Math.atan2(planet.getY() - playerController.getY(), planet.getX() - playerController.getX())));
-                degrees += 90;
+                float rot = (float) Math.atan2(planet.getY() - playerController.getY(), planet.getX() - playerController.getX());
 
-                float pRot = (float) Math.toRadians(degrees);
+                rot += Math.PI / 2.0;
 
-                playerController.setTransform(playerController.getX(), playerController.getY(), pRot);
+                playerController.setTransform(playerController.getX(), playerController.getY(), rot);
             }
 
         }
