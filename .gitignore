@@ -1,21 +1,12 @@
-
 \.gradle/
 
 \.idea/
 
 build/
 
-gradle/
-
 *.iml
 
-*.gradle
-
-*.properties
-
 *.class
-
-core/build/
 
 *.xml
 
