@@ -20,9 +20,9 @@ import java.util.List;
 
 public class GameView extends ScreenAdapter {
 
-    private final GroundControl game;
+    public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, RIGHT_LEFT_BUTTONS}
 
-    public enum StateInput { RIGHT_BUTTON, lEFT_BUTTON, JUMP_BUTTON}
+    private final GroundControl game;
 
     public final static float PIXEL_TO_METER = 0.009f;
 
