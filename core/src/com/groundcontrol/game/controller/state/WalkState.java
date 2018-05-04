@@ -1,8 +1,11 @@
 package com.groundcontrol.game.controller.state;
 
 import com.badlogic.gdx.math.Vector2;
+import com.groundcontrol.game.controller.elements.PlanetController;
 import com.groundcontrol.game.controller.elements.PlayerController;
 import com.groundcontrol.game.view.GameView;
+
+import java.util.ArrayList;
 
 import static com.groundcontrol.game.view.GameView.StateInput.*;
 
@@ -10,7 +13,7 @@ public class WalkState implements PlayerState {
 
     int times= 0;
 
-    public PlayerState handleInput(PlayerController context, GameView.StateInput input){
+    public PlayerState handleInput(PlayerController context, GameView.StateInput input, ArrayList<PlanetController> planets){
         if(times++ >400)  return new RunState();
 
         if(input == SPACE_BUTTON){
@@ -33,6 +36,6 @@ public class WalkState implements PlayerState {
 
     @Override
     public void enter(PlayerController context) {
-        
+
     }
 }
