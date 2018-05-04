@@ -16,3 +16,19 @@ gradle/
 *.class
 
 core/build/
+
+*.xml
+
+android/res/drawable-xhdpi/
+
+android/libs/armeabi/
+
+android/libs/x86/
+
+android/libs/x86_64/
+
+android/res/drawable-hdpi/
+
+*.so
+
+*.pro
