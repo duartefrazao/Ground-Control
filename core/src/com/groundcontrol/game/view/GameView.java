@@ -20,7 +20,7 @@ public class GameView extends ScreenAdapter {
 
     private final GroundControl game;
 
-    public enum StateInput { RIGHT_BUTTON, lEFT_BUTTON, JUMP_BUTTON}
+    public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, RIGHT_LEFT_BUTTONS}
 
     public final static float PIXEL_TO_METER = 0.005f;
 
@@ -88,6 +88,9 @@ public class GameView extends ScreenAdapter {
 
         /*
 
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+          -------------- BOTH
+        }
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             GameController.getInstance().moveLeft(delta);
         }

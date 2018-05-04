@@ -1,10 +1,14 @@
 package com.groundcontrol.game.controller.state;
 
 import com.groundcontrol.game.controller.elements.PlayerController;
-import com.groundcontrol.game.view.GameView;
+import com.groundcontrol.game.view.GameView.StateInput;
 
 public interface PlayerState {
 
-    void handleInput(PlayerController context, GameView.StateInput input);
+
+
+    PlayerState handleInput(PlayerController context, StateInput input);
+
+    void enter(PlayerController context);
 
 }

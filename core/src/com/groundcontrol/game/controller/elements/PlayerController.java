@@ -5,12 +5,18 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.controller.state.IdleState;
 import com.groundcontrol.game.controller.state.PlayerState;
 import com.groundcontrol.game.model.elements.ElementModel;
+import com.groundcontrol.game.view.GameView.StateInput;
 
 public class PlayerController extends ElementController {
 
     private PlayerState state;
 
-    public void handleInput(){
+    public void handleInput(StateInput input){
+        PlayerState nextState =  state.handleInput(this,input);
+
+        if(nextState!= null){
+            state= nextState;
+        }
 
     }
 
