@@ -12,7 +12,8 @@ public class PlanetController extends ElementController{
 
     public PlanetController(World world, ElementModel model){
 
-        super(world, model, BodyDef.BodyType.KinematicBody);
+        //super(world, model, BodyDef.BodyType.KinematicBody);
+        super(world, model, BodyDef.BodyType.DynamicBody);
 
         float density = 1f,
                 friction = 0.4f,
@@ -20,7 +21,7 @@ public class PlanetController extends ElementController{
         int width = 512, height = 512;
 
         createFixture(body, new float[]{
-                142, 62,
+                204, 57,
                 101, 83,
                 36, 254,
                 44, 318,

@@ -2,24 +2,15 @@ package com.groundcontrol.game.controller.elements;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.controller.state.IdleState;
 import com.groundcontrol.game.controller.state.PlayerState;
 import com.groundcontrol.game.model.elements.ElementModel;
-import com.groundcontrol.game.view.GameView.StateInput;
-
-import java.util.ArrayList;
 
 public class PlayerController extends ElementController {
 
     private PlayerState state;
 
-    public void handleInput(StateInput input, ArrayList<PlanetController> planets){
-        PlayerState nextState =  state.handleInput(this,input, planets);
-
-        if(nextState!= null){
-            state= nextState;
-        }
+    public void handleInput(){
 
     }
 
@@ -28,7 +19,7 @@ public class PlayerController extends ElementController {
 
         state = new IdleState();
 
-        float density = 1f,
+        float density = 0.4f,
                 friction = 0.4f,
                 restitution = 0.5f;
         int width = 244, height = 423;
@@ -65,7 +56,7 @@ public class PlayerController extends ElementController {
                 232,52,
                 219,76,
                 191,83,
-        },width, height, density, friction, restitution, PLAYER_BODY, PLAYER_BODY);
+        },width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY|PLAYER_BODY));
 
         //Arms
         createFixture(body, new float[]{
@@ -74,7 +65,7 @@ public class PlayerController extends ElementController {
                 3,217,
                 21,268,
                 61,196,
-        },width, height, density, friction, restitution, PLAYER_BODY, PLAYER_BODY);
+        },width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY|PLAYER_BODY));
 
         createFixture(body, new float[]{
                 150,229,
@@ -82,7 +73,7 @@ public class PlayerController extends ElementController {
                 166,316,
                 156,330,
                 150,229,
-        },width, height, density, friction, restitution, PLAYER_BODY, PLAYER_BODY);
+        },width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY|PLAYER_BODY));
 
         //Legs
         createFixture(body, new float[]{
@@ -94,7 +85,7 @@ public class PlayerController extends ElementController {
                 85,403,
                 81,374,
                 31,332,
-        },width, height, density, friction, restitution, PLAYER_BODY, PLAYER_BODY);
+        },width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY|PLAYER_BODY));
 
         createFixture(body, new float[]{
                 107,359,
@@ -104,7 +95,7 @@ public class PlayerController extends ElementController {
                 144,397,
                 107,359,
                 152,327,
-        },width, height, density, friction, restitution, PLAYER_BODY, PLAYER_BODY);
+        },width, height, density, friction, restitution, PLAYER_BODY,(short) (PLANET_BODY|PLAYER_BODY));
 
         //Belly
         createFixture(body, new float[]{
@@ -116,7 +107,7 @@ public class PlayerController extends ElementController {
                 151,280,
                 138,227,
                 75,219,
-        },width, height, density, friction, restitution, PLAYER_BODY, PLAYER_BODY);
+        },width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY|PLAYER_BODY));
 
 
     }

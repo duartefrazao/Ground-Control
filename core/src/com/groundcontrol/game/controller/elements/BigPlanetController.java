@@ -9,7 +9,8 @@ public class BigPlanetController extends ElementController {
 
     public BigPlanetController(World world, ElementModel model){
 
-        super(world, model, BodyDef.BodyType.KinematicBody);
+        //super(world, model, BodyDef.BodyType.KinematicBody);
+        super(world, model, BodyDef.BodyType.DynamicBody);
 
         float density = 1f,
                 friction = 0.4f,
@@ -25,7 +26,7 @@ public class BigPlanetController extends ElementController {
                 409, 855,
                 486, 877,
                 324, 109
-        }, width, height, density, friction, restitution, PLANET_BODY, PLANET_BODY);
+        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY|PLAYER_BODY));
 
         createFixture(body, new float[]{
                 324, 109,
@@ -36,7 +37,7 @@ public class BigPlanetController extends ElementController {
                 922, 699,
                 721, 847,
                 486, 877
-        },width, height, density, friction, restitution, PLANET_BODY, PLANET_BODY);
+        },width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY|PLAYER_BODY));
 
 
     }

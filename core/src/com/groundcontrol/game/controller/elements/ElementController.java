@@ -102,6 +102,22 @@ public abstract class ElementController {
         body.applyForceToCenter(x, y, awake);
     }
 
+    public void applyForceToCenter(Vector2 v, boolean awake){
+        body.applyForceToCenter(v, awake);
+    }
+
+    public void applyLinearImpulseToCenter(Vector2 v, boolean awake){
+        body.applyLinearImpulse(v,body.getLocalCenter(), awake);
+    }
+
+    public Vector2 getPosition(){
+        return body.getPosition();
+    }
+
+    public float getMass(){
+        return body.getMass();
+    }
+
     public Object getUserData() {
         return body.getUserData();
     }

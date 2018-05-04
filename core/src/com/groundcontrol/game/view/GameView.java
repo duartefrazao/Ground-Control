@@ -6,6 +6,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
@@ -20,17 +22,24 @@ public class GameView extends ScreenAdapter {
 
     private final GroundControl game;
 
-    public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, RIGHT_LEFT_BUTTONS}
+    public enum StateInput { RIGHT_BUTTON, lEFT_BUTTON, JUMP_BUTTON}
 
-    public final static float PIXEL_TO_METER = 0.005f;
+    public final static float PIXEL_TO_METER = 0.009f;
 
-    private static final float VIEWPORT_WIDTH = 20;
+    private static final float VIEWPORT_WIDTH = 30;
 
     private final OrthographicCamera camera;
 
     private GameController gameController;
 
     private GameModel gameModel;
+
+    private static final boolean DEBUG_PHYSICS = false;
+
+    private Box2DDebugRenderer debugRenderer;
+
+    private Matrix4 debugCamera;
+
 
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
 
@@ -51,6 +60,12 @@ public class GameView extends ScreenAdapter {
 
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
         camera.update();
+
+        if (DEBUG_PHYSICS) {
+            debugRenderer = new Box2DDebugRenderer();
+            debugCamera = camera.combined.cpy();
+            debugCamera.scl(1 / PIXEL_TO_METER);
+        }
 
         return camera;
 
@@ -82,15 +97,18 @@ public class GameView extends ScreenAdapter {
         drawElements();
         game.getBatch().end();
 
+        if (DEBUG_PHYSICS) {
+            debugCamera = camera.combined.cpy();
+            debugCamera.scl(1 / PIXEL_TO_METER);
+            debugRenderer.render(this.gameController.getWorld(), debugCamera);
+        }
+
     }
 
     private void handleInputs(float delta){
 
         /*
 
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT && Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-          -------------- BOTH
-        }
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             GameController.getInstance().moveLeft(delta);
         }
