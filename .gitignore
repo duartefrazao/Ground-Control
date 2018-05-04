@@ -8,7 +8,7 @@ build/
 
 *.class
 
-*.xml
+local.properties
 
 android/res/drawable-xhdpi/
 
@@ -23,3 +23,5 @@ android/res/drawable-hdpi/
 *.so
 
 *.pro
+
+
