@@ -139,7 +139,7 @@ public class GameController implements ContactListener {
 
         if(playerController.isInPlanet()){
             Vector2 force = calculatePullForce(playerController.getPlanet());
-            playerController.applyForceToCenter(force.scl(5), true);
+            playerController.applyForceToCenter(force.scl(7), true);
             return;
         }
 

@@ -28,14 +28,19 @@ public class WalkState implements PlayerState {
 
         float rot = context.getAngleBetween(context.getPlanet());
 
-        Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
+        rot -= Math.PI / 2.0;
+
+        Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot));
+
+        //TODO -> Calculate the desire velocity in the planet
+        direction.scl(context.getPlanet().getMass() / 7);
 
          if(input == RIGHT_BUTTON){
-            context.setLinearVelocity(direction.rotate90(0).scl(10));
+            context.setLinearVelocity(direction.rotate90(1));
 
         }
         else if(input ==LEFT_BUTTON){
-             context.setLinearVelocity(direction.rotate90(-1).scl(10));
+             context.setLinearVelocity(direction.rotate90(-1));
         }
 
 
