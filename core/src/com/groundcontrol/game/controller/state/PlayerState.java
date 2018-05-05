@@ -10,7 +10,7 @@ public interface PlayerState {
 
 
 
-    PlayerState handleInput(PlayerController context, StateInput input, ArrayList<PlanetController> planets);
+    void handleInput(PlayerController context, StateInput input);
 
     void enter(PlayerController context);
 

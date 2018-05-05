@@ -14,12 +14,12 @@ import static com.groundcontrol.game.view.GameView.StateInput.SPACE_BUTTON;
 
 public class RunState implements PlayerState {
 
-    public PlayerState handleInput(PlayerController context, GameView.StateInput input, ArrayList<PlanetController> planets){
+    public void handleInput(PlayerController context, GameView.StateInput input){
         if(input == SPACE_BUTTON){
-            return new JumpState();
+            context.setState(new JumpState());
 
         }else if(input== RIGHT_LEFT_BUTTONS){
-            return new IdleState();
+            context.setState(new IdleState());
 
         }else if(input == RIGHT_BUTTON){
             context.setLinearVelocity(new Vector2(10,10));
@@ -29,8 +29,6 @@ public class RunState implements PlayerState {
             context.setLinearVelocity(new Vector2(-10,-10));
         }
 
-
-        return null;
     }
 
     @Override

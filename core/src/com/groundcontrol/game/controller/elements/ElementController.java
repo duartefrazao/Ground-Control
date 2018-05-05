@@ -68,6 +68,11 @@ public abstract class ElementController {
     }
 
 
+    public Body getBody(){
+        return this.body;
+    }
+
+
     public float getX() {
         return body.getPosition().x;
     }
@@ -118,6 +123,14 @@ public abstract class ElementController {
 
     public Object getUserData() {
         return body.getUserData();
+    }
+
+    public float getAngleBetween(Body body){
+        float rot = (float) Math.atan2(body.getPosition().y - this.getY(), body.getPosition().x - this.getX());
+
+        rot += Math.PI / 2.0;
+
+        return rot;
     }
 
 }

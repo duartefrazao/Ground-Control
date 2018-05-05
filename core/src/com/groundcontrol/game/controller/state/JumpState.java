@@ -10,15 +10,10 @@ public class JumpState implements PlayerState {
 
 
 
-    public PlayerState handleInput(PlayerController context, StateInput input, ArrayList<PlanetController> planets){
+    public void handleInput(PlayerController context, StateInput input){
 
-        PlanetController nearest =closeToPlanet(context, planets);
+       // PlanetController nearest =closeToPlanet(context);
 
-        if(nearest == null) return null;
-
-
-
-        return null;
     }
 
     private PlanetController closeToPlanet(PlayerController context, ArrayList<PlanetController> planets) {

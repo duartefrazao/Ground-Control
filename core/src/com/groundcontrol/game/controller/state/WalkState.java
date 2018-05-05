@@ -13,25 +13,32 @@ public class WalkState implements PlayerState {
 
     int times= 0;
 
-    public PlayerState handleInput(PlayerController context, GameView.StateInput input, ArrayList<PlanetController> planets){
-        if(times++ >400)  return new RunState();
+    public void handleInput(PlayerController context, GameView.StateInput input){
 
         if(input == SPACE_BUTTON){
-            return new JumpState();
+            context.setState(new JumpState());
 
-        }else if(input== RIGHT_LEFT_BUTTONS){
-            return new IdleState();
+        }else if(input== RIGHT_LEFT_BUTTONS) {
+            context.setState(new IdleState());
+        }
 
-        }else if(input == RIGHT_BUTTON){
-            context.setLinearVelocity(new Vector2(10,10));
+        //POS -> RIGHT
+        //NEG ->LEFT
+
+
+        float rot = context.getAngleBetween(context.getPlanet());
+
+        Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
+
+         if(input == RIGHT_BUTTON){
+            context.setLinearVelocity(direction.rotate90(0).scl(10));
 
         }
         else if(input ==LEFT_BUTTON){
-            context.setLinearVelocity(new Vector2(-10,-10));
+             context.setLinearVelocity(direction.rotate90(-1).scl(10));
         }
 
 
-        return null;
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
+import com.groundcontrol.game.view.GameView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,10 @@ public class GameController implements ContactListener {
     public void setPlanetForce(float x, float y) {
         this.planetForce.x = x;
         this.planetForce.y = y;
+    }
+
+    public void handleInput(GameView.StateInput input){
+        this.playerController.handleInput(input);
     }
 
     public GameController(GameModel gameModel) {
@@ -109,10 +114,37 @@ public class GameController implements ContactListener {
     }
 
 
+    private Vector2 calculatePullForce(Body body){
+
+        double distanceSquared = body.getPosition().dst2(playerController.getPosition());
+
+        double planet_mass = body.getMass();
+
+        double player_mass = playerController.getMass();
+
+        double force_module = G  * (planet_mass * player_mass) / distanceSquared;
+
+        Vector2 force = body.getPosition().sub(playerController.getPosition()).nor();
+
+        force.setLength((float) force_module);
+
+        //force.limit(PULL_LIMIT);
+
+        return force;
+
+
+    }
+
     private void applyPullForceToPlayer() {
 
+        if(playerController.isInPlanet()){
+            Vector2 force = calculatePullForce(playerController.getPlanet());
+            playerController.applyForceToCenter(force.scl(5), true);
+            return;
+        }
+
         for (ElementController e : planetControllers) {
-            Vector2 force = calculatePullForce(e);
+            Vector2 force = calculatePullForce(e.getBody());
             playerController.applyForceToCenter(force, true);
         }
 
@@ -190,9 +222,15 @@ public class GameController implements ContactListener {
 
             if (distance < 8) {
 
+                /*
+
                 float rot = (float) Math.atan2(planet.getY() - playerController.getY(), planet.getX() - playerController.getX());
 
                 rot += Math.PI / 2.0;
+
+                */
+
+                float rot = playerController.getAngleBetween(planet.getBody());
 
                 playerController.setTransform(playerController.getX(), playerController.getY(), rot);
             }
@@ -235,6 +273,8 @@ public class GameController implements ContactListener {
     }
 
     public void playerPlanetCollision(Body planet) {
+
+        playerController.setInPlanet(planet);
 
     }
 

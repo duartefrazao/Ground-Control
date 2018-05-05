@@ -1,16 +1,25 @@
 package com.groundcontrol.game.controller.elements;
 
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.controller.state.IdleState;
 import com.groundcontrol.game.controller.state.PlayerState;
 import com.groundcontrol.game.model.elements.ElementModel;
+import com.groundcontrol.game.view.GameView;
 
 public class PlayerController extends ElementController {
 
     private PlayerState state;
 
-    public void handleInput(){
+    private Body currentPlanet = null;
+
+    public void setState(PlayerState state){
+        this.state = state;
+    }
+
+    public void handleInput(GameView.StateInput input){
+        this.state.handleInput(this, input);
 
     }
 
@@ -19,9 +28,9 @@ public class PlayerController extends ElementController {
 
         state = new IdleState();
 
-        float density = 0.4f,
-                friction = 0.4f,
-                restitution = 0.5f;
+        float density = 0.0f,
+                friction = 1.0f,
+                restitution = 0.1f;
         int width = 244, height = 423;
 
         //Head
@@ -109,6 +118,17 @@ public class PlayerController extends ElementController {
                 75,219,
         },width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY|PLAYER_BODY));
 
+    }
 
+    public boolean isInPlanet(){
+        return this.currentPlanet != null;
+    }
+
+    public void setInPlanet(Body b){
+        this.currentPlanet = b;
+    }
+
+    public Body getPlanet(){
+        return this.currentPlanet;
     }
 }

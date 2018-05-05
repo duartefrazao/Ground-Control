@@ -107,25 +107,15 @@ public class GameView extends ScreenAdapter {
 
     private void handleInputs(float delta){
 
-        /*
+
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            GameController.getInstance().moveLeft(delta);
+            this.gameController.handleInput(StateInput.LEFT_BUTTON);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-            GameController.getInstance().moveRight(delta);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            GameController.getInstance().moveUp(delta);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            GameController.getInstance().moveDown(delta);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.R)){
-            GameController.getInstance().rotateLeft(delta);
+            this.gameController.handleInput(StateInput.RIGHT_BUTTON);
         }
 
-        */
 
 
         boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
