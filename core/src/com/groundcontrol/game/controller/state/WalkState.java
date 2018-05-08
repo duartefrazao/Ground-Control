@@ -1,26 +1,15 @@
 package com.groundcontrol.game.controller.state;
 
 import com.badlogic.gdx.math.Vector2;
-import com.groundcontrol.game.controller.elements.PlanetController;
 import com.groundcontrol.game.controller.elements.PlayerController;
-import com.groundcontrol.game.view.GameView;
-
-import java.util.ArrayList;
-
-import static com.groundcontrol.game.view.GameView.StateInput.*;
 
 public class WalkState implements PlayerState {
 
-    int times= 0;
+    public void handleInput(PlayerController context, InputDecoder.Input input){
 
-    public void handleInput(PlayerController context, GameView.StateInput input){
-
-        if(input == SPACE_BUTTON){
-            context.setState(new JumpState());
-
-        }else if(input== RIGHT_LEFT_BUTTONS) {
+        if(input == InputDecoder.Input.LEFT_RIGHT)
             context.setState(new IdleState());
-        }
+
 
         //POS -> RIGHT
         //NEG ->LEFT
@@ -33,13 +22,26 @@ public class WalkState implements PlayerState {
         Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot));
 
         //TODO -> Calculate the desire velocity in the planet
-        direction.scl(context.getPlanet().getMass() / 7);
+        direction.scl(10) ;
 
-         if(input == RIGHT_BUTTON){
+
+        if(input == InputDecoder.Input.JUMP) {
+
+            context.removeFromPlanet();
+
+            context.setLinearVelocity(direction.scl(10));
+
+            context.setState(new FloatState());
+
+            return;
+
+        }
+
+         if(input == InputDecoder.Input.RIGHT){
             context.setLinearVelocity(direction.rotate90(1));
 
         }
-        else if(input ==LEFT_BUTTON){
+        else if(input == InputDecoder.Input.LEFT){
              context.setLinearVelocity(direction.rotate90(-1));
         }
 

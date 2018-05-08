@@ -18,6 +18,9 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 
 import java.util.List;
 
+import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
+import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
+
 public class GameView extends ScreenAdapter {
 
     public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, RIGHT_LEFT_BUTTONS}
@@ -26,7 +29,7 @@ public class GameView extends ScreenAdapter {
 
     public final static float PIXEL_TO_METER = 0.009f;
 
-    private static final float VIEWPORT_WIDTH = 30;
+    private static final float VIEWPORT_WIDTH = 35;
 
     private final OrthographicCamera camera;
 
@@ -76,6 +79,7 @@ public class GameView extends ScreenAdapter {
         this.game.getAssetManager().load("player.png", Texture.class);
         this.game.getAssetManager().load("big_planet.png", Texture.class);
         this.game.getAssetManager().load("runningSheet.png", Texture.class);
+        this.game.getAssetManager().load("background.png", Texture.class);
         this.game.getAssetManager().finishLoading();
     }
 
@@ -94,6 +98,7 @@ public class GameView extends ScreenAdapter {
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
         game.getBatch().begin();
+        drawBackGround();
         drawElements();
         game.getBatch().end();
 
@@ -114,6 +119,9 @@ public class GameView extends ScreenAdapter {
         }
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
             this.gameController.handleInput(StateInput.RIGHT_BUTTON);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            this.gameController.handleInput(StateInput.SPACE_BUTTON);
         }
 
 
@@ -147,6 +155,13 @@ public class GameView extends ScreenAdapter {
             view.update(p);
             view.draw(game.getBatch());
         }
+    }
+
+    public void drawBackGround(){
+        Texture background = game.getAssetManager().get("background.png", Texture.class);
+        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / PIXEL_TO_METER), (int) (ARENA_HEIGHT / PIXEL_TO_METER));
+
     }
 
 }

@@ -3,10 +3,10 @@ package com.groundcontrol.game.controller.elements;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.groundcontrol.game.controller.state.IdleState;
+import com.groundcontrol.game.controller.state.FloatState;
+import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.controller.state.PlayerState;
 import com.groundcontrol.game.model.elements.ElementModel;
-import com.groundcontrol.game.view.GameView;
 
 public class PlayerController extends ElementController {
 
@@ -18,7 +18,7 @@ public class PlayerController extends ElementController {
         this.state = state;
     }
 
-    public void handleInput(GameView.StateInput input){
+    public void handleInput(InputDecoder.Input input){
         this.state.handleInput(this, input);
 
     }
@@ -26,7 +26,7 @@ public class PlayerController extends ElementController {
     public PlayerController(World world, ElementModel model) {
         super(world, model, BodyDef.BodyType.DynamicBody);
 
-        state = new IdleState();
+        state = new FloatState();
 
         float density = 0.0f,
                 friction = 1.0f,
@@ -126,6 +126,10 @@ public class PlayerController extends ElementController {
 
     public void setInPlanet(Body b){
         this.currentPlanet = b;
+    }
+
+    public void removeFromPlanet(){
+        this.currentPlanet = null;
     }
 
     public Body getPlanet(){

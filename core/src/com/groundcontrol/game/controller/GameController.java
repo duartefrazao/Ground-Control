@@ -7,6 +7,7 @@ import com.groundcontrol.game.controller.elements.BigPlanetController;
 import com.groundcontrol.game.controller.elements.ElementController;
 import com.groundcontrol.game.controller.elements.PlanetController;
 import com.groundcontrol.game.controller.elements.PlayerController;
+import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
@@ -32,8 +33,6 @@ public class GameController implements ContactListener {
 
     private static final float ANGULAR_LIMIT = 0.02f;
 
-    private static float PULL_LIMIT = 10f;
-
     private final World world;
 
     private float accumulator;
@@ -46,13 +45,17 @@ public class GameController implements ContactListener {
 
     private Vector2 planetForce = new Vector2(0, 0);
 
+    private InputDecoder decoder;
+
     public void setPlanetForce(float x, float y) {
         this.planetForce.x = x;
         this.planetForce.y = y;
     }
 
-    public void handleInput(GameView.StateInput input){
-        this.playerController.handleInput(input);
+    public void handleInput(GameView.StateInput input) {
+
+        this.playerController.handleInput(this.decoder.convertViewInput(input));
+
     }
 
     public GameController(GameModel gameModel) {
@@ -68,16 +71,16 @@ public class GameController implements ContactListener {
 
         for (PlanetModel p : planets) {
 
-            if (p.getSize() == PlanetModel.PlanetSize.MEDIUM) {
-
+            if (p.getSize() == PlanetModel.PlanetSize.MEDIUM)
                 planetC = new PlanetController(world, p);
-            } else {
+            else
                 planetC = new BigPlanetController(world, p);
-            }
+
 
             planetControllers.add(planetC);
         }
 
+        this.decoder = new InputDecoder();
 
         world.setContactListener(this);
 
@@ -94,27 +97,7 @@ public class GameController implements ContactListener {
 
     }
 
-    private Vector2 calculatePullForce(ElementController planet) {
-
-        double distanceSquared = planet.getPosition().dst2(playerController.getPosition());
-
-        double planet_mass = planet.getMass();
-
-        double player_mass = playerController.getMass();
-
-        double force_module = G * (planet_mass * player_mass) / distanceSquared;
-
-        Vector2 force = planet.getPosition().sub(playerController.getPosition()).nor();
-
-        force.setLength((float) force_module);
-
-        //force.limit(PULL_LIMIT);
-
-        return force;
-    }
-
-
-    private Vector2 calculatePullForce(Body body){
+    private Vector2 calculatePullForce(Body body) {
 
         double distanceSquared = body.getPosition().dst2(playerController.getPosition());
 
@@ -122,13 +105,11 @@ public class GameController implements ContactListener {
 
         double player_mass = playerController.getMass();
 
-        double force_module = G  * (planet_mass * player_mass) / distanceSquared;
+        double force_module = G * (planet_mass * player_mass) / distanceSquared;
 
         Vector2 force = body.getPosition().sub(playerController.getPosition()).nor();
 
         force.setLength((float) force_module);
-
-        //force.limit(PULL_LIMIT);
 
         return force;
 
@@ -137,14 +118,15 @@ public class GameController implements ContactListener {
 
     private void applyPullForceToPlayer() {
 
-        if(playerController.isInPlanet()){
+        if (playerController.isInPlanet()) {
             Vector2 force = calculatePullForce(playerController.getPlanet());
-            playerController.applyForceToCenter(force.scl(7), true);
+            playerController.applyForceToCenter(force.scl(10), true);
             return;
         }
 
         for (ElementController e : planetControllers) {
             Vector2 force = calculatePullForce(e.getBody());
+            System.out.println("Force: " + force);
             playerController.applyForceToCenter(force, true);
         }
 
@@ -214,21 +196,23 @@ public class GameController implements ContactListener {
 
     private void getPlayerRotation(float delta) {
 
-        Float distance;
+        float distance;
+
+        if (playerController.isInPlanet()) {
+            float rot = playerController.getAngleBetween(playerController.getPlanet());
+
+            playerController.setTransform(playerController.getX(), playerController.getY(), rot);
+
+            return;
+
+        }
 
         for (ElementController planet : planetControllers) {
+
             distance = abs(planet.getX() - playerController.getX());
             distance += abs(planet.getY() - playerController.getY());
 
             if (distance < 8) {
-
-                /*
-
-                float rot = (float) Math.atan2(planet.getY() - playerController.getY(), planet.getX() - playerController.getX());
-
-                rot += Math.PI / 2.0;
-
-                */
 
                 float rot = playerController.getAngleBetween(planet.getBody());
 
@@ -274,7 +258,12 @@ public class GameController implements ContactListener {
 
     public void playerPlanetCollision(Body planet) {
 
+        if(playerController.isInPlanet())
+            return;
+
         playerController.setInPlanet(planet);
+
+        playerController.handleInput(InputDecoder.Input.PLANET_LAND);
 
     }
 
