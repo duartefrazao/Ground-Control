@@ -14,6 +14,16 @@ public class PlayerController extends ElementController {
 
     private Body currentPlanet = null;
 
+    private boolean rightSide = true;
+
+    public boolean isRightSide(){
+        return rightSide;
+    }
+
+    public void setRightSide(boolean side){
+        this.rightSide = side;
+    }
+
     public void setState(PlayerState state){
         this.state = state;
     }

@@ -2,6 +2,7 @@ package com.groundcontrol.game.controller.state;
 
 import com.badlogic.gdx.math.Vector2;
 import com.groundcontrol.game.controller.elements.PlayerController;
+import com.groundcontrol.game.model.elements.ElementModel;
 
 public class WalkState implements PlayerState {
 
@@ -39,10 +40,12 @@ public class WalkState implements PlayerState {
 
          if(input == InputDecoder.Input.RIGHT){
             context.setLinearVelocity(direction.rotate90(1));
+             context.setRightSide(true);
 
         }
         else if(input == InputDecoder.Input.LEFT){
              context.setLinearVelocity(direction.rotate90(-1));
+             context.setRightSide(false);
         }
 
 

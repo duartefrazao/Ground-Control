@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.model.elements.ElementModel;
+import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.controller.state.IdleState;
 import com.groundcontrol.game.controller.state.PlayerState;
@@ -18,6 +19,8 @@ public class PlayerView extends ElementView {
     private static final float FRAME_TIME = 0.1f;
 
     private float stateTime = 0;
+
+    private boolean flip = true;
 
     private Animation<TextureRegion> runningAnimation;
 
@@ -52,6 +55,8 @@ public class PlayerView extends ElementView {
     @Override
     public void update(ElementModel model){
         super.update(model);
+
+        flip = ((PlayerModel) model).isRightSide();
     }
 
     @Override
@@ -61,7 +66,11 @@ public class PlayerView extends ElementView {
 
         sprite.setRegion(runningAnimation.getKeyFrame(stateTime, true));
 
+        if(!flip)
+            sprite.flip(true, false);
+
         sprite.draw(batch);
+
 
     }
 }

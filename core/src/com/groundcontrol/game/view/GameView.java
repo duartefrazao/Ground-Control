@@ -37,12 +37,11 @@ public class GameView extends ScreenAdapter {
 
     private GameModel gameModel;
 
-    private static final boolean DEBUG_PHYSICS = true;
+    private static final boolean DEBUG_PHYSICS = false;
 
     private Box2DDebugRenderer debugRenderer;
 
     private Matrix4 debugCamera;
-
 
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
 

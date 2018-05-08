@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.decrementExact;
 import static com.badlogic.gdx.math.MathUtils.random;
 
 public class GameController implements ContactListener {
@@ -126,7 +125,6 @@ public class GameController implements ContactListener {
 
         for (ElementController e : planetControllers) {
             Vector2 force = calculatePullForce(e.getBody());
-            System.out.println("Force: " + force);
             playerController.applyForceToCenter(force, true);
         }
 
@@ -183,6 +181,8 @@ public class GameController implements ContactListener {
         world.getBodies(bodies);
 
         getPlayerRotation(delta);
+
+        ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
 
         for (Body body : bodies) {
             verifyBounds(body);
