@@ -6,8 +6,15 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
@@ -21,7 +28,10 @@ import java.util.List;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
-public class GameView extends ScreenAdapter {
+public class GameView extends ScreenAdapter{
+
+    private static boolean rightButtonClicked=false;
+    private static boolean leftButtonClicked = false;
 
     public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, RIGHT_LEFT_BUTTONS}
 
@@ -43,6 +53,14 @@ public class GameView extends ScreenAdapter {
 
     private Matrix4 debugCamera;
 
+    Stage stage;
+
+    ImageButton upButton;
+    ImageButton leftButton;
+    ImageButton rightButton;
+
+    Table uiTable;
+
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
 
         this.game = game;
@@ -52,7 +70,82 @@ public class GameView extends ScreenAdapter {
 
         this.gameController = gameController;
 
+        stage = new Stage();
+
+
+        upButton= addUIComponent( "Buttons/up.png");
+        leftButton = addUIComponent("Buttons/left.png");
+        rightButton = addUIComponent("Buttons/right.png");
+
+        uiTable = createUiTable();
+
+        stage.addActor(uiTable);
+
+        Gdx.input.setInputProcessor(stage);
+
         camera = createCamera();
+    }
+
+    private Table createUiTable(){
+        upButton= addUIComponent( "Buttons/up.png");
+        upButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                gameController.handleInput(StateInput.SPACE_BUTTON);
+            }
+        });
+
+        leftButton = addUIComponent("Buttons/left.png");
+        leftButton.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
+                //gameController.handleInput(StateInput.RIGHT_BUTTON);
+                leftButtonClicked=true;
+                return true;
+            }
+
+            @Override
+            public void touchUp (InputEvent e, float x, float y, int pointer, int button){
+                //gameController.handleInput(StateInput.RIGHT_BUTTON);
+                leftButtonClicked=false;
+            }
+        });
+
+        rightButton = addUIComponent("Buttons/right.png");
+        rightButton.addListener(new ClickListener(){
+            @Override
+            public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
+                //gameController.handleInput(StateInput.RIGHT_BUTTON);
+                rightButtonClicked=true;
+                return true;
+            }
+
+            @Override
+            public void touchUp (InputEvent e, float x, float y, int pointer, int button){
+                //gameController.handleInput(StateInput.RIGHT_BUTTON);
+                rightButtonClicked=false;
+            }
+        });
+
+
+        Table table=new Table();
+
+        table.bottom();
+        table.add(leftButton).height(100).width(100);
+        table.add(rightButton).height(100).width(100);
+        table.add(upButton).height(100).width(100);
+        table.setFillParent(true);
+
+
+        return table;
+    }
+
+    private ImageButton addUIComponent(String fileName){
+
+        Texture buttonTexture=game.getAssetManager().get(fileName,Texture.class);
+        TextureRegion buttonTextureReg =new TextureRegion(buttonTexture);
+        TextureRegionDrawable buttonTextureRegionDraw = new TextureRegionDrawable(buttonTextureReg);
+        return (new ImageButton(buttonTextureRegionDraw));
     }
 
 
@@ -79,6 +172,9 @@ public class GameView extends ScreenAdapter {
         this.game.getAssetManager().load("big_planet.png", Texture.class);
         this.game.getAssetManager().load("runningSheet.png", Texture.class);
         this.game.getAssetManager().load("background.png", Texture.class);
+        this.game.getAssetManager().load("Buttons/up.png",Texture.class);
+        this.game.getAssetManager().load("Buttons/left.png",Texture.class);
+        this.game.getAssetManager().load("Buttons/right.png",Texture.class);
         this.game.getAssetManager().finishLoading();
     }
 
@@ -107,11 +203,14 @@ public class GameView extends ScreenAdapter {
             debugRenderer.render(this.gameController.getWorld(), debugCamera);
         }
 
+        stage.draw();
+
     }
 
     private void handleInputs(float delta){
 
-
+        if(rightButtonClicked) gameController.handleInput(StateInput.RIGHT_BUTTON);
+        if(leftButtonClicked) gameController.handleInput(StateInput.LEFT_BUTTON);
 
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
             this.gameController.handleInput(StateInput.LEFT_BUTTON);
@@ -162,5 +261,7 @@ public class GameView extends ScreenAdapter {
         game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / PIXEL_TO_METER), (int) (ARENA_HEIGHT / PIXEL_TO_METER));
 
     }
+
+
 
 }
