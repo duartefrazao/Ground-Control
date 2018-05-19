@@ -144,8 +144,6 @@ public class PlayerController extends ElementController {
                 75, 219,
         }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
 
-
-        System.out.println("Player mass: " + this.body.getMass());
     }
 
     public void jump() {

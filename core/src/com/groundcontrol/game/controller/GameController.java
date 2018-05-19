@@ -43,6 +43,8 @@ public class GameController implements ContactListener {
 
     private InputDecoder decoder;
 
+    private ScoreController scoreController;
+
     public void setPlanetForce(float x, float y) {
         this.planetForce.x = x * 2;
         this.planetForce.y = y * 2;
@@ -86,12 +88,16 @@ public class GameController implements ContactListener {
 
         this.decoder = new InputDecoder();
 
+        this.scoreController = new ScoreController();
+
         world.setContactListener(this);
     }
 
     public void update(float delta) {
 
         this.gameModel.update(delta);
+
+        this.scoreController.update(delta);
 
         float frameTime = Math.min(delta, 0.25f);
 
@@ -125,13 +131,14 @@ public class GameController implements ContactListener {
             ((ElementModel) body.getUserData()).setY(body.getPosition().y);
             ((ElementModel) body.getUserData()).setRotation(body.getAngle());
         }
+
+        this.gameModel.setScore(scoreController.getScore());
     }
 
 
     public World getWorld() {
         return this.world;
     }
-
 
     private void verifyBounds(Body body) {
         if (body.getPosition().x < 0)

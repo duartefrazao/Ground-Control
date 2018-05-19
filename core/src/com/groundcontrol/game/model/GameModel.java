@@ -25,6 +25,8 @@ public class GameModel {
 
     private static final int PLANET_COUNT = 15;
 
+    private int score = 0;
+
     /**
      * Planets
      */
@@ -68,19 +70,16 @@ public class GameModel {
 
     }
 
+    public void setScore(int score){ this.score = score;}
+
+    public int getScore(){ return this.score; }
+
     public PlayerModel getPlayer() {
         return player;
-    }
-
-    public void setPlayer(PlayerModel player) {
-        this.player = player;
     }
 
     public List<PlanetModel> getPlanets() {
         return planets;
     }
 
-    public void setPlanets(List<PlanetModel> planets) {
-        this.planets = planets;
-    }
 }

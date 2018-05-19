@@ -99,7 +99,7 @@ public class GameView extends ScreenAdapter{
     private Table createScoreTable(){
         Table table = new Table();
         table.top().right();
-        score = 123456;
+        score = 0;
         font = new BitmapFont();
         scoreLabel = new Label(Integer.toString(score), new Label.LabelStyle(font, whiteColor));
         table.add(scoreLabel).height(Gdx.graphics.getHeight() / 10).padRight(10);
@@ -206,7 +206,6 @@ public class GameView extends ScreenAdapter{
 
         this.gameController.update(delta);
 
-        //camera.position.set(GameModel.getInstance().getPlayer().getX()/PIXEL_TO_METER,GameModel.getInstance().getPlayer().getY()/PIXEL_TO_METER,0);
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
 
@@ -215,6 +214,7 @@ public class GameView extends ScreenAdapter{
 
         game.getBatch().begin();
         drawBackGround();
+        this.scoreLabel.setText(Integer.toString(this.gameModel.getScore()));
         drawElements();
         game.getBatch().end();
 

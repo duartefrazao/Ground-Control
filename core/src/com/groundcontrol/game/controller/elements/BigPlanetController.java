@@ -56,8 +56,6 @@ public class BigPlanetController extends ElementController {
 
         this.body.setAngularDamping(0.9f);
 
-        System.out.println("Big Mass: " + this.body.getMass());
-
     }
 
     public float getGravityPercentage(){
