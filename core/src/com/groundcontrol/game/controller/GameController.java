@@ -39,21 +39,21 @@ public class GameController implements ContactListener {
 
     private ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
 
-    private Vector2 planetForce = new Vector2(0, 0);
-
     private InputDecoder decoder;
 
     private ScoreController scoreController;
 
+    private ForceController forceController;
+
     public void setPlanetForce(float x, float y) {
-        this.planetForce.x = x * 2;
-        this.planetForce.y = y * 2;
+
+        this.forceController.updateForce(x, y);
     }
 
     private void applyGravityToPlanets() {
 
         for (ElementController c : planetControllers) {
-            c.applyArtificialGravity(planetForce);
+            c.applyArtificialGravity(forceController.getForce());
         }
 
     }
@@ -90,6 +90,8 @@ public class GameController implements ContactListener {
 
         this.scoreController = new ScoreController();
 
+        this.forceController = new ForceController();
+
         world.setContactListener(this);
     }
 
@@ -109,7 +111,6 @@ public class GameController implements ContactListener {
 
         playerController.limitVelocity();
         playerController.limitAngularVelocity();
-
 
         accumulator += frameTime;
 
