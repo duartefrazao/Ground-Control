@@ -45,9 +45,9 @@ public class GameController implements ContactListener {
 
     private ForceController forceController;
 
-    public void setPlanetForce(float x, float y) {
+    public void setPlanetForce(float delta, float x, float y) {
 
-        this.forceController.updateForce(x, y);
+        this.forceController.updateForce(delta, x, y);
     }
 
     private void applyGravityToPlanets() {
@@ -107,10 +107,11 @@ public class GameController implements ContactListener {
 
         playerController.applyPullForce(planets);
 
-        playerController.setRotation(planets);
-
         playerController.limitVelocity();
+
         playerController.limitAngularVelocity();
+
+        playerController.setRotation(planets);
 
         accumulator += frameTime;
 

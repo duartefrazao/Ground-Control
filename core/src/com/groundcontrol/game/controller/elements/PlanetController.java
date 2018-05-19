@@ -32,7 +32,7 @@ public class PlanetController extends ElementController{
 
         float density = 11000f,
                 friction = 1f,
-                restitution = 0f;
+                restitution = 0.7f;
         int width = 512, height = 512;
 
         createFixture(body, new float[]{

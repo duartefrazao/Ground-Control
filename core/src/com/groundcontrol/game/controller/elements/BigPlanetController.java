@@ -23,13 +23,11 @@ public class BigPlanetController extends ElementController {
 
     public BigPlanetController(World world, ElementModel model) {
 
-
-        //super(world, model, BodyDef.BodyType.KinematicBody);
         super(world, model, BodyDef.BodyType.DynamicBody);
 
         float density = 8000f,
                 friction = 1f,
-                restitution = 0;
+                restitution = 0.5f;
         int width = 1024, height = 1024;
 
         createFixture(body, new float[]{

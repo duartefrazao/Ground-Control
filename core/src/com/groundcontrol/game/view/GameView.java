@@ -42,7 +42,7 @@ public class GameView extends ScreenAdapter{
 
     public final static float PIXEL_TO_METER = 0.009f;
 
-    private static final float VIEWPORT_WIDTH = 35;
+    private static final float VIEWPORT_WIDTH = 50;
 
     private final OrthographicCamera camera;
 
@@ -252,7 +252,7 @@ public class GameView extends ScreenAdapter{
             float vx = Gdx.input.getAccelerometerX();
             float vy = Gdx.input.getAccelerometerY();
 
-            this.gameController.setPlanetForce(-vx, -vy);
+            this.gameController.setPlanetForce(delta, -vx, -vy);
 
         }
 

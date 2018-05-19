@@ -34,8 +34,8 @@ public class WalkState implements PlayerState {
 
         direction.scl(context.calculatePullForce(context.getPlanet()).len() / 60);
 
-        //context.setLinearVelocity(direction.rotate90(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise));
         context.applyLinearImpulseToCenter(direction.rotate90(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise), true);
+
         context.setRightSide(input == InputDecoder.Input.RIGHT);
 
 

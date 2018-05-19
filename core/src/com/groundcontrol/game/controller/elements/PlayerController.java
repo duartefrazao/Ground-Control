@@ -144,6 +144,7 @@ public class PlayerController extends ElementController {
                 75, 219,
         }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
 
+        this.body.setGravityScale(0);
     }
 
     public void jump() {
