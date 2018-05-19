@@ -3,15 +3,18 @@ package com.groundcontrol.game.view;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -55,11 +58,19 @@ public class GameView extends ScreenAdapter{
 
     Stage stage;
 
+    //UI Components
     ImageButton upButton;
     ImageButton leftButton;
     ImageButton rightButton;
-
     Table uiTable;
+
+
+    //Score Components
+    private int score;
+    private BitmapFont font;
+    private Label scoreLabel;
+    private Table scoreTable;
+    private Color whiteColor = new Color(Color.WHITE);
 
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
 
@@ -74,16 +85,26 @@ public class GameView extends ScreenAdapter{
 
         stage = new Stage();
 
-        upButton= addUIComponent( "Buttons/up.png");
-        leftButton = addUIComponent("Buttons/left.png");
-        rightButton = addUIComponent("Buttons/right.png");
-
         uiTable = createUiTable();
 
+        scoreTable = createScoreTable();
+
         stage.addActor(uiTable);
+        stage.addActor(scoreTable);
 
         Gdx.input.setInputProcessor(stage);
 
+    }
+
+    private Table createScoreTable(){
+        Table table = new Table();
+        table.top().right();
+        score = 123456;
+        font = new BitmapFont();
+        scoreLabel = new Label(Integer.toString(score), new Label.LabelStyle(font, whiteColor));
+        table.add(scoreLabel).height(Gdx.graphics.getHeight() / 10).padRight(10);
+        table.setFillParent(true);
+        return table;
     }
 
     private Table createUiTable(){
