@@ -33,7 +33,7 @@ public class GameView extends ScreenAdapter{
     private static boolean rightButtonClicked=false;
     private static boolean leftButtonClicked = false;
 
-    public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, RIGHT_LEFT_BUTTONS}
+    public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON}
 
     private final GroundControl game;
 
@@ -70,8 +70,9 @@ public class GameView extends ScreenAdapter{
 
         this.gameController = gameController;
 
-        stage = new Stage();
+        camera = createCamera();
 
+        stage = new Stage();
 
         upButton= addUIComponent( "Buttons/up.png");
         leftButton = addUIComponent("Buttons/left.png");
@@ -83,7 +84,6 @@ public class GameView extends ScreenAdapter{
 
         Gdx.input.setInputProcessor(stage);
 
-        camera = createCamera();
     }
 
     private Table createUiTable(){
@@ -131,9 +131,9 @@ public class GameView extends ScreenAdapter{
         Table table=new Table();
 
         table.bottom();
-        table.add(leftButton).height(100).width(100);
-        table.add(rightButton).height(100).width(100);
-        table.add(upButton).height(100).width(100);
+        table.add(leftButton).height(Gdx.graphics.getHeight() / 10).width(Gdx.graphics.getWidth() / 3);
+        table.add(rightButton).height(Gdx.graphics.getHeight() / 10).width(Gdx.graphics.getWidth() / 3);
+        table.add(upButton).height(Gdx.graphics.getHeight() / 10).width(Gdx.graphics.getWidth() / 3);
         table.setFillParent(true);
 
 

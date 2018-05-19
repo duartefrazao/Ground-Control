@@ -7,14 +7,29 @@ import com.groundcontrol.game.model.elements.PlanetModel;
 
 public class BigPlanetController extends ElementController {
 
-    public BigPlanetController(World world, ElementModel model){
+    private final static int maxVelocity = 8;
+
+    private final static float artificialGravity = 0.7f;
+
+    private final static float maxAngularVelocity = 0.02f;
+
+    public  float getMaxVelocity(){
+        return this.maxVelocity;
+    }
+
+    public float getMaxAngular(){
+        return this.maxAngularVelocity;
+    }
+
+    public BigPlanetController(World world, ElementModel model) {
+
 
         //super(world, model, BodyDef.BodyType.KinematicBody);
         super(world, model, BodyDef.BodyType.DynamicBody);
 
-        float density = 1f,
-                friction = 0.4f,
-                restitution = 0.5f;
+        float density = 8000f,
+                friction = 1f,
+                restitution = 0;
         int width = 1024, height = 1024;
 
         createFixture(body, new float[]{
@@ -26,7 +41,7 @@ public class BigPlanetController extends ElementController {
                 409, 855,
                 486, 877,
                 324, 109
-        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY|PLAYER_BODY));
+        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
 
         createFixture(body, new float[]{
                 324, 109,
@@ -37,8 +52,16 @@ public class BigPlanetController extends ElementController {
                 922, 699,
                 721, 847,
                 486, 877
-        },width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY|PLAYER_BODY));
+        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
 
+        this.body.setAngularDamping(0.9f);
+
+        System.out.println("Big Mass: " + this.body.getMass());
 
     }
+
+    public float getGravityPercentage(){
+        return this.artificialGravity;
+    }
+
 }

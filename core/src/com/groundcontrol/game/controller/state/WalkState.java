@@ -1,36 +1,24 @@
 package com.groundcontrol.game.controller.state;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.groundcontrol.game.controller.elements.PlayerController;
-import com.groundcontrol.game.model.elements.ElementModel;
+
+import java.util.ArrayList;
+
+import static com.groundcontrol.game.controller.elements.PlayerController.walkMultiplier;
 
 public class WalkState implements PlayerState {
 
-    public void handleInput(PlayerController context, InputDecoder.Input input){
+    private static int clockWise = 1;
+    private static int counterClockWise = -1;
 
-        if(input == InputDecoder.Input.LEFT_RIGHT)
-            context.setState(new IdleState());
-
-
-        //POS -> RIGHT
-        //NEG ->LEFT
+    public void handleInput(PlayerController context, InputDecoder.Input input) {
 
 
-        float rot = context.getAngleBetween(context.getPlanet());
+        if (input == InputDecoder.Input.JUMP) {
 
-        rot -= Math.PI / 2.0;
-
-        Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot));
-
-        //TODO -> Calculate the desire velocity in the planet
-        direction.scl(10) ;
-
-
-        if(input == InputDecoder.Input.JUMP) {
-
-            context.removeFromPlanet();
-
-            context.setLinearVelocity(direction.scl(10));
+            context.jump();
 
             context.setState(new FloatState());
 
@@ -38,21 +26,28 @@ public class WalkState implements PlayerState {
 
         }
 
-         if(input == InputDecoder.Input.RIGHT){
-            context.setLinearVelocity(direction.rotate90(1));
-             context.setRightSide(true);
+        float rot = context.getAngleBetween(context.getPlanet());
 
-        }
-        else if(input == InputDecoder.Input.LEFT){
-             context.setLinearVelocity(direction.rotate90(-1));
-             context.setRightSide(false);
-        }
+        rot -= Math.PI / 2.0;
+
+        Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
+
+        direction.scl(context.calculatePullForce(context.getPlanet()).len() / 60);
+
+        //context.setLinearVelocity(direction.rotate90(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise));
+        context.applyLinearImpulseToCenter(direction.rotate90(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise), true);
+        context.setRightSide(input == InputDecoder.Input.RIGHT);
 
 
     }
 
-    @Override
-    public void enter(PlayerController context) {
+    public void setRotation(PlayerController context, ArrayList<Body> objects) {
+        context.setTransform(context.getX(), context.getY(), context.getAngleBetween(context.getPlanet()));
+    }
+
+    public void applyPullForce(PlayerController context, ArrayList<Body> objects) {
+        Vector2 force = context.calculatePullForce(context.getPlanet());
+        context.applyForceToCenter(force, true);
 
     }
 }
