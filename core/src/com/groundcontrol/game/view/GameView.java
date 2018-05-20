@@ -4,15 +4,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
@@ -46,13 +52,13 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     private Button exitButton;
     boolean flinged=false;
 
-    public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, RIGHT_LEFT_BUTTONS}
+    public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON}
 
     public final GroundControl game;
 
     public final static float PIXEL_TO_METER = 0.009f;
 
-    private static final float VIEWPORT_WIDTH = 35;
+    private static final float VIEWPORT_WIDTH = 50;
 
     private final OrthographicCamera camera;
 
@@ -71,6 +77,14 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     public Section currentSection;
 
 
+
+    //Score Components
+    private int score;
+    private BitmapFont font;
+    private Label scoreLabel;
+    private Table scoreTable;
+    private Color whiteColor = new Color(Color.WHITE);
+
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
 
         this.game = game;
@@ -82,6 +96,7 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
 
         camera = createCamera();
 
+
         gameSection = new GameSection(this);
         pauseSection= new PauseSection(this);
         currentSection = gameSection;
@@ -89,6 +104,8 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
         ip = new InputMultiplexer();
         stage = gameSection.createStage();
         pauseStage= pauseSection.createStage();
+        scoreTable = createScoreTable();
+        stage.addActor(scoreTable);
 
         ip.addProcessor(stage);
         ip.addProcessor(new GestureDetector(this));
@@ -97,6 +114,17 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
 
     }
 
+    private Table createScoreTable(){
+        Table table = new Table();
+        table.center();
+        table.top();
+        score = 0;
+        font = new BitmapFont();
+        scoreLabel = new Label(Integer.toString(score), new Label.LabelStyle(font, whiteColor));
+        table.add(scoreLabel).height(Gdx.graphics.getHeight() / 10);
+        table.setFillParent(true);
+        return table;
+    }
 
 
 
@@ -147,6 +175,7 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
 
         currentSection.display(delta);
 
+        this.scoreLabel.setText(Integer.toString(this.gameModel.getScore()));
         game.getBatch().end();
 
         if (DEBUG_PHYSICS) {
@@ -187,7 +216,7 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
             float vx = Gdx.input.getAccelerometerX();
             float vy = Gdx.input.getAccelerometerY();
 
-            this.gameController.setPlanetForce(-vx, -vy);
+            this.gameController.setPlanetForce(delta, -vx, -vy);
 
         }
 

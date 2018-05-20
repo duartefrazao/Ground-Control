@@ -6,8 +6,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.groundcontrol.game.controller.GameController;
+import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.model.elements.ElementModel;
 
+import static com.badlogic.gdx.Input.Keys.G;
 import static com.groundcontrol.game.view.GameView.PIXEL_TO_METER;
 
 public abstract class ElementController {
@@ -16,6 +19,7 @@ public abstract class ElementController {
     final static short PLANET_BODY = 0x0001;
     final static short PLAYER_BODY = 0x0002;
 
+    final static float pullForceLimit = 20;
 
     final Body body;
 
@@ -68,7 +72,7 @@ public abstract class ElementController {
     }
 
 
-    public Body getBody(){
+    public Body getBody() {
         return this.body;
     }
 
@@ -93,8 +97,12 @@ public abstract class ElementController {
         body.setLinearVelocity((float) (velocity * -Math.sin(getAngle())), (float) (velocity * Math.cos(getAngle())));
     }
 
-    public void setLinearVelocity(Vector2 v){
+    public void setLinearVelocity(Vector2 v) {
         body.setLinearVelocity(v);
+    }
+
+    public float getVelocity(){
+        return body.getLinearVelocity().len();
     }
 
     public void setAngularVelocity(float omega) {
@@ -105,19 +113,19 @@ public abstract class ElementController {
         body.applyForceToCenter(x, y, awake);
     }
 
-    public void applyForceToCenter(Vector2 v, boolean awake){
+    public void applyForceToCenter(Vector2 v, boolean awake) {
         body.applyForceToCenter(v, awake);
     }
 
-    public void applyLinearImpulseToCenter(Vector2 v, boolean awake){
-        body.applyLinearImpulse(v,body.getLocalCenter(), awake);
+    public void applyLinearImpulseToCenter(Vector2 v, boolean awake) {
+        body.applyLinearImpulse(v, body.getLocalCenter(), awake);
     }
 
-    public Vector2 getPosition(){
+    public Vector2 getPosition() {
         return body.getPosition();
     }
 
-    public float getMass(){
+    public float getMass() {
         return body.getMass();
     }
 
@@ -125,12 +133,67 @@ public abstract class ElementController {
         return body.getUserData();
     }
 
-    public float getAngleBetween(Body body){
+    public float getAngleBetween(Body body) {
         float rot = (float) Math.atan2(body.getPosition().y - this.getY(), body.getPosition().x - this.getX());
 
         rot += Math.PI / 2.0;
 
         return rot;
+    }
+
+    public Vector2 calculatePullForce(Body body) {
+
+        double distanceSquared = body.getPosition().dst2(this.getPosition());
+
+        double planet_mass = body.getMass();
+
+        double player_mass = this.getMass();
+
+        double force_module = GameController.G * (planet_mass * player_mass) / distanceSquared;
+
+        Vector2 force = body.getPosition().sub(this.getPosition()).nor();
+
+        force.setLength((float) force_module);
+
+        return force;
+    }
+
+    public abstract float getMaxVelocity();
+
+    public void limitVelocity() {
+
+        float x = this.body.getLinearVelocity().x;
+        float y = this.body.getLinearVelocity().y;
+
+        if (Math.abs(x) > getMaxVelocity())
+            x = getMaxVelocity() * Math.signum(x);
+
+        if (Math.abs(y) > getMaxVelocity())
+            y = getMaxVelocity() * Math.signum(y);
+
+        this.body.setLinearVelocity(x, y);
+    }
+
+    public abstract float getMaxAngular();
+
+    public void limitAngularVelocity() {
+
+        float omega = this.body.getAngularVelocity();
+
+        if (Math.abs(omega) > getMaxVelocity())
+            omega = getMaxAngular() * Math.signum(omega);
+
+        this.body.setAngularVelocity(omega);
+    }
+
+
+    public abstract float getGravityPercentage();
+
+    public void applyArtificialGravity(Vector2 planetForce) {
+
+        this.body.setLinearVelocity(planetForce.x * getGravityPercentage(), planetForce.y * getGravityPercentage());
+
+
     }
 
 }

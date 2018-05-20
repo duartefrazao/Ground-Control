@@ -17,7 +17,6 @@ import com.groundcontrol.game.view.GameView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.Math.abs;
 import static com.badlogic.gdx.math.MathUtils.random;
 
 public class GameController implements ContactListener {
@@ -26,11 +25,7 @@ public class GameController implements ContactListener {
 
     public static final int ARENA_HEIGHT = 100;
 
-    private static final double G = 6.667;
-
-    private static final float VELOCITY_LIMIT = 8f;
-
-    private static final float ANGULAR_LIMIT = 0.02f;
+    public static final double G = Math.pow(6.667, -2);
 
     private final World world;
 
@@ -40,15 +35,27 @@ public class GameController implements ContactListener {
 
     private final PlayerController playerController;
 
-    private ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
+    private ArrayList<Body> planets = new ArrayList<Body>();
 
-    private Vector2 planetForce = new Vector2(0, 0);
+    private ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
 
     private InputDecoder decoder;
 
-    public void setPlanetForce(float x, float y) {
-        this.planetForce.x = x;
-        this.planetForce.y = y;
+    private ScoreController scoreController;
+
+    private ForceController forceController;
+
+    public void setPlanetForce(float delta, float x, float y) {
+
+        this.forceController.updateForce(delta, x, y);
+    }
+
+    private void applyGravityToPlanets() {
+
+        for (ElementController c : planetControllers) {
+            c.applyArtificialGravity(forceController.getForce());
+        }
+
     }
 
     public void handleInput(GameView.StateInput input) {
@@ -75,102 +82,38 @@ public class GameController implements ContactListener {
             else
                 planetC = new BigPlanetController(world, p);
 
-
-            planetControllers.add(planetC);
+            this.planets.add(planetC.getBody());
+            this.planetControllers.add(planetC);
         }
 
         this.decoder = new InputDecoder();
 
+        this.scoreController = new ScoreController();
+
+        this.forceController = new ForceController();
+
         world.setContactListener(this);
-
-
     }
-
-
-    private void applyGravityToPlanets() {
-
-        for (ElementController p : planetControllers) {
-            p.setLinearVelocity(planetForce);
-        }
-
-
-    }
-
-    private Vector2 calculatePullForce(Body body) {
-
-        double distanceSquared = body.getPosition().dst2(playerController.getPosition());
-
-        double planet_mass = body.getMass();
-
-        double player_mass = playerController.getMass();
-
-        double force_module = G * (planet_mass * player_mass) / distanceSquared;
-
-        Vector2 force = body.getPosition().sub(playerController.getPosition()).nor();
-
-        force.setLength((float) force_module);
-
-        return force;
-
-
-    }
-
-    private void applyPullForceToPlayer() {
-
-        if (playerController.isInPlanet()) {
-            Vector2 force = calculatePullForce(playerController.getPlanet());
-            playerController.applyForceToCenter(force.scl(10), true);
-            return;
-        }
-
-        for (ElementController e : planetControllers) {
-            Vector2 force = calculatePullForce(e.getBody());
-            playerController.applyForceToCenter(force, true);
-        }
-
-    }
-
-    private void limitVelocities(Body body) {
-
-        float x = limitV(body.getLinearVelocity().x);
-        float y = limitV(body.getLinearVelocity().y);
-
-        float omega = limitOmega(body.getAngularVelocity());
-
-        body.setLinearVelocity(x, y);
-        body.setAngularVelocity(omega);
-    }
-
-    private float limitV(float v) {
-        if (v > VELOCITY_LIMIT)
-            v = VELOCITY_LIMIT;
-        else if (v < (-VELOCITY_LIMIT))
-            v = -VELOCITY_LIMIT;
-
-        return v;
-    }
-
-    private float limitOmega(float omega) {
-        if (omega > ANGULAR_LIMIT)
-            omega = ANGULAR_LIMIT;
-        else if (omega < (-ANGULAR_LIMIT))
-            omega = -ANGULAR_LIMIT;
-
-        return omega;
-    }
-
 
     public void update(float delta) {
 
         this.gameModel.update(delta);
 
-        float frameTime = Math.min(delta, 0.25f);
+        this.scoreController.update(delta);
 
-        accumulator += frameTime;
+        float frameTime = Math.min(delta, 0.25f);
 
         applyGravityToPlanets();
 
-        applyPullForceToPlayer();
+        playerController.applyPullForce(planets);
+
+        playerController.limitVelocity();
+
+        playerController.limitAngularVelocity();
+
+        playerController.setRotation(planets);
+
+        accumulator += frameTime;
 
         while (accumulator >= 1 / 60f) {
             world.step(1 / 60f, 6, 2);
@@ -178,56 +121,26 @@ public class GameController implements ContactListener {
         }
 
         Array<Body> bodies = new Array<Body>();
+
         world.getBodies(bodies);
 
-        getPlayerRotation(delta);
-
+        playerController.verifyInPlanet();
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
 
         for (Body body : bodies) {
             verifyBounds(body);
-            limitVelocities(body);
             ((ElementModel) body.getUserData()).setX(body.getPosition().x);
             ((ElementModel) body.getUserData()).setY(body.getPosition().y);
             ((ElementModel) body.getUserData()).setRotation(body.getAngle());
-
-        }
-    }
-
-    private void getPlayerRotation(float delta) {
-
-        float distance;
-
-        if (playerController.isInPlanet()) {
-            float rot = playerController.getAngleBetween(playerController.getPlanet());
-
-            playerController.setTransform(playerController.getX(), playerController.getY(), rot);
-
-            return;
-
         }
 
-        for (ElementController planet : planetControllers) {
-
-            distance = abs(planet.getX() - playerController.getX());
-            distance += abs(planet.getY() - playerController.getY());
-
-            if (distance < 8) {
-
-                float rot = playerController.getAngleBetween(planet.getBody());
-
-                playerController.setTransform(playerController.getX(), playerController.getY(), rot);
-            }
-
-        }
-
+        this.gameModel.setScore(scoreController.getScore());
     }
 
 
     public World getWorld() {
         return this.world;
     }
-
 
     private void verifyBounds(Body body) {
         if (body.getPosition().x < 0)
@@ -258,7 +171,7 @@ public class GameController implements ContactListener {
 
     public void playerPlanetCollision(Body planet) {
 
-        if(playerController.isInPlanet())
+        if (playerController.isInPlanet())
             return;
 
         playerController.setInPlanet(planet);

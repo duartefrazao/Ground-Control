@@ -10,14 +10,29 @@ import javax.xml.bind.Element;
 public class PlanetController extends ElementController{
 
 
+    private final static int maxVelocity = 12;
+
+    private final static float maxAngularVelocity = 0.02f;
+
+    private final static float artificialGravity = 0.9f;
+
+
+    public  float getMaxVelocity(){
+        return this.maxVelocity;
+    }
+
+    public float getMaxAngular(){
+        return this.maxAngularVelocity;
+    }
+
+
     public PlanetController(World world, ElementModel model){
 
-        //super(world, model, BodyDef.BodyType.KinematicBody);
         super(world, model, BodyDef.BodyType.DynamicBody);
 
-        float density = 1f,
-                friction = 0.4f,
-                restitution = 0.5f;
+        float density = 11000f,
+                friction = 1f,
+                restitution = 0.7f;
         int width = 512, height = 512;
 
         createFixture(body, new float[]{
@@ -40,7 +55,11 @@ public class PlanetController extends ElementController{
                 345, 398,
         },width, height, density, friction, restitution, PLANET_BODY,  (short) (PLANET_BODY|PLAYER_BODY));
 
+        this.body.setAngularDamping(0.9f);
+    }
 
+    public float getGravityPercentage(){
+        return this.artificialGravity;
     }
 
 }
