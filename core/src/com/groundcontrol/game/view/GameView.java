@@ -175,8 +175,10 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
 
         currentSection.display(delta);
 
-        this.scoreLabel.setText(Integer.toString(this.gameModel.getScore()));
         game.getBatch().end();
+        stage.draw();
+        this.scoreLabel.setText(Integer.toString(this.gameModel.getScore()));
+
 
         if (DEBUG_PHYSICS) {
             debugCamera = camera.combined.cpy();

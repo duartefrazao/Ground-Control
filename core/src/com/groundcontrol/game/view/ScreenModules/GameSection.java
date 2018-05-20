@@ -26,16 +26,14 @@ public class GameSection  implements Section{
 
     @Override
     public void update(float delta) {
-        gv.gameController.update(delta);
         gv.handleInputs(delta);
+        gv.gameController.update(delta);
     }
 
     @Override
     public void display(float delta) {
         gv.drawBackGround();
         draw();
-        gv.stage.act(delta);
-        gv.stage.draw();
     }
 
     @Override
