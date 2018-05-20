@@ -17,6 +17,7 @@ public class PlayerView extends ElementView {
     private static final int numberOfRunningStates = 6;
 
     private static final float FRAME_TIME = 0.1f;
+    private boolean stop =false;
 
     private float stateTime = 0;
 
@@ -59,10 +60,18 @@ public class PlayerView extends ElementView {
         flip = ((PlayerModel) model).isRightSide();
     }
 
+    public void setStopped(){
+        this.stop=true;
+    }
+
+    public void removeStopped(){
+        this.stop=false;
+    }
+
     @Override
     public void draw(SpriteBatch batch){
 
-        this.stateTime += Gdx.graphics.getDeltaTime();
+        if(!stop)this.stateTime += Gdx.graphics.getDeltaTime();
 
         sprite.setRegion(runningAnimation.getKeyFrame(stateTime, true));
 

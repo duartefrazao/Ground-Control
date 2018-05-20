@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.GameView;
+import com.groundcontrol.game.view.MenuScreen;
+import com.groundcontrol.game.view.SecondPlayerScreen;
 
 public class GroundControl extends Game {
 	private SpriteBatch batch;
 	private AssetManager assetManager;
 
-	
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -23,6 +25,16 @@ public class GroundControl extends Game {
 	private void startGame(){
 
         GameModel gameModel = new GameModel();
+
+		GameController gameController = new GameController(gameModel);
+
+
+		setScreen(new MenuScreen(this));
+
+	}
+
+	public void startNewGame(){
+		GameModel gameModel = new GameModel();
 
 		GameController gameController = new GameController(gameModel);
 
@@ -43,4 +55,11 @@ public class GroundControl extends Game {
 		return assetManager;
 	}
 
+	public void startMP() {
+		setScreen(new SecondPlayerScreen(this));
+	}
+
+    public void startMainMenu() {
+		setScreen(new MenuScreen(this));
+    }
 }
