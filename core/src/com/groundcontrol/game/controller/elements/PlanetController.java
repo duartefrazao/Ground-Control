@@ -3,9 +3,6 @@ package com.groundcontrol.game.controller.elements;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.model.elements.ElementModel;
-import com.groundcontrol.game.model.elements.PlanetModel;
-
-import javax.xml.bind.Element;
 
 public class PlanetController extends ElementController{
 
@@ -32,7 +29,7 @@ public class PlanetController extends ElementController{
 
         float density = 11000f,
                 friction = 1f,
-                restitution = 0.7f;
+                restitution = 0.0f;
         int width = 512, height = 512;
 
         createFixture(body, new float[]{

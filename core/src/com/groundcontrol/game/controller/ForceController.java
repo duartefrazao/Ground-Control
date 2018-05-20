@@ -1,17 +1,20 @@
 package com.groundcontrol.game.controller;
 
 import com.badlogic.gdx.math.Vector2;
+
 public class ForceController {
 
     private Vector2 force;
 
     private int minimumVy = 6;
 
-    private int maxForceValue = 25;
+    private int currentMax = 15;
+
+    private int absoluteMax = 30;
 
     private double elapsedTime;
 
-    public ForceController(){
+    public ForceController() {
 
         force = new Vector2(0, -minimumVy);
 
@@ -20,22 +23,26 @@ public class ForceController {
     }
 
 
-    public void updateForce(float delta, float x, float y){
+    public void updateForce(float delta, float x, float y) {
 
         elapsedTime += delta;
-        force.x += x;
-        force.y += y;
+        force.x += x * 0.7;
+        force.y += y * 0.7;
         updateMaxForceValue();
 
-
-        force.limit(maxForceValue);
+        force.limit(currentMax);
     }
 
-    public Vector2 getForce() {return force;}
+    public Vector2 getForce() {
+        return force;
+    }
 
-    private void updateMaxForceValue(){
+    private void updateMaxForceValue() {
 
-        maxForceValue =  (int) ( (11f/25f) * elapsedTime + 25);
+        if (currentMax >= absoluteMax)
+            return;
+
+        currentMax = (int) ((9f / 37f) * elapsedTime + 10);
 
     }
 

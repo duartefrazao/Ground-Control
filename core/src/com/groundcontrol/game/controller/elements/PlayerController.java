@@ -17,13 +17,11 @@ public class PlayerController extends ElementController {
 
     public final static float jumpMultiplier = 50000000;
 
-    public final static float walkMultiplier = 150;
-
-    private final static float maxVelocity = 15;
-
-    private final static float walkPull = 10;
+    private final static float maxVelocity = 13;
 
     private final static float maxAngularVelocity = 0.02f;
+
+    public final static int walkToPullRation = 70;
 
     private Body currentPlanet = null;
 
@@ -45,17 +43,13 @@ public class PlayerController extends ElementController {
         this.state.handleInput(this, input);
     }
 
-    public float getWalkPull() {
-        return this.walkPull;
-    }
-
     public PlayerController(World world, ElementModel model) {
         super(world, model, BodyDef.BodyType.DynamicBody);
 
         state = new FloatState();
 
         float density = 20f,
-                friction = 0.7f,
+                friction = 1f,
                 restitution = 0.0f;
         int width = 244, height = 423;
 
@@ -145,6 +139,7 @@ public class PlayerController extends ElementController {
         }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
 
         this.body.setGravityScale(0);
+        this.body.setAngularDamping(0.7f);
     }
 
     public void jump() {

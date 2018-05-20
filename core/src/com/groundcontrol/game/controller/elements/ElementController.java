@@ -7,10 +7,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.controller.GameController;
-import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.model.elements.ElementModel;
 
-import static com.badlogic.gdx.Input.Keys.G;
 import static com.groundcontrol.game.view.GameView.PIXEL_TO_METER;
 
 public abstract class ElementController {
@@ -19,7 +17,6 @@ public abstract class ElementController {
     final static short PLANET_BODY = 0x0001;
     final static short PLAYER_BODY = 0x0002;
 
-    final static float pullForceLimit = 20;
 
     final Body body;
 
@@ -127,10 +124,6 @@ public abstract class ElementController {
 
     public float getMass() {
         return body.getMass();
-    }
-
-    public Object getUserData() {
-        return body.getUserData();
     }
 
     public float getAngleBetween(Body body) {

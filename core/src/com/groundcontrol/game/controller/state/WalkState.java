@@ -6,7 +6,7 @@ import com.groundcontrol.game.controller.elements.PlayerController;
 
 import java.util.ArrayList;
 
-import static com.groundcontrol.game.controller.elements.PlayerController.walkMultiplier;
+import static com.groundcontrol.game.controller.elements.PlayerController.walkToPullRation;
 
 public class WalkState implements PlayerState {
 
@@ -32,12 +32,11 @@ public class WalkState implements PlayerState {
 
         Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
 
-        direction.scl(context.calculatePullForce(context.getPlanet()).len() / 60);
+        direction.scl(context.calculatePullForce(context.getPlanet()).len() / walkToPullRation);
 
         context.applyLinearImpulseToCenter(direction.rotate90(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise), true);
 
         context.setRightSide(input == InputDecoder.Input.RIGHT);
-
 
     }
 
@@ -47,7 +46,7 @@ public class WalkState implements PlayerState {
 
     public void applyPullForce(PlayerController context, ArrayList<Body> objects) {
         Vector2 force = context.calculatePullForce(context.getPlanet());
-        context.applyForceToCenter(force, true);
+        context.applyForceToCenter(force.add(context.getPlanet().getLinearVelocity()), true);
 
     }
 }
