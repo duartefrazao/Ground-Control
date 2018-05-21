@@ -8,36 +8,39 @@ import java.util.ArrayList;
 
 import static com.groundcontrol.game.controller.elements.PlayerController.walkToPullRation;
 
-public class WalkState implements PlayerState {
+public class RunningState implements PlayerState {
 
     private static int clockWise = 1;
     private static int counterClockWise = -1;
 
     public void handleInput(PlayerController context, InputDecoder.Input input) {
 
+        if (input == InputDecoder.Input.IDLE) {
 
-        if (input == InputDecoder.Input.JUMP) {
+            context.setState(new IdleState());
+
+        } else if (input == InputDecoder.Input.JUMP) {
 
             context.jump();
 
             context.setState(new FloatState());
 
-            return;
+
+        } else {
+
+            float rot = context.getAngleBetween(context.getPlanet());
+
+            rot -= Math.PI / 2.0;
+
+            Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
+
+            direction.scl(context.calculatePullForce(context.getPlanet()).len() / walkToPullRation);
+
+            context.applyLinearImpulseToCenter(direction.rotate90(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise), true);
+
+            context.setRightSide(input == InputDecoder.Input.RIGHT);
 
         }
-
-        float rot = context.getAngleBetween(context.getPlanet());
-
-        rot -= Math.PI / 2.0;
-
-        Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
-
-        direction.scl(context.calculatePullForce(context.getPlanet()).len() / walkToPullRation);
-
-        context.applyLinearImpulseToCenter(direction.rotate90(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise), true);
-
-        context.setRightSide(input == InputDecoder.Input.RIGHT);
-
     }
 
     public void setRotation(PlayerController context, ArrayList<Body> objects) {
@@ -45,8 +48,10 @@ public class WalkState implements PlayerState {
     }
 
     public void applyPullForce(PlayerController context, ArrayList<Body> objects) {
+
         Vector2 force = context.calculatePullForce(context.getPlanet());
-        context.applyForceToCenter(force.add(context.getPlanet().getLinearVelocity()), true);
+        context.applyForceToCenter(force, true);
+
 
     }
 }

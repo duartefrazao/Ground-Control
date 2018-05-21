@@ -1,7 +1,5 @@
 package com.groundcontrol.game.controller;
 
-import com.badlogic.gdx.utils.TimeUtils;
-
 public class ScoreController {
 
     private double time;

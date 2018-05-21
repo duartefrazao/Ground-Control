@@ -1,13 +1,21 @@
 package com.groundcontrol.game.model.elements;
 
+
 public class PlayerModel extends ElementModel {
 
-    private boolean accelerating=true;
+    private boolean rightSide;
 
-    private boolean rightSide = true;
+    private animationState currentState;
+
+    public enum animationState {IDLE, RUNNING, JUMPING }
 
     public PlayerModel(float x, float y, float rotation) {
         super(x, y, rotation);
+
+        this.rightSide = true;
+
+        this.currentState = animationState.IDLE;
+
     }
 
     @Override
@@ -15,12 +23,10 @@ public class PlayerModel extends ElementModel {
         return ModelType.Player;
     }
 
-    public void setAccelerating(boolean b) {
-        accelerating=b;
-    }
+    public animationState getCurrentState() { return this.currentState; }
 
-    public boolean isAccelerating(){
-        return accelerating;
+    public void setCurrentState(animationState state){
+        this.currentState = state;
     }
 
     public boolean isRightSide(){

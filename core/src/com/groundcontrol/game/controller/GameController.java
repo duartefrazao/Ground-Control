@@ -1,7 +1,12 @@
 package com.groundcontrol.game.controller;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.elements.BigPlanetController;
 import com.groundcontrol.game.controller.elements.ElementController;
@@ -17,15 +22,13 @@ import com.groundcontrol.game.view.GameView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.badlogic.gdx.math.MathUtils.random;
-
 public class GameController implements ContactListener {
 
     public static final int ARENA_WIDTH = 50;
 
     public static final int ARENA_HEIGHT = 100;
 
-    public static final double G = Math.pow(6.667, -2);
+    public static final double G = Math.pow(3.667, -2);
 
     private final World world;
 
@@ -101,18 +104,14 @@ public class GameController implements ContactListener {
 
         this.scoreController.update(delta);
 
-        float frameTime = Math.min(delta, 0.25f);
-
         applyGravityToPlanets();
 
-        playerController.applyPullForce(planets);
+        playerController.update(planets, delta);
 
-        playerController.limitVelocity();
+        for(ElementController ec : this.planetControllers)
+            ec.verifyBounds();
 
-        playerController.limitAngularVelocity();
-
-        playerController.setRotation(planets);
-
+        float frameTime = Math.min(delta, 0.25f);
         accumulator += frameTime;
 
         while (accumulator >= 1 / 60f) {
@@ -124,16 +123,13 @@ public class GameController implements ContactListener {
 
         world.getBodies(bodies);
 
-        playerController.verifyInPlanet();
-        ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
-
         for (Body body : bodies) {
-            verifyBounds(body);
             ((ElementModel) body.getUserData()).setX(body.getPosition().x);
             ((ElementModel) body.getUserData()).setY(body.getPosition().y);
             ((ElementModel) body.getUserData()).setRotation(body.getAngle());
         }
 
+        ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
         this.gameModel.setScore(scoreController.getScore());
     }
 
@@ -142,19 +138,6 @@ public class GameController implements ContactListener {
         return this.world;
     }
 
-    private void verifyBounds(Body body) {
-        if (body.getPosition().x < 0)
-            body.setTransform(ARENA_WIDTH, body.getPosition().y * random.nextFloat(), body.getAngle());
-
-        if (body.getPosition().y < 0)
-            body.setTransform(body.getPosition().x * random.nextFloat(), ARENA_HEIGHT, body.getAngle());
-
-        if (body.getPosition().x > ARENA_WIDTH)
-            body.setTransform(0, body.getPosition().y * random.nextFloat(), body.getAngle());
-
-        if (body.getPosition().y > ARENA_HEIGHT)
-            body.setTransform(body.getPosition().x * random.nextFloat(), 0, body.getAngle());
-    }
 
     @Override
     public void beginContact(Contact contact) {
