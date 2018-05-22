@@ -73,13 +73,13 @@ public class GameSection  implements Section{
         leftButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                gv.leftButtonClicked=true;
+                gv.setCurrentInput(GameView.StateInput.LEFT_BUTTON);
                 return true;
             }
 
             @Override
             public void touchUp (InputEvent e, float x, float y, int pointer, int button){
-                gv.leftButtonClicked=false;
+                gv.setCurrentInput(GameView.StateInput.IDLE);
             }
         });
 
@@ -87,13 +87,13 @@ public class GameSection  implements Section{
         rightButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                gv.rightButtonClicked=true;
+                gv.setCurrentInput(GameView.StateInput.RIGHT_BUTTON);
                 return true;
             }
 
             @Override
             public void touchUp (InputEvent e, float x, float y, int pointer, int button){
-                gv.rightButtonClicked=false;
+                gv.setCurrentInput(GameView.StateInput.IDLE);
             }
         });
 

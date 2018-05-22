@@ -11,9 +11,6 @@ public class PlanetController extends ElementController{
 
     private final static float maxAngularVelocity = 0.02f;
 
-    private final static float artificialGravity = 0.9f;
-
-
     public  float getMaxVelocity(){
         return this.maxVelocity;
     }
@@ -30,7 +27,8 @@ public class PlanetController extends ElementController{
         float density = 11000f,
                 friction = 1f,
                 restitution = 0.0f;
-        int width = 512, height = 512;
+        this.width = 512;
+        this.height = 512;
 
         createFixture(body, new float[]{
                 204, 57,
@@ -53,10 +51,7 @@ public class PlanetController extends ElementController{
         },width, height, density, friction, restitution, PLANET_BODY,  (short) (PLANET_BODY|PLAYER_BODY));
 
         this.body.setAngularDamping(0.9f);
-    }
-
-    public float getGravityPercentage(){
-        return this.artificialGravity;
+        this.artificialGravity = (float) Math.random() + 0.5f;
     }
 
 }

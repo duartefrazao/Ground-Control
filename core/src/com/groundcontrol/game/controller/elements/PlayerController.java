@@ -8,40 +8,28 @@ import com.groundcontrol.game.controller.state.FloatState;
 import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.controller.state.PlayerState;
 import com.groundcontrol.game.model.elements.ElementModel;
+import com.groundcontrol.game.model.elements.PlayerModel;
 
 import java.util.ArrayList;
 
 public class PlayerController extends ElementController {
 
-    private PlayerState state;
+    private final static float runningRelativeVelocity = 0.03f;
 
-    public final static float jumpMultiplier = 50000000;
+    public final static int walkToPullRation = 70;
 
     private final static float maxVelocity = 13;
 
     private final static float maxAngularVelocity = 0.02f;
 
-    public final static int walkToPullRation = 70;
+    private float jumpingTime = 0f;
+
+    private PlayerState state;
 
     private Body currentPlanet = null;
 
     private boolean rightSide = true;
 
-    public boolean isRightSide() {
-        return rightSide;
-    }
-
-    public void setRightSide(boolean side) {
-        this.rightSide = side;
-    }
-
-    public void setState(PlayerState state) {
-        this.state = state;
-    }
-
-    public void handleInput(InputDecoder.Input input) {
-        this.state.handleInput(this, input);
-    }
 
     public PlayerController(World world, ElementModel model) {
         super(world, model, BodyDef.BodyType.DynamicBody);
@@ -51,7 +39,8 @@ public class PlayerController extends ElementController {
         float density = 20f,
                 friction = 1f,
                 restitution = 0.0f;
-        int width = 244, height = 423;
+        this.width = 244;
+        this.height = 423;
 
         //Head
         createFixture(body, new float[]{
@@ -142,15 +131,33 @@ public class PlayerController extends ElementController {
         this.body.setAngularDamping(0.7f);
     }
 
+    public boolean isRightSide() {
+        return rightSide;
+    }
+
+    public void setRightSide(boolean side) {
+        this.rightSide = side;
+    }
+
+    public void setState(PlayerState state) {
+        this.state = state;
+    }
+
+    public void handleInput(InputDecoder.Input input) {
+        this.state.handleInput(this, input);
+    }
+
     public void jump() {
 
         float rot = this.getAngleBetween(this.getPlanet());
+
+        this.jumpingTime = 0.5f;
 
         rot -= Math.PI / 2.0;
 
         Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
 
-        this.applyForceToCenter(direction.rotate(180).scl((float) Math.pow(this.calculatePullForce(this.getPlanet()).len(), 2)), true);
+        this.applyForceToCenter(direction.rotate(180).scl((float) Math.pow(this.calculatePullForce(this.getPlanet()).len(), 4)), true);
 
         this.removeFromPlanet();
 
@@ -177,7 +184,8 @@ public class PlayerController extends ElementController {
     }
 
     public void applyPullForce(ArrayList<Body> objects) {
-        this.state.applyPullForce(this, objects);
+        if(this.jumpingTime == 0)
+          this.state.applyPullForce(this, objects);
     }
 
     public float getMaxVelocity() {
@@ -188,17 +196,56 @@ public class PlayerController extends ElementController {
         return this.maxAngularVelocity;
     }
 
-    public float getGravityPercentage() {
-        return 0;
-    }
-
     public void verifyInPlanet() {
         if (!this.isInPlanet())
             return;
-        if (this.getPosition().dst2(this.getPlanet().getPosition()) > 100) {
+        if (this.getPosition().dst2(this.getPlanet().getPosition()) > 81) {
             this.removeFromPlanet();
             this.setState(new FloatState());
         }
     }
+
+    public void update(ArrayList<Body> planets, float delta) {
+
+        this.updateJumpTime(delta);
+
+        this.applyPullForce(planets);
+
+        this.limitVelocity();
+
+        this.limitAngularVelocity();
+
+        this.setRotation(planets);
+
+        this.verifyInPlanet();
+
+        this.updateMovementState();
+    }
+
+    private void updateJumpTime(float delta){
+
+        jumpingTime -= delta;
+
+        if(jumpingTime < 0)
+            jumpingTime = 0;
+
+    }
+
+    private void updateMovementState() {
+
+        if (!isInPlanet())
+            ((PlayerModel) body.getUserData()).setCurrentState(PlayerModel.animationState.IDLE);
+        else {
+
+            if (Math.abs(this.body.getLinearVelocity().len() - this.getPlanet().getLinearVelocity().len()) > runningRelativeVelocity)
+                ((PlayerModel) body.getUserData()).setCurrentState(PlayerModel.animationState.RUNNING);
+            else
+                ((PlayerModel) body.getUserData()).setCurrentState(PlayerModel.animationState.IDLE);
+
+        }
+
+
+    }
+
 
 }

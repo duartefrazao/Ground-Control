@@ -9,6 +9,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.elements.ElementModel;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
+import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 import static com.groundcontrol.game.view.GameView.PIXEL_TO_METER;
 
 public abstract class ElementController {
@@ -17,8 +20,16 @@ public abstract class ElementController {
     final static short PLANET_BODY = 0x0001;
     final static short PLAYER_BODY = 0x0002;
 
-
     final Body body;
+
+    protected float artificialGravity = 0f;
+
+    protected int width;
+    protected int height;
+
+    protected int width_meters;
+    protected int height_meters;
+
 
     ElementController(World world, ElementModel model, BodyDef.BodyType bodyType) {
 
@@ -36,6 +47,10 @@ public abstract class ElementController {
 
 
     final void createFixture(Body body, float[] vertexes, int width, int height, float density, float friction, float restitution, short category, short mask) {
+
+        this.height_meters = (int) ((float) this.height * PIXEL_TO_METER);
+
+        this.width_meters = (int) ((float) this.width * PIXEL_TO_METER);
 
         for (int i = 0; i < vertexes.length; i++) {
             if (i % 2 == 0)
@@ -73,7 +88,6 @@ public abstract class ElementController {
         return this.body;
     }
 
-
     public float getX() {
         return body.getPosition().x;
     }
@@ -82,32 +96,8 @@ public abstract class ElementController {
         return body.getPosition().y;
     }
 
-    public float getAngle() {
-        return body.getAngle();
-    }
-
     public void setTransform(float x, float y, float angle) {
         body.setTransform(x, y, angle);
-    }
-
-    public void setLinearVelocity(float velocity) {
-        body.setLinearVelocity((float) (velocity * -Math.sin(getAngle())), (float) (velocity * Math.cos(getAngle())));
-    }
-
-    public void setLinearVelocity(Vector2 v) {
-        body.setLinearVelocity(v);
-    }
-
-    public float getVelocity(){
-        return body.getLinearVelocity().len();
-    }
-
-    public void setAngularVelocity(float omega) {
-        body.setAngularVelocity(omega);
-    }
-
-    public void applyForceToCenter(float x, float y, boolean awake) {
-        body.applyForceToCenter(x, y, awake);
     }
 
     public void applyForceToCenter(Vector2 v, boolean awake) {
@@ -180,13 +170,25 @@ public abstract class ElementController {
     }
 
 
-    public abstract float getGravityPercentage();
-
     public void applyArtificialGravity(Vector2 planetForce) {
+        this.body.setLinearVelocity(planetForce.x * this.artificialGravity, planetForce.y * this.artificialGravity);
+    }
 
-        this.body.setLinearVelocity(planetForce.x * getGravityPercentage(), planetForce.y * getGravityPercentage());
+    public void verifyBounds() {
 
+        if (body.getPosition().x + this.width_meters / 2.0f < 0)
+            body.setTransform(ARENA_WIDTH, body.getPosition().y * random.nextFloat(), body.getAngle());
+
+        if (body.getPosition().y + this.height_meters / 2.0f < 0)
+            body.setTransform(body.getPosition().x * random.nextFloat(), ARENA_HEIGHT, body.getAngle());
+
+        if (body.getPosition().x - this.width_meters / 2.0 > ARENA_WIDTH)
+            body.setTransform(0, body.getPosition().y * random.nextFloat(), body.getAngle());
+
+        if (body.getPosition().y - this.height_meters / 2.0 > ARENA_HEIGHT)
+            body.setTransform(body.getPosition().x * random.nextFloat(), 0, body.getAngle());
 
     }
+
 
 }

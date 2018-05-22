@@ -11,11 +11,7 @@ import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
 
-
 public class GameModel {
-
-
-    private static final boolean DEBUG = false;
 
     /**
      * Player character
@@ -23,7 +19,7 @@ public class GameModel {
     private PlayerModel player;
 
 
-    private static final int PLANET_COUNT = 15;
+    private static final int PLANET_COUNT = 7;
 
     private int score = 0;
 
@@ -34,7 +30,7 @@ public class GameModel {
 
     public GameModel() {
         planets = new ArrayList<PlanetModel>();
-        player = new PlayerModel(5, 5, 0);
+        player = new PlayerModel(ARENA_WIDTH / 2, ARENA_HEIGHT / 2, 0);
 
 
         for (int i = 0; i < PLANET_COUNT; i++) {
@@ -45,21 +41,6 @@ public class GameModel {
                     random.nextBoolean() ? PlanetModel.PlanetSize.BIG : PlanetModel.PlanetSize.MEDIUM));
         }
 
-
-        /*
-         *  Test Purposes
-         */
-
-        if(DEBUG) {
-            for (int i = 0; i < 1; i++) {
-                planets.add(new PlanetModel(
-                        17,
-                        15,
-                        (float) Math.toRadians(random.nextFloat() * 360),
-                        random.nextBoolean() ? PlanetModel.PlanetSize.BIG : PlanetModel.PlanetSize.MEDIUM));
-            }
-
-        }
 
     }
 
