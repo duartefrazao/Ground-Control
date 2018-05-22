@@ -36,7 +36,7 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
 
     public final static float PIXEL_TO_METER = 0.009f;
     private static final float VIEWPORT_WIDTH = 50;
-
+    public enum StateInput {RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, IDLE}
     private StateInput currentInput = StateInput.IDLE;
 
     public final Stage pauseStage;
@@ -59,8 +59,6 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     private Label scoreLabel;
     private Table scoreTable;
     private Color whiteColor = new Color(Color.WHITE);
-    public GameView(GroundControl game, GameModel gameModel, GameController gameController) {
-
     private float vx=0,vy=0;
 
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
@@ -280,10 +278,9 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     }
 
     @Override
-    public void pinchStop() {}
+    public void pinchStop() {
 
     }
 
-    public enum StateInput {RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, IDLE}
 
 }
