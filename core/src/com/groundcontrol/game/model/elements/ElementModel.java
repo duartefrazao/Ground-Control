@@ -2,7 +2,7 @@ package com.groundcontrol.game.model.elements;
 
 public abstract class ElementModel {
 
-    public enum ModelType{ BigPlanet, MediumPlanet, Player, Comet}
+    public enum ModelType{ BigPlanet, MediumPlanet, Player, Comet, Explosion}
 
     private float x;
 

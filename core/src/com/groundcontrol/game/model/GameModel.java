@@ -3,10 +3,12 @@ package com.groundcontrol.game.model;
 import com.badlogic.gdx.utils.Pool;
 import com.groundcontrol.game.model.elements.CometModel;
 import com.groundcontrol.game.model.elements.ElementModel;
+import com.groundcontrol.game.model.elements.ExplosionModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -36,6 +38,12 @@ public class GameModel {
      */
     private List<CometModel> comets;
 
+    /**
+     * Explosions
+     */
+    private List<ExplosionModel> explosions;
+
+
     Pool<CometModel> cometPoll = new Pool<CometModel>(){
 
         @Override
@@ -45,9 +53,11 @@ public class GameModel {
 
     };
 
+
     public GameModel() {
         planets = new ArrayList<PlanetModel>();
         comets = new ArrayList<CometModel>();
+        explosions = new ArrayList<ExplosionModel>();
         player = new PlayerModel(ARENA_WIDTH / 2, ARENA_HEIGHT / 2, 0);
 
 
@@ -64,8 +74,21 @@ public class GameModel {
 
     public void update(float delta) {
 
-        //TODO
-        return;
+        System.out.println("Size: " + this.explosions.size());
+
+        Iterator<ExplosionModel> iter = this.explosions.iterator();
+
+        while(iter.hasNext()){
+
+            ExplosionModel em = iter.next();
+
+            if(em.isExplosionOver(delta)){
+
+                iter.remove();
+
+            }
+
+        }
 
     }
 
@@ -85,6 +108,10 @@ public class GameModel {
         return comets;
     }
 
+    public List<ExplosionModel> getExplosions(){
+        return explosions;
+    }
+
     public CometModel createComet(float x, float y){
 
         CometModel comet = cometPoll.obtain();
@@ -97,6 +124,19 @@ public class GameModel {
         comets.add(comet);
 
         return comet;
+    }
+
+    public void createExplosion(float x, float y){
+
+        ExplosionModel explosion = new ExplosionModel(0, 0, 0);
+
+        explosion.setToBeRemoved(false);
+        explosion.setX(x);
+        explosion.setY(y);
+        explosion.setRotation(0);
+        explosion.initializeExplosionTime();
+
+        explosions.add(explosion);
     }
 
     public void removeModel(ElementModel model){

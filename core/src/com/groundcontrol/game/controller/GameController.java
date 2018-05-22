@@ -34,7 +34,7 @@ public class GameController implements ContactListener {
 
     public static final double G = Math.pow(3.667, -2);
 
-    private static final float TIME_BETWEEN_COMETS = 4f;
+    private static final float TIME_BETWEEN_COMETS = 3f;
 
     private final World world;
     private final PlayerController playerController;
@@ -118,9 +118,6 @@ public class GameController implements ContactListener {
 
     public void update(float delta) {
 
-
-        this.gameModel.update(delta);
-
         this.scoreController.update(delta);
 
         applyGravityToPlanets();
@@ -152,6 +149,8 @@ public class GameController implements ContactListener {
 
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
         this.gameModel.setScore(scoreController.getScore());
+
+        this.gameModel.update(delta);
 
         removeFlagged();
     }
@@ -230,6 +229,8 @@ public class GameController implements ContactListener {
 
         if(this.playerController.getPlanet() == planet)
             playerController.jump();
+
+        this.gameModel.createExplosion(planet.getPosition().x, planet.getPosition().y);
 
         ((ElementModel) comet.getUserData()).setToBeRemoved(true);
         ((ElementModel) planet.getUserData()).setToBeRemoved(true);

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.model.elements.CometModel;
+import com.groundcontrol.game.model.elements.ExplosionModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
@@ -66,6 +67,12 @@ public class GameSection  implements Section{
         for(CometModel c : comets){
             ElementView view = ViewFactory.makeView(gv.game, c);
             view.update(c);
+            view.draw(gv.game.getBatch());
+        }
+        List<ExplosionModel> explosions = gv.gameModel.getExplosions();
+        for(ExplosionModel e : explosions){
+            ElementView view = ViewFactory.makeView(gv.game, e);
+            view.update(e);
             view.draw(gv.game.getBatch());
         }
     }
