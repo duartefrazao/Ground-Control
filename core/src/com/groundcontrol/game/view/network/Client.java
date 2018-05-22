@@ -24,6 +24,8 @@ public class Client {
         } catch (IOException e) {
             System.out.println("Error connecting client to server");
             e.printStackTrace();
+
+            System.out.println(e);
             return 1;
         }
 
@@ -51,7 +53,18 @@ public class Client {
         else return null;
     }
 
-    public void stopConnection() throws IOException {
+    public void tick() throws IOException {
+        if(receiver.finished || sender.finished) stop();
+    }
+
+    public boolean isAlive(){
+        return alive;
+    }
+
+    public void stop() throws IOException {
+        this.alive=false;
+        receiver.finished=true;
+        sender.finished=true;
         receiver.stopCom();
         sender.stopCom();
         clientSocket.close();

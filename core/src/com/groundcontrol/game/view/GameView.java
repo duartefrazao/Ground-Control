@@ -33,7 +33,9 @@ import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.elements.ElementView;
 import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
+import com.groundcontrol.game.view.network.Server;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
@@ -48,9 +50,8 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     public final GameSection gameSection;
     public final PauseSection pauseSection;
     public boolean paused;
-    private Button resumeButton;
-    private Button exitButton;
     boolean flinged=false;
+    private Server server;
 
     public enum StateInput { RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON}
 
@@ -85,11 +86,15 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     private Table scoreTable;
     private Color whiteColor = new Color(Color.WHITE);
 
+    private float vx=0,vy=0;
+
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
 
         this.game = game;
         loadAssets();
 
+        server = new Server();
+        server.start(25000);
         this.gameModel = gameModel;
 
         this.gameController = gameController;
@@ -163,7 +168,16 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     public void render(float delta){
 
 
+        if(server.isAlive()){
+            try {
+                server.tick();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            receiveInputs(delta);
+        }
         currentSection.update(delta);
+
 
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
@@ -191,6 +205,7 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
 
     public void handleInputs(float delta){
 
+
         if(rightButtonClicked) gameController.handleInput(StateInput.RIGHT_BUTTON);
         if(leftButtonClicked) gameController.handleInput(StateInput.LEFT_BUTTON);
 
@@ -213,15 +228,35 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
 
         boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 
-        if(accAvailable){
+        if(accAvailable&& !server.isAlive()){
 
-            float vx = Gdx.input.getAccelerometerX();
-            float vy = Gdx.input.getAccelerometerY();
+            vx = Gdx.input.getAccelerometerX();
+            vy = Gdx.input.getAccelerometerY();
 
             this.gameController.setPlanetForce(delta, -vx, -vy);
 
         }
+        this.gameController.setPlanetForce(delta, -vx, -vy);
+    }
 
+    private void receiveInputs(float delta) {
+        String messageReceived = null;
+        try {
+            messageReceived = server.receiveMessage();
+        } catch (IOException e) {
+            System.out.println("Error receiving string messages");
+            e.printStackTrace();
+        }
+
+        if(messageReceived != null){
+            if(messageReceived.substring(0,2).equals("vx")) {
+                messageReceived=messageReceived.substring(2);
+                vx=Float.valueOf(messageReceived);
+            }else{
+                messageReceived=messageReceived.substring(2);
+                vy=Float.valueOf(messageReceived);
+            }
+        }
     }
 
 
@@ -279,8 +314,6 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     }
 
     @Override
-    public void pinchStop() {
-
-    }
+    public void pinchStop() {}
 
 }

@@ -48,13 +48,15 @@ public class TestBasicNetworkFunctionalityTest {
     @Test
     public void testServerReceiveSend() throws InterruptedException, IOException {
         Client client = new Client();
-        client.startConnection("127.0.0.1", 6666);
+
+        System.out.println(client.startConnection("192.168.2.188", 25000));
         TimeUnit.SECONDS.sleep(2);
 
         for(int i = 0; i< 2;i++)System.out.println(client.receiveMessage());
         TimeUnit.SECONDS.sleep(2);
         for(int i = 0; i< 200;i++){
-            client.sendMessage("RIGHT");
+            //client.sendMessage("RIGHT");
+            client.sendMessage("vx"+Float.toString(9.64981269426941f));
             TimeUnit.MILLISECONDS.sleep(100);
         }
         TimeUnit.SECONDS.sleep(2);
