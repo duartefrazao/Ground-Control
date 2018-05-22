@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.groundcontrol.game.model.elements.CometModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
@@ -59,6 +60,12 @@ public class GameSection  implements Section{
         for(PlanetModel p : planets){
             ElementView view = ViewFactory.makeView(gv.game,p);
             view.update(p);
+            view.draw(gv.game.getBatch());
+        }
+        List<CometModel> comets = gv.gameModel.getComets();
+        for(CometModel c : comets){
+            ElementView view = ViewFactory.makeView(gv.game, c);
+            view.update(c);
             view.draw(gv.game.getBatch());
         }
     }

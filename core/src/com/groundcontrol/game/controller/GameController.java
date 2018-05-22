@@ -9,11 +9,13 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.elements.BigPlanetController;
+import com.groundcontrol.game.controller.elements.CometController;
 import com.groundcontrol.game.controller.elements.ElementController;
 import com.groundcontrol.game.controller.elements.PlanetController;
 import com.groundcontrol.game.controller.elements.PlayerController;
 import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.model.GameModel;
+import com.groundcontrol.game.model.elements.CometModel;
 import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
@@ -21,6 +23,8 @@ import com.groundcontrol.game.view.GameView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.badlogic.gdx.math.MathUtils.random;
 
 public class GameController implements ContactListener {
 
@@ -30,14 +34,12 @@ public class GameController implements ContactListener {
 
     public static final double G = Math.pow(3.667, -2);
 
+    private static final float TIME_BETWEEN_COMETS = 4f;
+
     private final World world;
-
-    private float accumulator;
-
-    private GameModel gameModel;
-
     private final PlayerController playerController;
-
+    private float accumulator;
+    private GameModel gameModel;
     private ArrayList<Body> planets = new ArrayList<Body>();
 
     private ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
@@ -48,24 +50,7 @@ public class GameController implements ContactListener {
 
     private ForceController forceController;
 
-    public void setPlanetForce(float delta, float x, float y) {
-
-        this.forceController.updateForce(delta, x, y);
-    }
-
-    private void applyGravityToPlanets() {
-
-        for (ElementController c : planetControllers) {
-            c.applyArtificialGravity(forceController.getForce());
-        }
-
-    }
-
-    public void handleInput(GameView.StateInput input) {
-
-        this.playerController.handleInput(this.decoder.convertViewInput(input));
-
-    }
+    private float timeToNextComet;
 
     public GameController(GameModel gameModel) {
         world = new World(new Vector2(0, 0), true);
@@ -95,20 +80,57 @@ public class GameController implements ContactListener {
 
         this.forceController = new ForceController();
 
+        this.timeToNextComet = TIME_BETWEEN_COMETS;
+
         world.setContactListener(this);
     }
 
+    public void setPlanetForce(float delta, float x, float y) {
+
+        this.forceController.updateForce(delta, x, y);
+    }
+
+    private void applyGravityToPlanets() {
+
+        for (ElementController c : planetControllers) {
+            c.applyArtificialGravity(forceController.getForce());
+        }
+
+    }
+
+    public void handleInput(GameView.StateInput input) {
+
+        this.playerController.handleInput(this.decoder.convertViewInput(input));
+
+    }
+
+    private void removeFromPlanetControllers(final Body body){
+
+        for(ElementController pc : this.planetControllers){
+
+            if(pc.getBody() == body) {
+                this.planetControllers.remove(pc);
+                break;
+            }
+        }
+
+    }
+
     public void update(float delta) {
+
+        System.out.println("Planets: " + this.planets.size());
 
         this.gameModel.update(delta);
 
         this.scoreController.update(delta);
 
+        this.checkForNewComet(delta);
+
         applyGravityToPlanets();
 
         playerController.update(planets, delta);
 
-        for(ElementController ec : this.planetControllers)
+        for (ElementController ec : this.planetControllers)
             ec.verifyBounds();
 
         float frameTime = Math.min(delta, 0.25f);
@@ -131,11 +153,35 @@ public class GameController implements ContactListener {
 
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
         this.gameModel.setScore(scoreController.getScore());
+
+        removeFlagged();
     }
 
 
-    public World getWorld() {
-        return this.world;
+    private void checkForNewComet(float delta) {
+
+        this.timeToNextComet -= delta;
+
+        if (timeToNextComet <= 0) {
+
+            float x = random.nextFloat() * this.ARENA_WIDTH;
+            float y = random.nextFloat() * this.ARENA_HEIGHT;
+
+            if (random.nextBoolean())
+                x = 0;
+            else
+                y = 0;
+
+            CometModel comet = this.gameModel.createComet(x, y);
+            CometController cometC = new CometController(world, comet);
+
+            cometC.applyInitialVelocity();
+
+            this.timeToNextComet = TIME_BETWEEN_COMETS;
+
+        }
+
+
     }
 
 
@@ -145,10 +191,38 @@ public class GameController implements ContactListener {
         Body A = contact.getFixtureA().getBody();
         Body B = contact.getFixtureB().getBody();
 
-        if (A.getUserData() instanceof PlayerModel)
+        if (A.getUserData() instanceof CometModel) {
+
+            if (B.getUserData() instanceof PlayerModel)
+                cometPlayerCollision(A, B);
+            else
+                cometObjectCollision(A, B);
+
+        } else if(B.getUserData() instanceof CometModel){
+
+            if (A.getUserData() instanceof PlayerModel)
+                cometPlayerCollision(B, A);
+            else
+                cometObjectCollision(B, A);
+
+
+        }else  if (A.getUserData() instanceof PlayerModel)
             this.playerPlanetCollision(B);
         else if (B.getUserData() instanceof PlayerModel)
             this.playerPlanetCollision(A);
+
+
+    }
+
+    public void cometPlayerCollision(Body comet, Body player) {
+
+    }
+
+    public void cometObjectCollision(Body comet, Body planet) {
+
+        ((ElementModel) comet.getUserData()).setToBeRemoved(true);
+        ((ElementModel) planet.getUserData()).setToBeRemoved(true);
+
 
     }
 
@@ -175,6 +249,25 @@ public class GameController implements ContactListener {
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
+
+    }
+
+    private void removeFlagged(){
+
+        Array<Body> bodies = new Array<Body>();
+        world.getBodies(bodies);
+        for(Body body : bodies){
+
+            if(( (ElementModel) body.getUserData()).isToBeRemoved()){
+                this.gameModel.removeModel((ElementModel) body.getUserData());
+                world.destroyBody(body);
+                this.planets.remove(body);
+                this.removeFromPlanetControllers(body);
+            }
+
+
+        }
+
 
     }
 }

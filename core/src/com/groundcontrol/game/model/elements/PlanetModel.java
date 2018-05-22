@@ -4,7 +4,6 @@ public class PlanetModel extends ElementModel {
 
 
     public enum PlanetSize {
-        SMALL,
         MEDIUM,
         BIG
     }

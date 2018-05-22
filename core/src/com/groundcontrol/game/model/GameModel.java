@@ -1,5 +1,8 @@
 package com.groundcontrol.game.model;
 
+import com.badlogic.gdx.utils.Pool;
+import com.groundcontrol.game.model.elements.CometModel;
+import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 
@@ -28,8 +31,23 @@ public class GameModel {
      */
     private List<PlanetModel> planets;
 
+    /**
+     * Comets
+     */
+    private List<CometModel> comets;
+
+    Pool<CometModel> cometPoll = new Pool<CometModel>(){
+
+        @Override
+        protected CometModel newObject(){
+            return new CometModel(0, 0, 0);
+        }
+
+    };
+
     public GameModel() {
         planets = new ArrayList<PlanetModel>();
+        comets = new ArrayList<CometModel>();
         player = new PlayerModel(ARENA_WIDTH / 2, ARENA_HEIGHT / 2, 0);
 
 
@@ -61,6 +79,36 @@ public class GameModel {
 
     public List<PlanetModel> getPlanets() {
         return planets;
+    }
+
+    public List<CometModel> getComets(){
+        return comets;
+    }
+
+    public CometModel createComet(float x, float y){
+
+        CometModel comet = cometPoll.obtain();
+
+        comet.setToBeRemoved(false);
+        comet.setX(x);
+        comet.setY(y);
+        comet.setRotation(0);
+
+        comets.add(comet);
+
+        return comet;
+    }
+
+    public void removeModel(ElementModel model){
+
+        if (model instanceof  PlanetModel)
+            this.planets.remove(model);
+        else if (model instanceof CometModel){
+            this.comets.remove(model);
+            this.cometPoll.free((CometModel) model);
+        }
+
+
     }
 
 }

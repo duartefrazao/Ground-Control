@@ -19,6 +19,7 @@ public abstract class ElementController {
     //Collision Handling
     final static short PLANET_BODY = 0x0001;
     final static short PLAYER_BODY = 0x0002;
+    final static short COMET_BODY  = 0x0003;
 
     final Body body;
 

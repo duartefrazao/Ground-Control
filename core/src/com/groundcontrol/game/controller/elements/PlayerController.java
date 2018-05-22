@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class PlayerController extends ElementController {
 
-    private final static float runningRelativeVelocity = 0.03f;
+    private final static float runningRelativeVelocity = 0.5f;
 
     public final static int walkToPullRation = 70;
 
@@ -161,6 +161,19 @@ public class PlayerController extends ElementController {
 
         this.removeFromPlanet();
 
+    }
+
+    public void walk(int dir){
+
+        float rot = this.getAngleBetween(this.getPlanet());
+
+        rot -= Math.PI / 2.0;
+
+        Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
+
+        direction.scl(this.calculatePullForce(this.getPlanet()).len() / walkToPullRation);
+
+        this.applyLinearImpulseToCenter(direction.rotate90(dir), true);
     }
 
     public boolean isInPlanet() {

@@ -6,8 +6,6 @@ import com.groundcontrol.game.controller.elements.PlayerController;
 
 import java.util.ArrayList;
 
-import static com.groundcontrol.game.controller.elements.PlayerController.walkToPullRation;
-
 public class RunningState implements PlayerState {
 
     private static int clockWise = 1;
@@ -28,15 +26,7 @@ public class RunningState implements PlayerState {
 
         } else {
 
-            float rot = context.getAngleBetween(context.getPlanet());
-
-            rot -= Math.PI / 2.0;
-
-            Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
-
-            direction.scl(context.calculatePullForce(context.getPlanet()).len() / walkToPullRation);
-
-            context.applyLinearImpulseToCenter(direction.rotate90(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise), true);
+            context.walk(input == InputDecoder.Input.RIGHT ? clockWise : counterClockWise);
 
             context.setRightSide(input == InputDecoder.Input.RIGHT);
 

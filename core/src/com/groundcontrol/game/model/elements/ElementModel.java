@@ -2,11 +2,13 @@ package com.groundcontrol.game.model.elements;
 
 public abstract class ElementModel {
 
-    public enum ModelType{ BigPlanet, MediumPlanet, Player};
+    public enum ModelType{ BigPlanet, MediumPlanet, Player, Comet}
 
     private float x;
 
     private float y;
+
+    private boolean toBeRemoved = false;
 
     public float getRotation() {
         return rotation;
@@ -41,4 +43,12 @@ public abstract class ElementModel {
     }
 
     public abstract ModelType getType();
+
+    public boolean isToBeRemoved(){
+        return toBeRemoved;
+    }
+
+    public void setToBeRemoved(boolean flag){
+        this.toBeRemoved = flag;
+    }
 }

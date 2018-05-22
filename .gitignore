@@ -25,3 +25,5 @@ android/res/drawable-hdpi/
 *.pro
 
 
+
+android/assets/hs_err_pid14288\.log

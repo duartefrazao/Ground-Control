@@ -105,8 +105,10 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     private void loadAssets() {
         this.game.getAssetManager().load("planet.png", Texture.class);
         this.game.getAssetManager().load("player.png", Texture.class);
+        this.game.getAssetManager().load("comet.png", Texture.class);
         this.game.getAssetManager().load("big_planet.png", Texture.class);
         this.game.getAssetManager().load("runningSheet.png", Texture.class);
+        this.game.getAssetManager().load("cometSheet.png", Texture.class);
         this.game.getAssetManager().load("idleSheet.png", Texture.class);
         this.game.getAssetManager().load("background.png", Texture.class);
         this.game.getAssetManager().load("Buttons/left.png", Texture.class);
