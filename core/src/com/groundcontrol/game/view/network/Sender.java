@@ -27,15 +27,15 @@ public class Sender extends Thread {
             try {
                 String msg = messagesToSend.take();
 
-                System.out.println("Sending " + msg);
+                //System.out.println("Sending " + msg);
 
                 PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())),true);
 
-                System.out.println("Sending " + msg);
+               // System.out.println("Sending " + msg);
                 out.println(msg);
 
             } catch (InterruptedException e) {
-                stopCom();
+                //stopCom();
                 e.printStackTrace();
             } catch (IOException e) {
                 stopCom();

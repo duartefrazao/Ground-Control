@@ -24,9 +24,11 @@ public class Server extends Observable {
         System.out.println("Setting up server");
         try {
             this.serverSocket = new ServerSocket(port);
+            serverSocket.setSoTimeout(5000);
             clientSocket = serverSocket.accept();
         } catch (IOException e) {
             e.printStackTrace();
+            return ;
         }
 
         System.out.println("Connection established");
@@ -45,142 +47,32 @@ public class Server extends Observable {
         alive=false;
         receiver.finished=true;
         sender.finished=true;
+        receiver.stopCom();
+        sender.stopCom();
         clientSocket.close();
         serverSocket.close();
     }
 
     public void sendMessage(String msg) throws IOException {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         sendQueue.add(msg);
     }
 
     public String receiveMessage() throws IOException {
-        if(!receiveQueue.isEmpty()) return receiveQueue.poll();
-        else return null;
+        if(!receiveQueue.isEmpty()){
+            String mes =receiveQueue.poll();
+            return mes;
+        }
+         return null;
     }
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
-        server.start(6666);
+        server.start(8888);
 
     }
 
     public void tick() throws IOException {
         if(receiver.finished || sender.finished) stop();
-        if(!receiveQueue.isEmpty()){
-            System.out.println(receiveQueue.poll());
-        }
     }
 
     public boolean isAlive() {

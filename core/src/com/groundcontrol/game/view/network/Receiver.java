@@ -34,7 +34,7 @@ public class Receiver  extends Thread{
                     finished = true;
                 }
                 else{
-                    System.out.println("Received " + msg);
+                    //System.out.println("Received " + msg);
                     messagesToReceive.add(msg);
                 }
 
