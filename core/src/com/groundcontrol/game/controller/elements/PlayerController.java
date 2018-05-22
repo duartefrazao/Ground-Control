@@ -161,6 +161,8 @@ public class PlayerController extends ElementController {
 
         this.removeFromPlanet();
 
+        this.setState(new FloatState());
+
     }
 
     public void walk(int dir){

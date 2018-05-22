@@ -1,6 +1,5 @@
 package com.groundcontrol.game.controller.elements;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -9,8 +8,7 @@ import com.groundcontrol.game.model.elements.ElementModel;
 
 public class CometController extends  ElementController{
 
-    private Vector2 initialVelocity = new Vector2(15 * ( MathUtils.random.nextBoolean() ? 1 : -1 ), 15 * ( MathUtils.random.nextBoolean() ? 1 : -1 ));
-
+    private Vector2 initialVelocity = new Vector2((float) ( Math.random() + 0.5) * 20 ,(float) (Math.random() + 0.5 ) * 15 );
 
     private float maxAngularVelocity = 0.5f;
 
@@ -47,11 +45,14 @@ public class CometController extends  ElementController{
 
     }
 
-    public void applyInitialVelocity(){
+    public void applyInitialVelocity(int vx_direction, int vy_direction){
+
+        this.initialVelocity.x *= vx_direction;
+        this.initialVelocity.y *= vy_direction;
 
         this.body.setLinearVelocity(initialVelocity);
 
-        this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y,(float) Math.PI - this.initialVelocity.angleRad());
+        this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y,(float) Math.PI - (float) (Math.PI/2.0 - this.initialVelocity.angleRad()));
 
 
 

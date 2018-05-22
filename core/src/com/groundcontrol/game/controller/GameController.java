@@ -104,11 +104,11 @@ public class GameController implements ContactListener {
 
     }
 
-    private void removeFromPlanetControllers(final Body body){
+    private void removeFromPlanetControllers(final Body body) {
 
-        for(ElementController pc : this.planetControllers){
+        for (ElementController pc : this.planetControllers) {
 
-            if(pc.getBody() == body) {
+            if (pc.getBody() == body) {
                 this.planetControllers.remove(pc);
                 break;
             }
@@ -118,17 +118,16 @@ public class GameController implements ContactListener {
 
     public void update(float delta) {
 
-        System.out.println("Planets: " + this.planets.size());
 
         this.gameModel.update(delta);
 
         this.scoreController.update(delta);
 
-        this.checkForNewComet(delta);
-
         applyGravityToPlanets();
 
         playerController.update(planets, delta);
+
+        this.checkForNewComet(delta);
 
         for (ElementController ec : this.planetControllers)
             ec.verifyBounds();
@@ -164,18 +163,27 @@ public class GameController implements ContactListener {
 
         if (timeToNextComet <= 0) {
 
-            float x = random.nextFloat() * this.ARENA_WIDTH;
-            float y = random.nextFloat() * this.ARENA_HEIGHT;
 
-            if (random.nextBoolean())
+            float x;
+            float y;
+            float r = random.nextFloat();
+
+            if (random.nextBoolean()) {
                 x = 0;
-            else
+                y = r * ARENA_HEIGHT;
+            } else {
                 y = 0;
+                x = r * ARENA_WIDTH;
+            }
+
 
             CometModel comet = this.gameModel.createComet(x, y);
             CometController cometC = new CometController(world, comet);
 
-            cometC.applyInitialVelocity();
+            int vx_direction = x > 0.5 ? -1 : 1;
+            int vy_direction = y > 0.5 ? -1 : 1;
+
+            cometC.applyInitialVelocity(vx_direction, vy_direction);
 
             this.timeToNextComet = TIME_BETWEEN_COMETS;
 
@@ -198,7 +206,7 @@ public class GameController implements ContactListener {
             else
                 cometObjectCollision(A, B);
 
-        } else if(B.getUserData() instanceof CometModel){
+        } else if (B.getUserData() instanceof CometModel) {
 
             if (A.getUserData() instanceof PlayerModel)
                 cometPlayerCollision(B, A);
@@ -206,7 +214,7 @@ public class GameController implements ContactListener {
                 cometObjectCollision(B, A);
 
 
-        }else  if (A.getUserData() instanceof PlayerModel)
+        } else if (A.getUserData() instanceof PlayerModel)
             this.playerPlanetCollision(B);
         else if (B.getUserData() instanceof PlayerModel)
             this.playerPlanetCollision(A);
@@ -214,11 +222,14 @@ public class GameController implements ContactListener {
 
     }
 
-    public void cometPlayerCollision(Body comet, Body player) {
+    private void cometPlayerCollision(Body comet, Body player) {
 
     }
 
-    public void cometObjectCollision(Body comet, Body planet) {
+    private void cometObjectCollision(Body comet, Body planet) {
+
+        if(this.playerController.getPlanet() == planet)
+            playerController.jump();
 
         ((ElementModel) comet.getUserData()).setToBeRemoved(true);
         ((ElementModel) planet.getUserData()).setToBeRemoved(true);
@@ -226,7 +237,7 @@ public class GameController implements ContactListener {
 
     }
 
-    public void playerPlanetCollision(Body planet) {
+    private void playerPlanetCollision(Body planet) {
 
         if (playerController.isInPlanet())
             return;
@@ -252,13 +263,13 @@ public class GameController implements ContactListener {
 
     }
 
-    private void removeFlagged(){
+    private void removeFlagged() {
 
         Array<Body> bodies = new Array<Body>();
         world.getBodies(bodies);
-        for(Body body : bodies){
+        for (Body body : bodies) {
 
-            if(( (ElementModel) body.getUserData()).isToBeRemoved()){
+            if (((ElementModel) body.getUserData()).isToBeRemoved()) {
                 this.gameModel.removeModel((ElementModel) body.getUserData());
                 world.destroyBody(body);
                 this.planets.remove(body);

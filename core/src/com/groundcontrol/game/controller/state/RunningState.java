@@ -21,8 +21,6 @@ public class RunningState implements PlayerState {
 
             context.jump();
 
-            context.setState(new FloatState());
-
 
         } else {
 
