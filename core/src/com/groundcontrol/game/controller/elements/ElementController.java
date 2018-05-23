@@ -173,21 +173,21 @@ public abstract class ElementController {
 
     public void applyArtificialGravity(Vector2 planetForce) {
         this.body.setLinearVelocity(planetForce.x * this.artificialGravity, planetForce.y * this.artificialGravity);
+        //this.body.applyLinearImpulse(planetForce.scl(this.artificialGravity), this.body.getLocalCenter(), true);
+        //this.body.applyForceToCenter(planetForce, true);
     }
 
     public void verifyBounds() {
 
         if (body.getPosition().x + this.width_meters / 2.0f < 0)
-            body.setTransform(ARENA_WIDTH, body.getPosition().y * random.nextFloat(), body.getAngle());
+            body.setTransform(ARENA_WIDTH + this.width_meters / 2.0f, body.getPosition().y * random.nextFloat(), body.getAngle());
+        else if (body.getPosition().x - this.width_meters / 2.0 > ARENA_WIDTH)
+            body.setTransform(-this.width_meters / 2.0f, body.getPosition().y * random.nextFloat(), body.getAngle());
 
         if (body.getPosition().y + this.height_meters / 2.0f < 0)
-            body.setTransform(body.getPosition().x * random.nextFloat(), ARENA_HEIGHT, body.getAngle());
-
-        if (body.getPosition().x - this.width_meters / 2.0 > ARENA_WIDTH)
-            body.setTransform(0, body.getPosition().y * random.nextFloat(), body.getAngle());
-
-        if (body.getPosition().y - this.height_meters / 2.0 > ARENA_HEIGHT)
-            body.setTransform(body.getPosition().x * random.nextFloat(), 0, body.getAngle());
+            body.setTransform(body.getPosition().x * random.nextFloat(), ARENA_HEIGHT + this.height_meters / 2.0f, body.getAngle());
+        else if (body.getPosition().y - this.height_meters / 2.0 > ARENA_HEIGHT)
+            body.setTransform(body.getPosition().x * random.nextFloat(), -this.height_meters / 2.0f, body.getAngle());
 
     }
 

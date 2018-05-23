@@ -74,8 +74,6 @@ public class GameModel {
 
     public void update(float delta) {
 
-        System.out.println("Size: " + this.explosions.size());
-
         Iterator<ExplosionModel> iter = this.explosions.iterator();
 
         while(iter.hasNext()){
@@ -124,6 +122,17 @@ public class GameModel {
         comets.add(comet);
 
         return comet;
+    }
+
+    public PlanetModel createPlanet(float x, float y){
+
+        PlanetModel planet = new PlanetModel(x, y, 0, random.nextBoolean() ? PlanetModel.PlanetSize.BIG : PlanetModel.PlanetSize.MEDIUM);
+
+        planet.setToBeRemoved(false);
+
+        planets.add(planet);
+
+        return  planet;
     }
 
     public void createExplosion(float x, float y){
