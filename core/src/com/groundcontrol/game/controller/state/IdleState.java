@@ -14,8 +14,6 @@ public class IdleState implements PlayerState {
 
             context.jump();
 
-            context.setState(new FloatState());
-
         } else if (input == InputDecoder.Input.RIGHT || input == InputDecoder.Input.LEFT) {
             context.setState(new RunningState());
         }

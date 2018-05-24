@@ -20,14 +20,9 @@ import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.ScreenModules.GameSection;
 import com.groundcontrol.game.view.ScreenModules.PauseSection;
 import com.groundcontrol.game.view.ScreenModules.Section;
-import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-import com.groundcontrol.game.view.elements.ElementView;
-import com.groundcontrol.game.view.elements.PlayerView;
-import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
 
 import java.io.IOException;
-import java.util.List;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
@@ -123,6 +118,7 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
         this.game.getAssetManager().load("runningSheet.png", Texture.class);
         this.game.getAssetManager().load("cometSheet.png", Texture.class);
         this.game.getAssetManager().load("idleSheet.png", Texture.class);
+        this.game.getAssetManager().load("explosionSheet.png", Texture.class);
         this.game.getAssetManager().load("background.png", Texture.class);
         this.game.getAssetManager().load("Buttons/left.png", Texture.class);
         this.game.getAssetManager().load("Buttons/right.png", Texture.class);

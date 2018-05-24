@@ -1,4 +1,4 @@
-package com.groundcontrol.game.controller;
+package com.groundcontrol.game.controller.gameflow;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -10,7 +10,11 @@ public class ForceController {
 
     private int currentMax = 15;
 
-    private int absoluteMax = 30;
+    private int absoluteMax = 25;
+
+    private float timeToVelocityRatio = 4f / 70f;
+
+    private float initialMaxVelocity = 10;
 
     private double elapsedTime;
 
@@ -22,12 +26,11 @@ public class ForceController {
 
     }
 
-
     public void updateForce(float delta, float x, float y) {
 
         elapsedTime += delta;
-        force.x += x;
-        force.y += y;
+        force.x += x * delta;
+        force.y += y * delta;
         updateMaxForceValue();
 
         force.limit(currentMax);
@@ -42,7 +45,7 @@ public class ForceController {
         if (currentMax >= absoluteMax)
             return;
 
-        currentMax = (int) ((9f / 37f) * elapsedTime + 10);
+        currentMax = (int) (timeToVelocityRatio * elapsedTime + initialMaxVelocity);
 
     }
 

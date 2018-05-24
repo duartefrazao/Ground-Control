@@ -13,6 +13,8 @@ import com.groundcontrol.game.controller.elements.CometController;
 import com.groundcontrol.game.controller.elements.ElementController;
 import com.groundcontrol.game.controller.elements.PlanetController;
 import com.groundcontrol.game.controller.elements.PlayerController;
+import com.groundcontrol.game.controller.gameflow.ForceController;
+import com.groundcontrol.game.controller.gameflow.ScoreController;
 import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.model.elements.CometModel;
@@ -22,6 +24,7 @@ import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -34,7 +37,7 @@ public class GameController implements ContactListener {
 
     public static final double G = Math.pow(3.667, -2);
 
-    private static final float TIME_BETWEEN_COMETS = 4f;
+    private static final float TIME_BETWEEN_COMETS = 3f;
 
     private final World world;
     private final PlayerController playerController;
@@ -43,6 +46,8 @@ public class GameController implements ContactListener {
     private ArrayList<Body> planets = new ArrayList<Body>();
 
     private ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
+
+    private int planetsToAddCounter;
 
     private InputDecoder decoder;
 
@@ -82,6 +87,8 @@ public class GameController implements ContactListener {
 
         this.timeToNextComet = TIME_BETWEEN_COMETS;
 
+        this.planetsToAddCounter = 0;
+
         world.setContactListener(this);
     }
 
@@ -104,36 +111,19 @@ public class GameController implements ContactListener {
 
     }
 
-    private void removeFromPlanetControllers(final Body body){
-
-        for(ElementController pc : this.planetControllers){
-
-            if(pc.getBody() == body) {
-                this.planetControllers.remove(pc);
-                break;
-            }
-        }
-
-    }
 
     public void update(float delta) {
 
-        System.out.println("Planets: " + this.planets.size());
-
-        this.gameModel.update(delta);
-
         this.scoreController.update(delta);
-
-        this.checkForNewComet(delta);
 
         applyGravityToPlanets();
 
         playerController.update(planets, delta);
 
-        for (ElementController ec : this.planetControllers)
-            ec.verifyBounds();
+        this.checkForNewComet(delta);
 
         float frameTime = Math.min(delta, 0.25f);
+
         accumulator += frameTime;
 
         while (accumulator >= 1 / 60f) {
@@ -151,10 +141,48 @@ public class GameController implements ContactListener {
             ((ElementModel) body.getUserData()).setRotation(body.getAngle());
         }
 
+        for (ElementController ec : this.planetControllers) {
+            ec.verifyBounds();
+            ec.limitAngularVelocity();
+        }
+
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
+
         this.gameModel.setScore(scoreController.getScore());
 
-        removeFlagged();
+        this.gameModel.update(delta);
+
+        removeFlagged(bodies);
+
+        randomInsertPlanets();
+
+    }
+
+    private void randomInsertPlanets() {
+
+        if (this.planetsToAddCounter > 0) {
+
+            Vector2 r = generateRandomPeripheralPoints(100);
+
+            PlanetModel newPlanet = this.gameModel.createPlanet(r.x, r.y);
+
+            ElementController planet;
+
+            if (newPlanet.getSize() == PlanetModel.PlanetSize.MEDIUM)
+                planet = new PlanetController(world, newPlanet);
+            else
+                planet = new BigPlanetController(world, newPlanet);
+
+
+            this.planets.add(planet.getBody());
+            this.planetControllers.add(planet);
+
+            --planetsToAddCounter;
+
+
+        }
+
+
     }
 
 
@@ -164,26 +192,21 @@ public class GameController implements ContactListener {
 
         if (timeToNextComet <= 0) {
 
-            float x = random.nextFloat() * this.ARENA_WIDTH;
-            float y = random.nextFloat() * this.ARENA_HEIGHT;
+            Vector2 r = generateRandomPeripheralPoints(0);
 
-            if (random.nextBoolean())
-                x = 0;
-            else
-                y = 0;
-
-            CometModel comet = this.gameModel.createComet(x, y);
+            CometModel comet = this.gameModel.createComet(r.x, r.y);
             CometController cometC = new CometController(world, comet);
 
-            cometC.applyInitialVelocity();
+            int vx_direction = r.x > ARENA_WIDTH / 2.0f ? -1 : 1;
+            int vy_direction = r.y > ARENA_HEIGHT / 2.0f ? -1 : 1;
+
+            cometC.applyInitialVelocity(vx_direction, vy_direction);
 
             this.timeToNextComet = TIME_BETWEEN_COMETS;
 
         }
 
-
     }
-
 
     @Override
     public void beginContact(Contact contact) {
@@ -198,7 +221,7 @@ public class GameController implements ContactListener {
             else
                 cometObjectCollision(A, B);
 
-        } else if(B.getUserData() instanceof CometModel){
+        } else if (B.getUserData() instanceof CometModel) {
 
             if (A.getUserData() instanceof PlayerModel)
                 cometPlayerCollision(B, A);
@@ -206,7 +229,7 @@ public class GameController implements ContactListener {
                 cometObjectCollision(B, A);
 
 
-        }else  if (A.getUserData() instanceof PlayerModel)
+        } else if (A.getUserData() instanceof PlayerModel)
             this.playerPlanetCollision(B);
         else if (B.getUserData() instanceof PlayerModel)
             this.playerPlanetCollision(A);
@@ -214,19 +237,28 @@ public class GameController implements ContactListener {
 
     }
 
-    public void cometPlayerCollision(Body comet, Body player) {
+    private void cometPlayerCollision(Body comet, Body player) {
 
     }
 
-    public void cometObjectCollision(Body comet, Body planet) {
+    private void cometObjectCollision(Body comet, Body planet) {
+
+
+        if (this.playerController.getPlanet() == planet)
+            playerController.jump();
+
+        this.gameModel.createExplosion(planet.getPosition().x, planet.getPosition().y);
 
         ((ElementModel) comet.getUserData()).setToBeRemoved(true);
         ((ElementModel) planet.getUserData()).setToBeRemoved(true);
 
+        this.removeFromPlanetControllers(planet);
+        planetsToAddCounter++;
+        this.planets.remove(planet);
 
     }
 
-    public void playerPlanetCollision(Body planet) {
+    private void playerPlanetCollision(Body planet) {
 
         if (playerController.isInPlanet())
             return;
@@ -252,22 +284,59 @@ public class GameController implements ContactListener {
 
     }
 
-    private void removeFlagged(){
+    private void removeFlagged(Array<Body> bodies) {
 
-        Array<Body> bodies = new Array<Body>();
-        world.getBodies(bodies);
-        for(Body body : bodies){
+        Iterator<Body> iter = bodies.iterator();
 
-            if(( (ElementModel) body.getUserData()).isToBeRemoved()){
+        while (iter.hasNext()) {
+
+            Body body = iter.next();
+
+            if (((ElementModel) body.getUserData()).isToBeRemoved()) {
+
                 this.gameModel.removeModel((ElementModel) body.getUserData());
                 world.destroyBody(body);
-                this.planets.remove(body);
-                this.removeFromPlanetControllers(body);
+
+                iter.remove();
             }
 
 
         }
 
+    }
+
+    private void removeFromPlanetControllers(Body body) {
+
+        Iterator<ElementController> iter = this.planetControllers.iterator();
+
+        while (iter.hasNext()) {
+
+            ElementController em = iter.next();
+
+            if (em.getBody().getPosition().x == body.getPosition().x && em.getBody().getPosition().y == body.getPosition().y) {
+                iter.remove();
+                break;
+            }
+        }
+
+    }
+
+
+    private Vector2 generateRandomPeripheralPoints(float offset) {
+
+        float x;
+        float y;
+        float r = random.nextFloat();
+
+        if (random.nextBoolean()) {
+            x = random.nextBoolean() ? -offset : ARENA_WIDTH + offset;
+            y = r * ARENA_HEIGHT;
+        } else {
+            y = random.nextBoolean() ? -offset : ARENA_HEIGHT + offset;
+            x = r * ARENA_WIDTH;
+        }
+
+        return new Vector2(x, y);
 
     }
 }

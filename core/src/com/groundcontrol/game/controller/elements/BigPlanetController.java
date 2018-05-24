@@ -51,7 +51,7 @@ public class BigPlanetController extends ElementController {
         }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
 
         this.body.setAngularDamping(0.9f);
-        this.artificialGravity = (float) Math.random() + 0.3f;
+        this.artificialGravity = (float) Math.random() + 0.5f;
 
     }
 }

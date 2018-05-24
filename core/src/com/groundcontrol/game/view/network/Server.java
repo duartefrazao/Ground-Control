@@ -1,9 +1,6 @@
 package com.groundcontrol.game.view.network;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Observable;
@@ -24,7 +21,7 @@ public class Server extends Observable {
         System.out.println("Setting up server");
         try {
             this.serverSocket = new ServerSocket(port);
-            serverSocket.setSoTimeout(5000);
+            serverSocket.setSoTimeout(1000);
             clientSocket = serverSocket.accept();
         } catch (IOException e) {
             e.printStackTrace();

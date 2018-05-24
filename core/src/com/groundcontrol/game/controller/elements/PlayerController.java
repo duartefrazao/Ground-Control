@@ -16,7 +16,7 @@ public class PlayerController extends ElementController {
 
     private final static float runningRelativeVelocity = 0.5f;
 
-    public final static int walkToPullRation = 70;
+    public final static int walkToPullRation = 40;
 
     private final static float maxVelocity = 13;
 
@@ -161,6 +161,8 @@ public class PlayerController extends ElementController {
 
         this.removeFromPlanet();
 
+        this.setState(new FloatState());
+
     }
 
     public void walk(int dir){
@@ -212,7 +214,7 @@ public class PlayerController extends ElementController {
     public void verifyInPlanet() {
         if (!this.isInPlanet())
             return;
-        if (this.getPosition().dst2(this.getPlanet().getPosition()) > 81) {
+        if (this.getPosition().dst2(this.getPlanet().getPosition()) > 64) {
             this.removeFromPlanet();
             this.setState(new FloatState());
         }

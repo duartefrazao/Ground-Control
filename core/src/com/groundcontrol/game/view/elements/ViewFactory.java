@@ -8,6 +8,7 @@ import java.util.Map;
 
 import static com.groundcontrol.game.model.elements.ElementModel.ModelType.BigPlanet;
 import static com.groundcontrol.game.model.elements.ElementModel.ModelType.Comet;
+import static com.groundcontrol.game.model.elements.ElementModel.ModelType.Explosion;
 import static com.groundcontrol.game.model.elements.ElementModel.ModelType.MediumPlanet;
 import static com.groundcontrol.game.model.elements.ElementModel.ModelType.Player;
 
@@ -26,6 +27,8 @@ public class ViewFactory {
                 cache.put(model, new PlayerView(game));
             else if(model.getType() == Comet)
                 cache.put(model, new CometView(game));
+            else if(model.getType() == Explosion)
+                cache.put(model, new ExplosionView(game));
         }
 
         return cache.get(model);
