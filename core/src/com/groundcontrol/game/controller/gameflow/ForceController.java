@@ -10,9 +10,9 @@ public class ForceController {
 
     private int currentMax = 15;
 
-    private int absoluteMax =27;
+    private int absoluteMax = 25;
 
-    private float timeToVelocityRatio = 4f / 50f;
+    private float timeToVelocityRatio = 4f / 70f;
 
     private float initialMaxVelocity = 10;
 
@@ -26,12 +26,11 @@ public class ForceController {
 
     }
 
-
     public void updateForce(float delta, float x, float y) {
 
         elapsedTime += delta;
-        force.x += x;
-        force.y += y;
+        force.x += x * delta;
+        force.y += y * delta;
         updateMaxForceValue();
 
         force.limit(currentMax);

@@ -173,8 +173,6 @@ public abstract class ElementController {
 
     public void applyArtificialGravity(Vector2 planetForce) {
         this.body.setLinearVelocity(planetForce.x * this.artificialGravity, planetForce.y * this.artificialGravity);
-        //this.body.applyLinearImpulse(planetForce.scl(this.artificialGravity), this.body.getLocalCenter(), true);
-        //this.body.applyForceToCenter(planetForce, true);
     }
 
     public void verifyBounds() {

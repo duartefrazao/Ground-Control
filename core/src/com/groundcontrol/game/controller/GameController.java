@@ -37,7 +37,7 @@ public class GameController implements ContactListener {
 
     public static final double G = Math.pow(3.667, -2);
 
-    private static final float TIME_BETWEEN_COMETS = 1f;
+    private static final float TIME_BETWEEN_COMETS = 3f;
 
     private final World world;
     private final PlayerController playerController;
@@ -48,8 +48,6 @@ public class GameController implements ContactListener {
     private ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
 
     private int planetsToAddCounter;
-
-    private int collision;
 
     private InputDecoder decoder;
 
@@ -113,25 +111,6 @@ public class GameController implements ContactListener {
 
     }
 
-    private void removeFromPlanetControllers(Body body) {
-
-
-        Iterator<ElementController> iter = this.planetControllers.iterator();
-
-        while(iter.hasNext()){
-
-            ElementController em = iter.next();
-
-            if(em.getBody() == body){
-                this.planetsToAddCounter++;
-                iter.remove();
-                break;
-
-            }
-
-        }
-
-    }
 
     public void update(float delta) {
 
@@ -144,16 +123,13 @@ public class GameController implements ContactListener {
         this.checkForNewComet(delta);
 
         float frameTime = Math.min(delta, 0.25f);
+
         accumulator += frameTime;
 
         while (accumulator >= 1 / 60f) {
             world.step(1 / 60f, 6, 2);
             accumulator -= 1 / 60f;
         }
-
-        for (ElementController ec : this.planetControllers)
-            ec.verifyBounds();
-
 
         Array<Body> bodies = new Array<Body>();
 
@@ -165,20 +141,26 @@ public class GameController implements ContactListener {
             ((ElementModel) body.getUserData()).setRotation(body.getAngle());
         }
 
+        for (ElementController ec : this.planetControllers) {
+            ec.verifyBounds();
+            ec.limitAngularVelocity();
+        }
+
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
+
         this.gameModel.setScore(scoreController.getScore());
 
         this.gameModel.update(delta);
 
-        removeFlagged();
+        removeFlagged(bodies);
 
         randomInsertPlanets();
 
     }
 
-    private void randomInsertPlanets(){
+    private void randomInsertPlanets() {
 
-        if(this.planetsToAddCounter > 0){
+        if (this.planetsToAddCounter > 0) {
 
             Vector2 r = generateRandomPeripheralPoints(100);
 
@@ -186,7 +168,7 @@ public class GameController implements ContactListener {
 
             ElementController planet;
 
-            if(newPlanet.getSize() == PlanetModel.PlanetSize.MEDIUM)
+            if (newPlanet.getSize() == PlanetModel.PlanetSize.MEDIUM)
                 planet = new PlanetController(world, newPlanet);
             else
                 planet = new BigPlanetController(world, newPlanet);
@@ -215,8 +197,8 @@ public class GameController implements ContactListener {
             CometModel comet = this.gameModel.createComet(r.x, r.y);
             CometController cometC = new CometController(world, comet);
 
-            int vx_direction = r.x > 0.5 ? -1 : 1;
-            int vy_direction = r.y > 0.5 ? -1 : 1;
+            int vx_direction = r.x > ARENA_WIDTH / 2.0f ? -1 : 1;
+            int vy_direction = r.y > ARENA_HEIGHT / 2.0f ? -1 : 1;
 
             cometC.applyInitialVelocity(vx_direction, vy_direction);
 
@@ -270,6 +252,9 @@ public class GameController implements ContactListener {
         ((ElementModel) comet.getUserData()).setToBeRemoved(true);
         ((ElementModel) planet.getUserData()).setToBeRemoved(true);
 
+        this.removeFromPlanetControllers(planet);
+        planetsToAddCounter++;
+        this.planets.remove(planet);
 
     }
 
@@ -299,21 +284,17 @@ public class GameController implements ContactListener {
 
     }
 
-    private void removeFlagged() {
-        Array<Body> bodies = new Array<Body>();
-        world.getBodies(bodies);
+    private void removeFlagged(Array<Body> bodies) {
 
         Iterator<Body> iter = bodies.iterator();
 
-        while(iter.hasNext()){
+        while (iter.hasNext()) {
 
             Body body = iter.next();
 
             if (((ElementModel) body.getUserData()).isToBeRemoved()) {
-                this.gameModel.removeModel((ElementModel) body.getUserData());
 
-                this.planets.remove(body);
-                this.removeFromPlanetControllers(body);
+                this.gameModel.removeModel((ElementModel) body.getUserData());
                 world.destroyBody(body);
 
                 iter.remove();
@@ -324,8 +305,24 @@ public class GameController implements ContactListener {
 
     }
 
+    private void removeFromPlanetControllers(Body body) {
 
-    private Vector2 generateRandomPeripheralPoints(float offset){
+        Iterator<ElementController> iter = this.planetControllers.iterator();
+
+        while (iter.hasNext()) {
+
+            ElementController em = iter.next();
+
+            if (em.getBody().getPosition().x == body.getPosition().x && em.getBody().getPosition().y == body.getPosition().y) {
+                iter.remove();
+                break;
+            }
+        }
+
+    }
+
+
+    private Vector2 generateRandomPeripheralPoints(float offset) {
 
         float x;
         float y;
