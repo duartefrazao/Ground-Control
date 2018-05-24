@@ -27,7 +27,7 @@ public class FloatState implements PlayerState {
             float distance = abs(e.getPosition().x - context.getX());
             distance += abs(e.getPosition().y - context.getY());
 
-            if (distance < 8) {
+            if (distance < 7) {
 
                 context.setTransform(context.getX(), context.getY(), context.getAngleBetween(e));
 

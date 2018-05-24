@@ -21,6 +21,8 @@ public abstract class ElementController {
     final static short PLAYER_BODY = 0x0002;
     final static short COMET_BODY  = 0x0003;
 
+    private static float WORLD_OFFSET = 30;
+
     final Body body;
 
     protected float artificialGravity = 0f;
@@ -187,6 +189,17 @@ public abstract class ElementController {
         else if (body.getPosition().y - this.height_meters / 2.0 > ARENA_HEIGHT)
             body.setTransform(body.getPosition().x * random.nextFloat(), -this.height_meters / 2.0f, body.getAngle());
 
+    }
+
+    public boolean isOutOfBonds(){
+
+        if(this.body.getPosition().x < -WORLD_OFFSET || this.body.getPosition().x > (ARENA_WIDTH + WORLD_OFFSET))
+            return true;
+        else if(this.body.getPosition().y < -WORLD_OFFSET || this.body.getPosition().y > (ARENA_WIDTH + WORLD_OFFSET))
+                return true;
+
+
+        return false;
     }
 
 
