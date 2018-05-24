@@ -8,33 +8,21 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Communication {
 
-    private Socket clientSocket;
-    private Receiver receiver;
-    private Sender sender;
     private Server server;
-
-    private ConcurrentLinkedQueue<String> messagesToReceive;
-    private LinkedBlockingQueue<String> messagesToSend;
-
+    private Client client;
     private boolean alive;
+    private int portNum = 8500;
 
-    public Communication(Server s, Socket c){
-        System.out.println("Creating communication");
-        this.alive=true;
-        this.clientSocket=c;
-        this.server=s;
-        this.messagesToReceive = new ConcurrentLinkedQueue<String>();
-        this.messagesToSend = new LinkedBlockingQueue<String>();
-
-        receiver = new Receiver(clientSocket, messagesToReceive);
-        receiver.start();
-
-        sender= new Sender(clientSocket, messagesToSend);
-        sender.start();
+    public Communication(){
+       server= new Server();
+       server.start(portNum);
+       client= new Client();
+       //startCommunicationServer();
     }
 
-    public void send(String msg){
-        messagesToSend.add(msg);
+    public void startCommunication(){
+
     }
+
 
 }

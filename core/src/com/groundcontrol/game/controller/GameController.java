@@ -39,23 +39,23 @@ public class GameController implements ContactListener {
 
     private static final float TIME_BETWEEN_COMETS = 3f;
 
-    private final World world;
-    private final PlayerController playerController;
-    private float accumulator;
-    private GameModel gameModel;
-    private ArrayList<Body> planets = new ArrayList<Body>();
+    protected final World world;
+    protected final PlayerController playerController;
+    protected float accumulator;
+    protected GameModel gameModel;
+    protected ArrayList<Body> planets = new ArrayList<Body>();
 
-    private ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
+    protected ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
 
     private int planetsToAddCounter;
 
     private InputDecoder decoder;
 
-    private ScoreController scoreController;
+    protected ScoreController scoreController;
 
-    private ForceController forceController;
+    protected ForceController forceController;
 
-    private float timeToNextComet;
+    protected float timeToNextComet;
 
     public GameController(GameModel gameModel) {
         world = new World(new Vector2(0, 0), true);

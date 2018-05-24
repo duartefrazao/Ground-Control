@@ -156,8 +156,6 @@ public class GameModel {
             this.comets.remove(model);
             this.cometPoll.free((CometModel) model);
         }
-
-
     }
 
 }

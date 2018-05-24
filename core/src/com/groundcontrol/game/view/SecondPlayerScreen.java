@@ -28,14 +28,14 @@ public class SecondPlayerScreen extends ScreenAdapter{
 
 
 
-    public SecondPlayerScreen(GroundControl game) {
+    public SecondPlayerScreen(GroundControl game, Client client) {
         this.game = game;
         loadAssets();
 
         camera = createCamera();
         
-        client = new Client();
-        System.out.println(client.startConnection("172.30.16.118", 25000) == 1);
+        this.client = client;
+        //System.out.println(this.client.startConnection("172.30.16.118", 25000) == 1);
     }
 
     private OrthographicCamera createCamera(){
@@ -58,11 +58,7 @@ public class SecondPlayerScreen extends ScreenAdapter{
     public void render(float delta){
 
         if(client.isAlive()){
-            try {
-                client.tick();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            client.tick();
             //receiveInputs(delta);
         }
         handleInputs(delta);
@@ -91,12 +87,8 @@ public class SecondPlayerScreen extends ScreenAdapter{
             float vx = Gdx.input.getAccelerometerX();
             float vy = Gdx.input.getAccelerometerY();
 
-                try {
-                   client.sendMessage("vx"+Float.toString(vx));
-                   client.sendMessage("vy"+Float.toString(vy));
-                } catch (IOException e) {
-                    e.printStackTrace();
-            }
+            client.sendMessage("vx"+Float.toString(vx));
+            client.sendMessage("vy"+Float.toString(vy));
         }
     }
 

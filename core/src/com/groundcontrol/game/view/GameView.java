@@ -30,10 +30,13 @@ public class GameView extends ScreenAdapter{
 
     public final static float PIXEL_TO_METER = 0.009f;
     private static final float VIEWPORT_WIDTH = 50;
+    private boolean started=false;
+
     public enum StateInput {RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, IDLE}
     private StateInput currentInput = StateInput.IDLE;
 
-    public final Stage pauseStage;
+    public Stage networkStage;
+    public Stage pauseStage;
     public final InputMultiplexer ip;
     public final GameSection gameSection;
     public final PauseSection pauseSection;
@@ -48,19 +51,17 @@ public class GameView extends ScreenAdapter{
 
     //Score Components
     private int score;
-    private BitmapFont font;
+    private BitmapFont font = new BitmapFont();
     private Label scoreLabel;
     private Table scoreTable;
     private Color whiteColor = new Color(Color.WHITE);
     private float vx=0,vy=0;
 
+
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
 
         this.game = game;
         loadAssets();
-
-        server = new Server();
-        server.start(25000);
         this.gameModel = gameModel;
 
         this.gameController = gameController;
@@ -81,6 +82,10 @@ public class GameView extends ScreenAdapter{
         ip.addProcessor(stage);
         ip.addProcessor(new GestureDetector(gameSection));
         Gdx.input.setInputProcessor(ip);
+
+        server = new Server();
+        server.start(8500);
+        this.started=true;
 
 
     }
@@ -123,6 +128,7 @@ public class GameView extends ScreenAdapter{
         this.game.getAssetManager().load("Buttons/pause.png", Texture.class);
         this.game.getAssetManager().load("pauseScreen.png", Texture.class);
         this.game.getAssetManager().load("resume.png", Texture.class);
+
         this.game.getAssetManager().finishLoading();
     }
 
@@ -130,14 +136,11 @@ public class GameView extends ScreenAdapter{
     public void render(float delta) {
 
 
-        if(server.isAlive()){
-            try {
-                server.tick();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        if(server.isAlive()) {
+            server.tick();
             receiveInputs(delta);
         }
+
         currentSection.update(delta);
 
 
@@ -149,7 +152,9 @@ public class GameView extends ScreenAdapter{
 
         game.getBatch().begin();
 
+
         currentSection.display(delta);
+
 
         game.getBatch().end();
         stage.draw();
@@ -192,14 +197,11 @@ public class GameView extends ScreenAdapter{
 
     private void receiveInputs(float delta) {
         String messageReceived = null;
-        try {
-            messageReceived = server.receiveMessage();
-        } catch (IOException e) {
-            System.out.println("Error receiving string messages");
-            e.printStackTrace();
-        }
+        System.out.println("Trying to receive");
+        messageReceived = server.receiveMessage();
 
         if(messageReceived != null){
+            System.out.println("Received message");
             if(messageReceived.substring(0,2).equals("vx")) {
                 messageReceived=messageReceived.substring(2);
                 vx=Float.valueOf(messageReceived);

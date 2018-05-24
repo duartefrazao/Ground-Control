@@ -34,8 +34,7 @@ public class Sender extends Thread {
                // System.out.println("Sending " + msg);
                 out.println(msg);
 
-            } catch (InterruptedException e) {
-                //stopCom();
+            }catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 stopCom();

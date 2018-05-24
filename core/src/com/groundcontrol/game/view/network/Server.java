@@ -16,6 +16,7 @@ public class Server extends Observable {
     private boolean alive;
     private ConcurrentLinkedQueue<String> receiveQueue =  new ConcurrentLinkedQueue<String>();
     private LinkedBlockingQueue<String> sendQueue= new LinkedBlockingQueue<String>();
+    private int portNum = 8500;
 
     public void start(int port) {
         System.out.println("Setting up server");
@@ -40,40 +41,39 @@ public class Server extends Observable {
         System.out.println("[Server]Creating communication");
         this.alive = true;
     }
-    public void stop() throws IOException {
-        alive=false;
-        receiver.finished=true;
-        sender.finished=true;
-        receiver.stopCom();
-        sender.stopCom();
-        clientSocket.close();
-        serverSocket.close();
-    }
 
-    public void sendMessage(String msg) throws IOException {
+    public void sendMessage(String msg)  {
         sendQueue.add(msg);
     }
 
-    public String receiveMessage() throws IOException {
-        if(!receiveQueue.isEmpty()){
-            String mes =receiveQueue.poll();
-            return mes;
-        }
-         return null;
+    public String receiveMessage()  {
+
+        if(!receiveQueue.isEmpty())
+            receiveQueue.poll();
+        return null;
     }
 
-    public static void main(String[] args) throws IOException {
-        Server server = new Server();
-        server.start(8888);
 
-    }
-
-    public void tick() throws IOException {
+    public void tick()  {
         if(receiver.finished || sender.finished) stop();
     }
 
     public boolean isAlive() {
         return alive;
+    }
+
+    public void stop()  {
+        alive=false;
+        receiver.finished=true;
+        sender.finished=true;
+        receiver.stopCom();
+        sender.stopCom();
+        try {
+            clientSocket.close();
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
