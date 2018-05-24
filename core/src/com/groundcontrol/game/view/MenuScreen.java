@@ -4,13 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.groundcontrol.game.GroundControl;
+import com.groundcontrol.game.view.ScreenModules.GameSection;
+import com.groundcontrol.game.view.ScreenModules.NetworkSection;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
+
+import java.io.IOException;
+import java.net.Socket;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
@@ -27,6 +33,11 @@ public class MenuScreen extends ScreenAdapter {
     private Button exitButton;
     private Button gameButton;
     private Button mpButton;
+
+    NetworkSection networkSection;
+    private boolean started = false;
+    private boolean clickedGame =false;
+    private BitmapFont font = new BitmapFont();
 
     public MenuScreen(GroundControl game) {
         this.game = game;
@@ -54,6 +65,7 @@ public class MenuScreen extends ScreenAdapter {
         gameButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                clickedGame=true;
                 startGame();
             }
         });
@@ -107,7 +119,25 @@ public class MenuScreen extends ScreenAdapter {
         Gdx.gl.glClear( GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT );
 
         game.getBatch().begin();
+
         drawBackGround();
+        if(!started){
+            Socket s = null;
+            String serverIP="";
+            try {
+                s = new Socket("google.pt", 80);
+
+                serverIP = s.getLocalAddress().getHostAddress();
+
+               // System.out.println("IP->" +serverIP);
+                s.close();
+            } catch (IOException e) {
+                font.draw(game.getBatch(), "Couldn't get device ip", Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/20);
+                e.printStackTrace();
+            }
+            if(!serverIP.equals(""))
+                font.draw(game.getBatch(), "Enter the following ip on the other device" + serverIP, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/20);
+        }
         game.getBatch().end();
 
         stage.act(delta);

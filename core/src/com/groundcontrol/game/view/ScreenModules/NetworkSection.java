@@ -16,11 +16,11 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 
 import java.util.List;
 
-public class PauseSection implements Section{
+public class NetworkSection implements Section{
 
     private final GameView gv;
 
-    public PauseSection (GameView gameView) {
+    public NetworkSection(GameView gameView) {
         this.gv=gameView;
     }
 
@@ -35,12 +35,11 @@ public class PauseSection implements Section{
         draw();
         gv.stage.act(delta);
         gv.stage.draw();
-        gv.pauseSection.draw();
+        gv.networkStage.draw();
     }
 
     @Override
     public void transition() {
-        gv.paused=false;
         PlayerModel player = gv.gameModel.getPlayer();
         PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
         viewPlayer.removeStopped();
@@ -60,8 +59,6 @@ public class PauseSection implements Section{
             ElementView view = ViewFactory.makeView(gv.game,p);
             view.draw(gv.game.getBatch());
         }
-
-        gv.pauseStage.draw();
     }
 
     @Override

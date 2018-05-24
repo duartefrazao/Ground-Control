@@ -44,16 +44,18 @@ public class Client {
 
     }
 
-    public void sendMessage(String msg) throws IOException {
+    public void sendMessage(String msg) {
+        System.out.println("Sending message");
         sendQueue.add(msg);
     }
 
-    public String receiveMessage() throws IOException {
-        if(!receiveQueue.isEmpty()) return receiveQueue.poll();
+    public String receiveMessage() {
+        if(!receiveQueue.isEmpty())
+            return receiveQueue.poll();
         else return null;
     }
 
-    public void tick() throws IOException {
+    public void tick()  {
         if(receiver.finished || sender.finished) stop();
     }
 
@@ -61,12 +63,16 @@ public class Client {
         return alive;
     }
 
-    public void stop() throws IOException {
+    public void stop() {
         this.alive=false;
         receiver.finished=true;
         sender.finished=true;
         receiver.stopCom();
         sender.stopCom();
-        clientSocket.close();
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

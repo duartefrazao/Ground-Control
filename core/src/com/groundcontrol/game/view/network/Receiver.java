@@ -21,6 +21,7 @@ public class Receiver  extends Thread{
 
     @Override
     public void run(){
+
         System.out.println("Starting receive communication...");
         while(!finished){
 
@@ -28,19 +29,12 @@ public class Receiver  extends Thread{
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String msg = br.readLine();
-
-                if(msg == null) {
-                    System.out.println("Received null message");
-                    finished = true;
-                }
-                else{
-                    //System.out.println("Received " + msg);
-                    messagesToReceive.add(msg);
-                }
+                System.out.println("Read:"+ msg);
+                messagesToReceive.add(msg);
 
             } catch (IOException e) {
                 System.out.println("Caught exception on run() in Receiver");
-                stopCom();
+               //stopCom();
                 e.printStackTrace();
             }
         }
@@ -49,6 +43,7 @@ public class Receiver  extends Thread{
 
     public void stopCom(){
         System.out.println("Stopping communication...");
+        this.interrupt();
         this.finished=true;
     }
 }

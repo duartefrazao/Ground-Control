@@ -7,7 +7,10 @@ import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.MenuScreen;
+import com.groundcontrol.game.view.NetworkScreen;
 import com.groundcontrol.game.view.SecondPlayerScreen;
+import com.groundcontrol.game.view.network.Client;
+import com.groundcontrol.game.view.network.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -138,7 +141,7 @@ public class GroundControl extends Game {
 			System.out.println("IP->" +serverIP);
 			s.close();
 		} catch (IOException e) {
-			System.exit(1);
+			//System.exit(1);
 			e.printStackTrace();
 		}
 
@@ -176,10 +179,22 @@ public class GroundControl extends Game {
 	}
 
 	public void startMP() {
-		setScreen(new SecondPlayerScreen(this));
+		//setScreen(new SecondPlayerScreen(this));
+		setScreen(new NetworkScreen(this));
 	}
 
     public void startMainMenu() {
 		setScreen(new MenuScreen(this));
     }
+
+	public void startNewMut(String ip) {
+		GameModel gameModel = new GameModel();
+
+		GameController gameController = new GameController(gameModel);
+
+		Client client= new Client();
+		client.startConnection(ip,8500);
+
+		setScreen(new SecondPlayerScreen(this, client));
+	}
 }
