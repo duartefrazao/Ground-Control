@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -27,7 +26,7 @@ import java.io.IOException;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
-public class GameView extends ScreenAdapter implements GestureDetector.GestureListener {
+public class GameView extends ScreenAdapter{
 
     public final static float PIXEL_TO_METER = 0.009f;
     private static final float VIEWPORT_WIDTH = 50;
@@ -46,7 +45,6 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
     public GameModel gameModel;
     public Stage stage;
     public Section currentSection;
-    boolean flinged = false;
 
     //Score Components
     private int score;
@@ -81,7 +79,7 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
         stage.addActor(scoreTable);
 
         ip.addProcessor(stage);
-        ip.addProcessor(new GestureDetector(this));
+        ip.addProcessor(new GestureDetector(gameSection));
         Gdx.input.setInputProcessor(ip);
 
 
@@ -165,6 +163,8 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
 
         gameController.handleInput(currentInput);
 
+
+        /*
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             this.gameController.handleInput(StateInput.LEFT_BUTTON);
         }
@@ -174,11 +174,7 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             this.gameController.handleInput(StateInput.SPACE_BUTTON);
         }
-
-        if (flinged) {
-            flinged = false;
-            this.gameController.handleInput(StateInput.SPACE_BUTTON);
-        }
+        */
 
 
         boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
@@ -224,57 +220,6 @@ public class GameView extends ScreenAdapter implements GestureDetector.GestureLi
         Texture background = game.getAssetManager().get("background.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         game.getBatch().draw(background, 0, 0, 0, 0, (int) (ARENA_WIDTH / PIXEL_TO_METER), (int) (ARENA_HEIGHT / PIXEL_TO_METER));
-
-    }
-
-    @Override
-    public boolean touchDown(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean tap(float x, float y, int count, int button) {
-        if (paused) return false;
-
-        flinged = true;
-        return false;
-    }
-
-    @Override
-    public boolean longPress(float x, float y) {
-        return false;
-    }
-
-    @Override
-    public boolean fling(float velocityX, float velocityY, int button) {
-        if (paused) return false;
-
-        flinged = true;
-        return false;
-    }
-
-    @Override
-    public boolean pan(float x, float y, float deltaX, float deltaY) {
-        return false;
-    }
-
-    @Override
-    public boolean panStop(float x, float y, int pointer, int button) {
-        return false;
-    }
-
-    @Override
-    public boolean zoom(float initialDistance, float distance) {
-        return false;
-    }
-
-    @Override
-    public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-        return false;
-    }
-
-    @Override
-    public void pinchStop() {
 
     }
 

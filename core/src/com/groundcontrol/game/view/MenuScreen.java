@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 
@@ -94,6 +93,7 @@ public class MenuScreen extends ScreenAdapter {
         this.game.getAssetManager().load("exit.png", Texture.class);
         this.game.getAssetManager().load("start.png", Texture.class);
         this.game.getAssetManager().load("multiplayer.png", Texture.class);
+        this.game.getAssetManager().load("player.png", Texture.class);
         this.game.getAssetManager().finishLoading();
     }
 
@@ -108,6 +108,7 @@ public class MenuScreen extends ScreenAdapter {
 
         game.getBatch().begin();
         drawBackGround();
+        drawPlayer();
         game.getBatch().end();
 
         stage.act(delta);
@@ -121,6 +122,13 @@ public class MenuScreen extends ScreenAdapter {
         Texture background = game.getAssetManager().get("background.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / PIXEL_TO_METER), (int) (ARENA_HEIGHT / PIXEL_TO_METER));
+
+    }
+
+    private void drawPlayer(){
+
+        Texture player = game.getAssetManager().get("player.png", Texture.class);
+        game.getBatch().draw(player, 5, 5);
 
     }
 
