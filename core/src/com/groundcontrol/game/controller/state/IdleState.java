@@ -8,14 +8,34 @@ import java.util.ArrayList;
 
 public class IdleState implements PlayerState {
 
+    private float timeInPlanet;
+
+    public void updateTime(PlayerController context, float delta){
+        this.timeInPlanet += delta;
+
+        if(this.timeInPlanet > context.getMaxTimeInPlanet()){
+
+            //((ElementModel) context.getPlanet().getUserData()).setToBeRemoved(true);
+            context.jump();
+
+        }
+
+    }
+
+    public IdleState(float time){
+        this.timeInPlanet = time;
+    }
+
+    public IdleState(){
+        this.timeInPlanet = 0;
+    }
+
     public void handleInput(PlayerController context, InputDecoder.Input input) {
 
         if (input == InputDecoder.Input.JUMP) {
-
             context.jump();
-
         } else if (input == InputDecoder.Input.RIGHT || input == InputDecoder.Input.LEFT) {
-            context.setState(new RunningState());
+            context.setState(new RunningState(this.timeInPlanet));
         }
 
     }

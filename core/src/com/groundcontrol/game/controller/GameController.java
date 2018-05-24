@@ -129,11 +129,12 @@ public class GameController implements ContactListener {
 
         }
 
+        this.checkForCometsOutOfBonds();
+
         for (ElementController ec : this.planetControllers) {
             ec.verifyBounds();
             ec.limitAngularVelocity();
         }
-
 
 
         Array<Body> bodies = new Array<Body>();
@@ -151,8 +152,6 @@ public class GameController implements ContactListener {
         this.gameModel.setScore(scoreController.getScore());
 
         this.gameModel.update(delta);
-
-        this.checkForCometsOutOfBonds();
 
         removeFlagged(bodies);
 
@@ -248,7 +247,6 @@ public class GameController implements ContactListener {
 
     private void cometObjectCollision(Body comet, Body planet) {
 
-
         if (this.playerController.getPlanet() == planet)
             playerController.jump();
 
@@ -258,8 +256,8 @@ public class GameController implements ContactListener {
         ((ElementModel) planet.getUserData()).setToBeRemoved(true);
 
         this.removeFromPlanetControllers(planet);
-        planetsToAddCounter++;
         this.planets.remove(planet);
+        planetsToAddCounter++;
 
     }
 

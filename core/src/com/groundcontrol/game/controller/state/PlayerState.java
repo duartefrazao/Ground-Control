@@ -13,4 +13,6 @@ public interface PlayerState {
 
     void applyPullForce(PlayerController context, ArrayList<Body> objects);
 
+    void updateTime(PlayerController context, float delta);
+
 }
