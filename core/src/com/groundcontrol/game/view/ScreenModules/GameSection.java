@@ -23,7 +23,6 @@ import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.elements.ElementView;
 import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
-import com.groundcontrol.game.view.network.Server;
 
 import java.util.List;
 
@@ -71,6 +70,8 @@ public class GameSection implements Section, GestureDetector.GestureListener{
 
     @Override
     public void update(float delta) {
+
+        gv.gameController.handleInput(currentInput);
 
         gv.gameController.update(delta);
 
