@@ -54,8 +54,6 @@ public class CometController extends  ElementController{
 
         this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y,(float) Math.PI - (float) (Math.PI/2.0 - this.initialVelocity.angleRad()));
 
-
-
     }
 
 }

@@ -10,6 +10,15 @@ import static java.lang.Math.abs;
 
 public class FloatState implements PlayerState {
 
+    private float floatTime;
+
+    public FloatState(){
+        this.floatTime = 0;
+    }
+
+    public void updateTime(PlayerController context, float delta){
+        this.floatTime += delta;
+    }
 
     @Override
     public void handleInput(PlayerController context, InputDecoder.Input input) {
@@ -27,7 +36,7 @@ public class FloatState implements PlayerState {
             float distance = abs(e.getPosition().x - context.getX());
             distance += abs(e.getPosition().y - context.getY());
 
-            if (distance < 8) {
+            if (distance < 7) {
 
                 context.setTransform(context.getX(), context.getY(), context.getAngleBetween(e));
 

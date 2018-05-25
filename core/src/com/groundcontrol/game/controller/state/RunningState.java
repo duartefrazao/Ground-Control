@@ -10,17 +10,37 @@ public class RunningState implements PlayerState {
 
     private static int clockWise = 1;
     private static int counterClockWise = -1;
+    private float timeInPlanet;
+
+    public void updateTime(PlayerController context, float delta){
+        this.timeInPlanet += delta;
+
+        if(this.timeInPlanet > context.getMaxTimeInPlanet()){
+
+            //((ElementModel) context.getPlanet().getUserData()).setToBeRemoved(true);
+            context.jump();
+
+        }
+
+    }
+
+    public RunningState(float time){
+        this.timeInPlanet = time;
+    }
+
+    public RunningState(){
+        this.timeInPlanet = 0;
+    }
 
     public void handleInput(PlayerController context, InputDecoder.Input input) {
 
         if (input == InputDecoder.Input.IDLE) {
 
-            context.setState(new IdleState());
+            context.setState(new IdleState(this.timeInPlanet));
 
         } else if (input == InputDecoder.Input.JUMP) {
 
             context.jump();
-
 
         } else {
 
@@ -39,7 +59,6 @@ public class RunningState implements PlayerState {
 
         Vector2 force = context.calculatePullForce(context.getPlanet());
         context.applyForceToCenter(force, true);
-
 
     }
 }
