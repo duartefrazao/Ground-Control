@@ -37,6 +37,14 @@ public class CometView extends ElementView {
 
     }
 
+    public void setStopped() {
+        this.stop = true;
+    }
+
+    public void removeStopped() {
+        this.stop = false;
+    }
+
 
     public Sprite createSprite(GroundControl game) {
         Texture texture = game.getAssetManager().get("comet.png");

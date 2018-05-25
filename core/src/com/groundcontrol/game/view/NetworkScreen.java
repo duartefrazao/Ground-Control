@@ -7,16 +7,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.groundcontrol.game.GroundControl;
-import com.groundcontrol.game.view.ScreenModules.GameSection;
-import com.groundcontrol.game.view.ScreenModules.NetworkSection;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-
-import java.io.IOException;
-import java.net.Socket;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
@@ -30,12 +24,7 @@ public class NetworkScreen extends ScreenAdapter {
 
     Stage stage;
 
-    private Button gameButton;
-    private Button mpButton;
-
     ButtonFactory buttonFactory;
-
-    NetworkSection networkSection;
 
     BitmapFont font=new BitmapFont();
 
@@ -65,124 +54,21 @@ public class NetworkScreen extends ScreenAdapter {
         return but;
     }
 
+
+    public String hexToDec(String hex){
+        String result="";
+
+        for(int i = 0;i < hex.length();i+=2){
+            result+=Integer.parseInt(hex.substring(i,i+2),16)+".";
+        }
+        return result.substring(0,result.length()-1);
+    }
+
     private Stage createMenuStage(){
 
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
         buttonFactory = new ButtonFactory();
-       /* Button one= createButton("Numbers/one.png", w/3,h/5, (int)(w/2),(int)(h)/8, "1");
-        Button two= createButton("Numbers/two.png", 2*w/3,h/5, (int)(w/2),(int)(h)/8, "2");
-        Button three= createButton("Numbers/three.png", 3*w/3,h/5, (int)(w/2),(int)(h)/8, "3");
-        Button four= createButton("Numbers/four.png", w/3,2*h/5, (int)(w/2),(int)(h)/8, "4");
-        Button five = createButton("Numbers/five.png", 2*w/3,2*h/5, (int)(w/2),(int)(h)/8, "5");
-        Button six= createButton("Numbers/six.png", 3*w/3,2*h/5, (int)(w/2),(int)(h)/8, "6");
-        Button seven= createButton("Numbers/seven.png", w/3,3*h/5, (int)(w/2),(int)(h)/8, "7");
-        Button eight = createButton("Numbers/eight.png", 2*w/3,3*h/5, (int)(w/2),(int)(h)/8, "8");
-        Button nine = createButton("Numbers/nine.png", w/3,3*h/5, (int)(w/2),(int)(h)/8, "9");
-        Button zero = createButton("Numbers/zero.png", 2*w/3,4*h/5, (int)(w/2),(int)(h)/8, "0");
-*/
-
-        Button one= buttonFactory.makeButton(game.getAssetManager().get("Numbers/one.png",Texture.class),game.getAssetManager().get("Numbers/one.png",Texture.class), w/4,h/6, (int)(w/3),(int)(h)/8);
-        one.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "1";
-                System.out.println(ip);
-            }
-        });
-        Button two= buttonFactory.makeButton(game.getAssetManager().get("Numbers/two.png",Texture.class),game.getAssetManager().get("Numbers/two.png",Texture.class),  2*w/4,h/6, (int)(w/3),(int)(h)/8);
-        two.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "2";
-                System.out.println(ip);
-            }
-        });
-        Button three= buttonFactory.makeButton(game.getAssetManager().get("Numbers/three.png",Texture.class),game.getAssetManager().get("Numbers/three.png",Texture.class), 3*w/4,h/6, (int)(w/3),(int)(h)/8);
-        three.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "3";
-                System.out.println(ip);
-            }
-        });
-
-        Button four= buttonFactory.makeButton(game.getAssetManager().get("Numbers/four.png",Texture.class),game.getAssetManager().get("Numbers/four.png",Texture.class), w/4,2*h/6, (int)(w/3),(int)(h)/8);
-        four.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "4";
-                System.out.println(ip);
-            }
-        });
-        Button five= buttonFactory.makeButton(game.getAssetManager().get("Numbers/five.png",Texture.class),game.getAssetManager().get("Numbers/five.png",Texture.class),  2*w/4,2*h/6, (int)(w/3),(int)(h)/8);
-        five.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "5";
-                System.out.println(ip);
-            }
-        });
-        Button six= buttonFactory.makeButton(game.getAssetManager().get("Numbers/six.png",Texture.class),game.getAssetManager().get("Numbers/six.png",Texture.class), 3*w/4,2*h/6, (int)(w/3),(int)(h)/8);
-        six.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "6";
-                System.out.println(ip);
-            }
-        });
-
-        Button seven= buttonFactory.makeButton(game.getAssetManager().get("Numbers/seven.png",Texture.class),game.getAssetManager().get("Numbers/seven.png",Texture.class), w/4,3*h/6, (int)(w/3),(int)(h)/8);
-        seven.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "7";
-                System.out.println(ip);
-            }
-        });
-        Button eight= buttonFactory.makeButton(game.getAssetManager().get("Numbers/eight.png",Texture.class),game.getAssetManager().get("Numbers/eight.png",Texture.class),  2*w/4,3*h/6, (int)(w/3),(int)(h)/8);
-        eight.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "8";
-                System.out.println(ip);
-            }
-        });
-        Button nine= buttonFactory.makeButton(game.getAssetManager().get("Numbers/nine.png",Texture.class),game.getAssetManager().get("Numbers/nine.png",Texture.class), 3*w/4,3*h/6, (int)(w/3),(int)(h)/8);
-        nine.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "9";
-                System.out.println(ip);
-            }
-        });
-
-        Button zero= buttonFactory.makeButton(game.getAssetManager().get("Numbers/zero.png",Texture.class),game.getAssetManager().get("Numbers/zero.png",Texture.class),  2*w/4,4*h/6, (int)(w/3),(int)(h)/8);
-        zero.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + "0";
-                System.out.println(ip);
-            }
-        });
-
-        Button dot= buttonFactory.makeButton(game.getAssetManager().get("Numbers/zero.png",Texture.class),game.getAssetManager().get("Numbers/zero.png",Texture.class),  w/4,4*h/6, (int)(w/3)/2,(int)(h)/8/2);
-        dot.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + ".";
-                System.out.println(ip);
-            }
-        });
-
-        Button correct= buttonFactory.makeButton(game.getAssetManager().get("Numbers/correct.png",Texture.class),game.getAssetManager().get("Numbers/correct.png",Texture.class),  3*w/4,4*h/6, (int)(w/3)/5,(int)(h)/8/5);
-        correct.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip.substring(0,ip.length()-1);
-                System.out.println(ip);
-            }
-        });
 
 
 
@@ -194,11 +80,10 @@ public class NetworkScreen extends ScreenAdapter {
             }
         });
 
-        mpButton = buttonFactory.makeButton(game.getAssetManager().get("multiplayer.png",Texture.class),game.getAssetManager().get("multiplayer.png",Texture.class),  w/3,5*h/6, (int)(w/3),(int)(h)/8);
+        Button mpButton = buttonFactory.makeButton(game.getAssetManager().get("multiplayer.png",Texture.class),game.getAssetManager().get("multiplayer.png",Texture.class),  w/3,5*h/6, (int)(w/3),(int)(h)/8);
         mpButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-
                 game.startNewMut(ip);
             }
         });
@@ -207,34 +92,8 @@ public class NetworkScreen extends ScreenAdapter {
 
         stage.addActor(exitButton);
         stage.addActor(mpButton);
-        stage.addActor(zero);
-        stage.addActor(one);
-        stage.addActor(two);
-        stage.addActor(three);
-        stage.addActor(four);
-        stage.addActor(five);
-        stage.addActor(six);
-        stage.addActor(seven);
-        stage.addActor(eight);
-        stage.addActor(nine);
-        stage.addActor(dot);
-        stage.addActor(correct);
 
         return stage;
-    }
-
-
-
-    private void exitGame() {
-        System.exit(0);
-    }
-
-    private void startGame(){
-        game.startNewGame();
-    }
-
-    private void startMP(){
-        game.startMP();
     }
 
     private void loadAssets(){

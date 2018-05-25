@@ -1,12 +1,18 @@
 package com.groundcontrol.game.view.ScreenModules;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.model.elements.CometModel;
 import com.groundcontrol.game.model.elements.ExplosionModel;
@@ -17,43 +23,84 @@ import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.elements.ElementView;
 import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
+import com.groundcontrol.game.view.network.Server;
 
 import java.util.List;
 
+import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
+import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
+
 public class GameSection implements Section, GestureDetector.GestureListener{
 
-    GameView gv;
+    protected GameView gv;
+    protected InputMultiplexer ip = new InputMultiplexer();
+    protected  Stage stage;
+
+    public enum StateInput {RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, IDLE}
+    protected StateInput currentInput =StateInput.IDLE;
+
+
+    //Score Components
+    protected int score;
+    protected BitmapFont font = new BitmapFont();
+    protected Label scoreLabel;
+    protected Color whiteColor = new Color(Color.WHITE);
+    protected float vx=0,vy=0;
 
     public GameSection(GameView gameView){
+
         this.gv =gameView;
+        loadAssets();
+        stage=createStage();
+        stage.addActor(createScoreTable());
+        ip.addProcessor(stage);
+        ip.addProcessor(new GestureDetector(this));
+    }
+
+    private Table createScoreTable() {
+        Table table = new Table();
+        table.center();
+        table.top();
+        score = 0;
+        font = new BitmapFont();
+        scoreLabel = new Label(Integer.toString(score), new Label.LabelStyle(font, whiteColor));
+        table.add(scoreLabel).height(Gdx.graphics.getHeight() / 10);
+        table.setFillParent(true);
+        return table;
     }
 
     @Override
     public void update(float delta) {
-        gv.handleInputs(delta);
+
         gv.gameController.update(delta);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            gv.gameController.handleInput(StateInput.LEFT_BUTTON);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            gv.gameController.handleInput(StateInput.RIGHT_BUTTON);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            gv.gameController.handleInput(StateInput.SPACE_BUTTON);
+        }
+
+        boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
+
+        if(accAvailable) {
+
+            vx = Gdx.input.getAccelerometerX();
+            vy = Gdx.input.getAccelerometerY();
+        }
+
+        gv.gameController.setPlanetForce(delta, -vx, -vy);
+
+
     }
 
     @Override
     public void display(float delta) {
-        gv.drawBackGround();
-        draw();
-    }
+        drawBackground();
 
-    @Override
-    public void transition() {
-        PlayerModel player = gv.gameModel.getPlayer();
-        PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
-        viewPlayer.setStopped();
-
-        gv.paused=true;
-        Gdx.input.setInputProcessor(gv.pauseStage);
-
-        gv.currentSection= gv.pauseSection;
-    }
-
-    @Override
-    public void draw() {
         PlayerModel player = gv.gameModel.getPlayer();
         ElementView viewPlayer = ViewFactory.makeView(gv.game,player);
         viewPlayer.update(player);
@@ -80,6 +127,18 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     }
 
     @Override
+    public void transition() {
+        PlayerModel player = gv.gameModel.getPlayer();
+        PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
+        viewPlayer.removeStopped();
+        Gdx.input.setInputProcessor(this.ip);
+
+        gv.currentSection= gv.gameSection;
+
+    }
+
+
+    @Override
     public Stage createStage() {
         ButtonFactory butFac = new ButtonFactory();
 
@@ -89,13 +148,13 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         leftButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                gv.setCurrentInput(GameView.StateInput.LEFT_BUTTON);
+                currentInput=StateInput.LEFT_BUTTON;
                 return true;
             }
 
             @Override
             public void touchUp (InputEvent e, float x, float y, int pointer, int button){
-                gv.setCurrentInput(GameView.StateInput.IDLE);
+                currentInput=StateInput.IDLE;
             }
         });
 
@@ -103,13 +162,13 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         rightButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                gv.setCurrentInput(GameView.StateInput.RIGHT_BUTTON);
+                currentInput=StateInput.RIGHT_BUTTON;
                 return true;
             }
 
             @Override
             public void touchUp (InputEvent e, float x, float y, int pointer, int button){
-                gv.setCurrentInput(GameView.StateInput.IDLE);
+                currentInput=StateInput.IDLE;
             }
         });
 
@@ -117,7 +176,8 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         pauseButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                transition();
+                gv.currentSection=gv.pauseSection;
+                gv.currentSection.transition();
                 return true;
             }
 
@@ -138,6 +198,40 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     }
 
     @Override
+    public void loadAssets() {
+        gv.game.getAssetManager().load("planet.png", Texture.class);
+        gv.game.getAssetManager().load("comet.png", Texture.class);
+        gv.game.getAssetManager().load("big_planet.png", Texture.class);
+        gv.game.getAssetManager().load("runningSheet.png", Texture.class);
+        gv.game.getAssetManager().load("cometSheet.png", Texture.class);
+        gv.game.getAssetManager().load("idleSheet.png", Texture.class);
+        gv.game.getAssetManager().load("explosionSheet.png", Texture.class);
+        gv.game.getAssetManager().load("background.png", Texture.class);
+        gv.game.getAssetManager().load("Buttons/left.png", Texture.class);
+        gv.game.getAssetManager().load("Buttons/right.png", Texture.class);
+        gv.game.getAssetManager().load("Buttons/pause.png", Texture.class);
+        gv.game.getAssetManager().load("pauseScreen.png", Texture.class);
+        gv.game.getAssetManager().load("resume.png", Texture.class);
+
+        gv.game.getAssetManager().finishLoading();
+    }
+
+    @Override
+    public void drawStages(float delta) {
+        stage.draw();
+        this.scoreLabel.setText(Integer.toString(gv.gameModel.getScore()));
+
+    }
+
+    @Override
+    public void drawBackground() {
+        Texture background = gv.game.getAssetManager().get("background.png", Texture.class);
+        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        gv.game.getBatch().draw(background, 0, 0, 0, 0, (int) (ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
+
+    }
+
+    @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
         return false;
     }
@@ -155,9 +249,8 @@ public class GameSection implements Section, GestureDetector.GestureListener{
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        if (gv.paused) return false;
+        this.gv.gameController.handleInput(StateInput.SPACE_BUTTON);
 
-        this.gv.gameController.handleInput(GameView.StateInput.SPACE_BUTTON);
 
         return true;
     }

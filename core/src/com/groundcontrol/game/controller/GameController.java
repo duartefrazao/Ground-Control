@@ -22,6 +22,7 @@ import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
+import com.groundcontrol.game.view.ScreenModules.GameSection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -105,7 +106,7 @@ public class GameController implements ContactListener {
 
     }
 
-    public void handleInput(GameView.StateInput input) {
+    public void handleInput(GameSection.StateInput input) {
 
         this.playerController.handleInput(this.decoder.convertViewInput(input));
 
