@@ -24,6 +24,7 @@ import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,17 +40,28 @@ public class GameController implements ContactListener {
 
     private static final float TIME_BETWEEN_COMETS = 3f;
 
+    private HashSet<Vector2> cometsPosition = new HashSet<Vector2>();
+
     protected final World world;
+
     protected final PlayerController playerController;
+
     protected float accumulator;
+
     protected GameModel gameModel;
+
     protected ArrayList<Body> planets = new ArrayList<Body>();
 
     protected ArrayList<ElementController> planetControllers = new ArrayList<ElementController>();
+
     protected ScoreController scoreController;
+
     protected ForceController forceController;
+
     protected float timeToNextComet;
+
     private int planetsToAddCounter;
+
     private InputDecoder decoder;
 
     private ArrayList<ElementController> cometControllers = new ArrayList<ElementController>();
@@ -97,6 +109,12 @@ public class GameController implements ContactListener {
     private void applyGravityToPlanets() {
 
         for (ElementController c : planetControllers) {
+
+            if(c.getBody() == null){
+                System.out.println("null planet grav");
+                continue;
+            }
+
             c.applyArtificialGravity(forceController.getForce());
         }
 
@@ -110,6 +128,8 @@ public class GameController implements ContactListener {
 
 
     public void update(float delta) {
+
+        this.gameModel.update(delta);
 
         this.scoreController.update(delta);
 
@@ -128,8 +148,6 @@ public class GameController implements ContactListener {
             accumulator -= 1 / 60f;
 
         }
-
-        this.checkForCometsOutOfBonds();
 
         for (ElementController ec : this.planetControllers) {
             ec.verifyBounds();
@@ -151,7 +169,9 @@ public class GameController implements ContactListener {
 
         this.gameModel.setScore(scoreController.getScore());
 
-        this.gameModel.update(delta);
+
+
+        this.checkForCometsOutOfBonds();
 
         removeFlagged(bodies);
 
@@ -193,6 +213,9 @@ public class GameController implements ContactListener {
         if (timeToNextComet <= 0) {
 
             Vector2 r = generateRandomPeripheralPoints(0);
+
+           if(! this.cometsPosition.add(r))
+               System.out.println("oops");
 
             CometModel comet = this.gameModel.createComet(r.x, r.y);
             CometController cometC = new CometController(world, comet);
@@ -257,6 +280,7 @@ public class GameController implements ContactListener {
 
         this.removeFromPlanetControllers(planet);
         this.planets.remove(planet);
+
         planetsToAddCounter++;
 
     }
@@ -295,6 +319,15 @@ public class GameController implements ContactListener {
 
             Body body = iterator.next();
 
+            if(body == null) {
+                System.out.println("null");
+                continue;
+            }
+            if(world.isLocked()){
+                System.out.println("locked");
+                continue;
+            }
+
             if (((ElementModel) body.getUserData()).isToBeRemoved()) {
 
                 this.gameModel.removeModel((ElementModel) body.getUserData());
@@ -317,6 +350,7 @@ public class GameController implements ContactListener {
             ElementController cc = iterator.next();
 
             if (cc.isOutOfBonds()) {
+
                 ((ElementModel) cc.getBody().getUserData()).setToBeRemoved(true);
                 iterator.remove();
             }
@@ -337,6 +371,7 @@ public class GameController implements ContactListener {
                 iterator.remove();
                 break;
             }
+
         }
 
     }

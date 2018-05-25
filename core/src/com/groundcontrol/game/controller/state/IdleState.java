@@ -10,24 +10,21 @@ public class IdleState implements PlayerState {
 
     private float timeInPlanet;
 
+    public float getTime(){
+        return this.timeInPlanet;
+    }
+
     public void updateTime(PlayerController context, float delta){
-        this.timeInPlanet += delta;
+        this.timeInPlanet -= delta;
 
-        if(this.timeInPlanet > context.getMaxTimeInPlanet()){
-
-            //((ElementModel) context.getPlanet().getUserData()).setToBeRemoved(true);
+        if(this.timeInPlanet < 0){
             context.jump();
-
         }
 
     }
 
     public IdleState(float time){
         this.timeInPlanet = time;
-    }
-
-    public IdleState(){
-        this.timeInPlanet = 0;
     }
 
     public void handleInput(PlayerController context, InputDecoder.Input input) {

@@ -12,24 +12,24 @@ public class RunningState implements PlayerState {
     private static int counterClockWise = -1;
     private float timeInPlanet;
 
-    public void updateTime(PlayerController context, float delta){
-        this.timeInPlanet += delta;
+    public RunningState(float time) {
+        this.timeInPlanet = time;
+    }
 
-        if(this.timeInPlanet > context.getMaxTimeInPlanet()){
+    public float getTime() {
+        return this.timeInPlanet;
+    }
 
-            //((ElementModel) context.getPlanet().getUserData()).setToBeRemoved(true);
+    public void updateTime(PlayerController context, float delta) {
+
+        this.timeInPlanet -= delta;
+
+        if (this.timeInPlanet < 0) {
+
             context.jump();
 
         }
 
-    }
-
-    public RunningState(float time){
-        this.timeInPlanet = time;
-    }
-
-    public RunningState(){
-        this.timeInPlanet = 0;
     }
 
     public void handleInput(PlayerController context, InputDecoder.Input input) {

@@ -15,4 +15,6 @@ public interface PlayerState {
 
     void updateTime(PlayerController context, float delta);
 
+    float getTime();
+
 }

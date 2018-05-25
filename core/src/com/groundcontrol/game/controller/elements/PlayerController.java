@@ -18,12 +18,9 @@ public class PlayerController extends ElementController {
 
     public final static int walkToPullRation = 40;
 
-    public final static float maxTimeInPlanet = 3f;
-
     private final static float maxVelocity = 13;
 
     private final static float maxAngularVelocity = 0.02f;
-
 
     private float jumpingTime = 0f;
 
@@ -164,7 +161,9 @@ public class PlayerController extends ElementController {
 
         this.removeFromPlanet();
 
-        this.setState(new FloatState());
+        float time = this.state.getTime();
+
+        this.setState(new FloatState(time + 2f));
 
     }
 
@@ -196,8 +195,6 @@ public class PlayerController extends ElementController {
     public Body getPlanet() {
         return this.currentPlanet;
     }
-
-    public float getMaxTimeInPlanet(){return maxTimeInPlanet; }
 
     public void setRotation(ArrayList<Body> objects) {
         this.state.setRotation(this, objects);

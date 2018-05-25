@@ -21,44 +21,36 @@ import com.groundcontrol.game.view.ScreenModules.PauseSection;
 import com.groundcontrol.game.view.ScreenModules.Section;
 import com.groundcontrol.game.view.network.Server;
 
-import java.io.IOException;
-
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
-public class GameView extends ScreenAdapter{
+public class GameView extends ScreenAdapter {
 
     public final static float PIXEL_TO_METER = 0.009f;
     private static final float VIEWPORT_WIDTH = 50;
-    private boolean started=false;
-
-    public enum StateInput {RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, IDLE}
-    private StateInput currentInput = StateInput.IDLE;
-
-    public Stage networkStage;
-    public Stage pauseStage;
     public final InputMultiplexer ip;
     public final GameSection gameSection;
     public final PauseSection pauseSection;
-    private Server server;
     public final GroundControl game;
     private final OrthographicCamera camera;
+    public Stage networkStage;
+    public Stage pauseStage;
     public boolean paused;
     public GameController gameController;
     public GameModel gameModel;
     public Stage stage;
     public Section currentSection;
-
+    private boolean started = false;
+    private StateInput currentInput = StateInput.IDLE;
+    private Server server;
     //Score Components
     private int score;
     private BitmapFont font = new BitmapFont();
     private Label scoreLabel;
     private Table scoreTable;
     private Color whiteColor = new Color(Color.WHITE);
-    private float vx=0,vy=0;
-
-
-    public GameView(GroundControl game, GameModel gameModel, GameController gameController){
+    private float vx = 0, vy = 0;
+    public GameView(GroundControl game, GameModel gameModel, GameController gameController) {
 
         this.game = game;
         loadAssets();
@@ -85,7 +77,7 @@ public class GameView extends ScreenAdapter{
 
         server = new Server();
         server.start(8500);
-        this.started=true;
+        this.started = true;
 
 
     }
@@ -136,13 +128,12 @@ public class GameView extends ScreenAdapter{
     public void render(float delta) {
 
 
-        if(server.isAlive()) {
+        if (server.isAlive()) {
             server.tick();
             receiveInputs(delta);
         }
 
         currentSection.update(delta);
-
 
         camera.update();
         game.getBatch().setProjectionMatrix(camera.combined);
@@ -152,14 +143,12 @@ public class GameView extends ScreenAdapter{
 
         game.getBatch().begin();
 
-
         currentSection.display(delta);
 
-
         game.getBatch().end();
+
         stage.draw();
         this.scoreLabel.setText(Integer.toString(this.gameModel.getScore()));
-
 
 
     }
@@ -184,7 +173,7 @@ public class GameView extends ScreenAdapter{
 
         boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 
-        if(accAvailable&& !server.isAlive()){
+        if (accAvailable && !server.isAlive()) {
 
             vx = Gdx.input.getAccelerometerX();
             vy = Gdx.input.getAccelerometerY();
@@ -200,19 +189,19 @@ public class GameView extends ScreenAdapter{
         System.out.println("Trying to receive");
         messageReceived = server.receiveMessage();
 
-        if(messageReceived != null){
+        if (messageReceived != null) {
             System.out.println("Received message");
-            if(messageReceived.substring(0,2).equals("vx")) {
-                messageReceived=messageReceived.substring(2);
-                vx=Float.valueOf(messageReceived);
-            }else{
-                messageReceived=messageReceived.substring(2);
-                vy=Float.valueOf(messageReceived);
+            if (messageReceived.substring(0, 2).equals("vx")) {
+                messageReceived = messageReceived.substring(2);
+                vx = Float.valueOf(messageReceived);
+            } else {
+                messageReceived = messageReceived.substring(2);
+                vy = Float.valueOf(messageReceived);
             }
         }
     }
 
-    public void setCurrentInput(StateInput state){
+    public void setCurrentInput(StateInput state) {
 
         this.currentInput = state;
 
@@ -224,6 +213,8 @@ public class GameView extends ScreenAdapter{
         game.getBatch().draw(background, 0, 0, 0, 0, (int) (ARENA_WIDTH / PIXEL_TO_METER), (int) (ARENA_HEIGHT / PIXEL_TO_METER));
 
     }
+
+    public enum StateInput {RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, IDLE}
 
 
 }

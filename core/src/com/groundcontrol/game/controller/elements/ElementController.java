@@ -23,6 +23,16 @@ public abstract class ElementController {
 
     private static float WORLD_OFFSET = 30;
 
+    private boolean toBeRemoved;
+
+    public boolean isToBeRemoved(){
+        return toBeRemoved == true;
+    }
+
+    public void setToBeRemoved(boolean rem){
+        this.toBeRemoved = rem;
+    }
+
     final Body body;
 
     protected float artificialGravity = 0f;
@@ -46,6 +56,7 @@ public abstract class ElementController {
         body = world.createBody(bodydef);
         body.setUserData(model);
 
+        this.toBeRemoved = false;
     }
 
 

@@ -10,21 +10,31 @@ import static java.lang.Math.abs;
 
 public class FloatState implements PlayerState {
 
-    private float floatTime;
+    private static float floatTime = 30f;
+
+    private final static float INTIAL_TIME = 30f;
+
+    public float getTime(){
+        return this.floatTime;
+    }
 
     public FloatState(){
-        this.floatTime = 0;
+        this.floatTime = INTIAL_TIME;
+    }
+
+    public FloatState(float time){
+        floatTime = time;
     }
 
     public void updateTime(PlayerController context, float delta){
-        this.floatTime += delta;
+
     }
 
     @Override
     public void handleInput(PlayerController context, InputDecoder.Input input) {
 
         if (input == InputDecoder.Input.PLANET_LAND) {
-            context.setState(new IdleState());
+            context.setState(new IdleState(this.floatTime));
         }
 
     }
@@ -32,6 +42,11 @@ public class FloatState implements PlayerState {
     public void setRotation(PlayerController context, ArrayList<Body> objects) {
 
         for (Body e : objects) {
+
+            if(e == null) {
+                System.out.println("null gravity");
+                continue;
+            }
 
             float distance = abs(e.getPosition().x - context.getX());
             distance += abs(e.getPosition().y - context.getY());
