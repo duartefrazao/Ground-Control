@@ -44,6 +44,15 @@ public class ExplosionView extends ElementView{
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 
+    public void setStopped() {
+        this.stop = true;
+    }
+
+    public void removeStopped() {
+        this.stop = false;
+    }
+
+
     @Override
     public void draw(SpriteBatch batch) {
 

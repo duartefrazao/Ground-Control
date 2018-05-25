@@ -1,13 +1,14 @@
 package com.groundcontrol.game.controller.state;
 
 import com.groundcontrol.game.view.GameView;
+import com.groundcontrol.game.view.ScreenModules.GameSection;
 
 public class InputDecoder {
 
     public enum Input {LEFT, RIGHT, JUMP, PLANET_LAND, IDLE}
 
 
-    public Input convertViewInput(GameView.StateInput input) {
+    public Input convertViewInput(GameSection.StateInput input) {
 
         switch (input) {
             case LEFT_BUTTON:

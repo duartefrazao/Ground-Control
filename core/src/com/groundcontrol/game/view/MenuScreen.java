@@ -10,8 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
-import com.groundcontrol.game.view.ScreenModules.GameSection;
-import com.groundcontrol.game.view.ScreenModules.NetworkSection;
+import com.groundcontrol.game.view.ScreenModules.ConnectClientSection;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 
 import java.io.IOException;
@@ -32,14 +31,16 @@ public class MenuScreen extends ScreenAdapter {
     private Button exitButton;
     private Button gameButton;
     private Button mpButton;
+    private GameView gv;
 
-    NetworkSection networkSection;
+    ConnectClientSection networkSection;
     private boolean started = false;
     private boolean clickedGame =false;
     private BitmapFont font = new BitmapFont();
 
-    public MenuScreen(GroundControl game) {
-        this.game = game;
+    public MenuScreen(GameView gameView) {
+        this.gv=gameView;
+        this.game = gv.game;
         loadAssets();
 
         stage = createMenuStage();
@@ -64,8 +65,8 @@ public class MenuScreen extends ScreenAdapter {
         gameButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                clickedGame=true;
-                startGame();
+                //gv.
+
             }
         });
 
@@ -73,7 +74,7 @@ public class MenuScreen extends ScreenAdapter {
         mpButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                startMP();
+                game.setScreen(new NetworkScreen(game));
             }
         });
 
@@ -92,14 +93,6 @@ public class MenuScreen extends ScreenAdapter {
         System.exit(0);
     }
 
-    private void startGame(){
-        game.startNewGame();
-    }
-
-    private void startMP(){
-        game.startMP();
-    }
-
     private void loadAssets(){
         this.game.getAssetManager().load("background.png", Texture.class);
         this.game.getAssetManager().load("exit.png", Texture.class);
@@ -108,6 +101,20 @@ public class MenuScreen extends ScreenAdapter {
         this.game.getAssetManager().load("player.png", Texture.class);
         this.game.getAssetManager().finishLoading();
     }
+
+
+    public String decToHex(String dec){
+        String result="",tmp="";
+        String spl[] = dec.split("\\.");
+        for(String s:spl) {
+
+            tmp=""+Integer.toHexString(Integer.parseInt(String.valueOf(s)));
+            if(tmp.length()==1)tmp="0"+tmp;
+            result+=tmp;
+        }
+        return result;
+    }
+
 
     @Override
     public void render(float delta){
