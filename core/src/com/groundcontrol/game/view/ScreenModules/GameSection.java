@@ -82,22 +82,18 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         gv.gameController.handleInput(currentInput);
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            gv.gameController.handleInput(StateInput.LEFT_BUTTON);
+            currentInput =StateInput.LEFT_BUTTON;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            gv.gameController.handleInput(StateInput.RIGHT_BUTTON);
+            currentInput = StateInput.RIGHT_BUTTON;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            gv.gameController.handleInput(StateInput.SPACE_BUTTON);
+            currentInput = StateInput.SPACE_BUTTON;
         }
 
-        boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
+        gv.gameController.update(delta);
 
-        if(accAvailable) {
-
-            vx = Gdx.input.getAccelerometerX();
-            vy = Gdx.input.getAccelerometerY();
-        }
+        gv.gameController.handleInput(currentInput);
 
         gv.gameController.setPlanetForce(delta, -vx, -vy);
 
