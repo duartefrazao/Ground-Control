@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.GameView;
-import com.groundcontrol.game.view.NetworkScreen;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;

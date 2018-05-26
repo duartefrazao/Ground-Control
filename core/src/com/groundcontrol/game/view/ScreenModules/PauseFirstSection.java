@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.model.elements.CometModel;
@@ -20,32 +19,42 @@ import com.groundcontrol.game.view.elements.ElementView;
 import com.groundcontrol.game.view.elements.ExplosionView;
 import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
+import com.groundcontrol.game.view.network.Server;
 
 import java.util.List;
 
-import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
-import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
+public class PauseFirstSection extends PauseSection {
 
-public class PauseSection implements Section{
-
-    protected final GameView gv;
-    protected final GroundControl game;
-    protected final Stage stage;
+    Server server;
 
 
-    public PauseSection (GameView gameView) {
-        this.gv=gameView;
-        this.game = gameView.game;
-
-        loadAssets();
-
-        stage = createStage();
+    public PauseFirstSection(GameView gameView) {
+        super(gameView);
     }
 
     @Override
     public void update(float delta) {
 
+        if(server.isAlive())
+            server.tick();
+        else
+            exitToMainMenu();
+
+        String messageReceived = null;
+
+
+        messageReceived = server.receiveMessage();
+
+        if(messageReceived != null){
+            if(messageReceived.equals("RESUME"))
+                gv.multiplayerServer.transition();
+            else if(messageReceived.equals("EXIT"))
+            {
+                exitToMainMenu();
+            }
+        }
     }
+
 
     @Override
     public void display(float delta) {
@@ -72,10 +81,8 @@ public class PauseSection implements Section{
         }
     }
 
-
     @Override
     public void transition() {
-
 
         PlayerModel player = gv.gameModel.getPlayer();
         PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
@@ -97,9 +104,8 @@ public class PauseSection implements Section{
 
         Gdx.input.setInputProcessor(stage);
 
-        gv.currentSection= gv.pauseSection;
+        gv.currentSection= gv.pauseFirstSection;
     }
-
 
     @Override
     public Stage createStage() {
@@ -111,7 +117,8 @@ public class PauseSection implements Section{
         resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                gv.gameSection.transition();
+                server.sendMessage("RESUME");
+                gv.multiplayerServer.transition();
             }
         });
 
@@ -119,9 +126,7 @@ public class PauseSection implements Section{
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                gv.gameModel=new GameModel();
-                gv.gameController = new GameController(gv.gameModel);
-                gv.menuSection.transition();
+                server.sendMessage("EXIT");
             }
         });
 
@@ -133,23 +138,15 @@ public class PauseSection implements Section{
         return stage;
     }
 
-    @Override
-    public void loadAssets() {
-        gv.game.getAssetManager().load("resume.png", Texture.class);
-        gv.game.getAssetManager().finishLoading();
+    public void exitToMainMenu(){
+        server.stop();
+        gv.gameModel=new GameModel();
+        gv.gameController = new GameController(gv.gameModel);
+        gv.menuSection.transition();
     }
 
-    @Override
-    public void drawStages(float delta) {
-        stage.act(delta);
-        stage.draw();
-    }
 
-    @Override
-    public void drawBackground() {
-        Texture background = game.getAssetManager().get("background.png", Texture.class);
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-
+    public void setServer(Server server){
+        this.server=server;
     }
 }

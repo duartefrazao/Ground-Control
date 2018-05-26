@@ -17,16 +17,14 @@ public class Client {
     private LinkedBlockingQueue<String> sendQueue= new LinkedBlockingQueue<String>();
 
 
-    public int startConnection(String ip, int port)  {
+    public boolean startConnection(String ip, int port)  {
         System.out.println("Setting up Client");
         try {
             this.clientSocket = new Socket(ip, port);
         } catch (IOException e) {
             System.out.println("Error connecting client to server");
-            e.printStackTrace();
-
-            System.out.println(e);
-            return 1;
+            //System.out.println(e);
+            return false;
         }
 
         System.out.println("Connection established");
@@ -39,13 +37,12 @@ public class Client {
 
         this.alive = true;
 
-        return 0;
+        return true;
 
 
     }
 
     public void sendMessage(String msg) {
-        System.out.println("Sending message");
         sendQueue.add(msg);
     }
 
@@ -64,9 +61,8 @@ public class Client {
     }
 
     public void stop() {
+        while(!sendQueue.isEmpty()){}
         this.alive=false;
-        receiver.finished=true;
-        sender.finished=true;
         receiver.stopCom();
         sender.stopCom();
         try {

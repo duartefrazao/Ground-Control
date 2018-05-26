@@ -25,6 +25,12 @@ public class Sender extends Thread {
         System.out.println("Starting sending messages");
         while(!finished){
             try {
+
+                if(messagesToSend==null){
+                    this.finished=true;
+                    return;
+                }
+
                 String msg = messagesToSend.take();
 
                 //System.out.println("Sending " + msg);
@@ -36,9 +42,10 @@ public class Sender extends Thread {
 
             }catch (InterruptedException e) {
                 e.printStackTrace();
+                this.finished=true;
             } catch (IOException e) {
-                stopCom();
                 e.printStackTrace();
+                this.finished=true;
             }
 
 
@@ -49,6 +56,5 @@ public class Sender extends Thread {
     public void stopCom(){
         System.out.println("Stopping communication...");
         this.interrupt();
-        this.finished=true;
     }
 }

@@ -1,7 +1,7 @@
 package com.groundcontrol.game.view.ScreenModules;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,16 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
-import com.groundcontrol.game.model.elements.PlanetModel;
-import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
-import com.groundcontrol.game.view.NetworkScreen;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-import com.groundcontrol.game.view.elements.ElementView;
-import com.groundcontrol.game.view.elements.PlayerView;
-import com.groundcontrol.game.view.elements.ViewFactory;
-
-import java.util.List;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
@@ -32,6 +24,7 @@ public class ConnectClientSection implements Section{
     BitmapFont font=new BitmapFont();
 
     String ip = "";
+    String message;
 
     public ConnectClientSection(GameView gameView) {
 
@@ -39,6 +32,7 @@ public class ConnectClientSection implements Section{
         this.game = gv.game;
         loadAssets();
 
+        font.getData().scale(5);
         stage = createStage();
 
     }
@@ -61,11 +55,52 @@ public class ConnectClientSection implements Section{
     @Override
     public void update(float delta) {
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0)) {
+            ip = ip + "0";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
+            ip = ip + "1";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+            ip = ip + "2";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
+            ip = ip + "3";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
+            ip = ip + "4";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_5)) {
+            ip = ip + "5";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6)) {
+            ip = ip + "6";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7)) {
+            ip = ip + "7";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8)) {
+            ip = ip + "8";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9)) {
+            ip = ip + "9";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.PERIOD)) {
+            ip = ip + ".";
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+            ip = ip.substring(0,ip.length()-1);
+        }
+
+
+
     }
 
     @Override
     public void display(float delta) {
        // drawBackground();
+
+        font.draw(gv.game.getBatch(),"--->" + ip,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/3);
 
     }
 
@@ -199,7 +234,9 @@ public class ConnectClientSection implements Section{
         connectButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                gv.gameSection.transition();
+                if(gv.multiplayerClient.connectClient(ip))
+                    gv.multiplayerClient.transition();
+                else message= "Error connecting to server";
             }
         });
 

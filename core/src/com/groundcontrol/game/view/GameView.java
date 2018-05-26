@@ -14,6 +14,8 @@ import com.groundcontrol.game.view.ScreenModules.MultiplayerClientSection;
 import com.groundcontrol.game.view.ScreenModules.MultiplayerSectionSelector;
 import com.groundcontrol.game.view.ScreenModules.ConnectClientSection;
 import com.groundcontrol.game.view.ScreenModules.MultiplayerServerSection;
+import com.groundcontrol.game.view.ScreenModules.PauseFirstSection;
+import com.groundcontrol.game.view.ScreenModules.PauseSecondSection;
 import com.groundcontrol.game.view.ScreenModules.PauseSection;
 import com.groundcontrol.game.view.ScreenModules.Section;
 
@@ -38,6 +40,8 @@ public class GameView extends ScreenAdapter {
 
     public GameController gameController;
     public GameModel gameModel;
+    public PauseSecondSection pauseSecondSection;
+    public PauseFirstSection pauseFirstSection;
 
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
         this.game= game;
@@ -50,6 +54,9 @@ public class GameView extends ScreenAdapter {
         this.multiplayerSectionSelector= new MultiplayerSectionSelector(this);
         this.multiplayerServer= new MultiplayerServerSection(this);
         this.multiplayerClient= new MultiplayerClientSection(this);
+        this.pauseSecondSection = new PauseSecondSection(this);
+        this.pauseFirstSection = new PauseFirstSection(this);
+
 
         menuSection.transition();
 
@@ -81,8 +88,6 @@ public class GameView extends ScreenAdapter {
         currentSection.display(delta);
         game.getBatch().end();
         currentSection.drawStages(delta);
-
-
     }
 
 }

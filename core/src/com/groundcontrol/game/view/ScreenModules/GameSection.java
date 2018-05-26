@@ -180,8 +180,7 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         pauseButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                gv.currentSection=gv.pauseSection;
-                gv.currentSection.transition();
+                gv.pauseSection.transition();
                 return true;
             }
 

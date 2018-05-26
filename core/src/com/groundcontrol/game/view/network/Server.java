@@ -9,7 +9,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server extends Observable {
 
-    private ServerSocket serverSocket;
+    public ServerSocket serverSocket;
     private Socket clientSocket;
     private Receiver receiver;
     private Sender sender;
@@ -22,11 +22,11 @@ public class Server extends Observable {
         System.out.println("Setting up server");
         try {
             this.serverSocket = new ServerSocket(port);
-            serverSocket.setSoTimeout(1000);
+            System.out.println("Here111");
             clientSocket = serverSocket.accept();
         } catch (IOException e) {
-            e.printStackTrace();
-            return ;
+            System.out.println("Socket closed while waiting for client");
+            return;
         }
 
         System.out.println("Connection established");
@@ -49,7 +49,7 @@ public class Server extends Observable {
     public String receiveMessage()  {
 
         if(!receiveQueue.isEmpty())
-            receiveQueue.poll();
+            return receiveQueue.poll();
         return null;
     }
 
@@ -63,9 +63,9 @@ public class Server extends Observable {
     }
 
     public void stop()  {
+        System.out.println("Stopping server");
+        while(!sendQueue.isEmpty()){}
         alive=false;
-        receiver.finished=true;
-        sender.finished=true;
         receiver.stopCom();
         sender.stopCom();
         try {

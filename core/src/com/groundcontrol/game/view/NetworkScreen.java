@@ -76,7 +76,7 @@ public class NetworkScreen extends ScreenAdapter {
         exitButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                game.startMainMenu();
+                //game.startMainMenu();
             }
         });
 
@@ -84,7 +84,7 @@ public class NetworkScreen extends ScreenAdapter {
         mpButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                game.startNewMut(ip);
+                //game.startNewMut(ip);
             }
         });
 

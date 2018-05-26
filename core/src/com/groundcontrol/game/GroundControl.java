@@ -6,12 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.GameView;
-import com.groundcontrol.game.view.MenuScreen;
-import com.groundcontrol.game.view.NetworkScreen;
-import com.groundcontrol.game.view.ScreenModules.Section;
 import com.groundcontrol.game.view.SecondPlayerScreen;
 import com.groundcontrol.game.view.network.Client;
-import com.groundcontrol.game.view.network.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,10 +15,6 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Formatter;
-import java.util.concurrent.TimeUnit;
 
 public class GroundControl extends Game {
 	private SpriteBatch batch;
@@ -185,7 +177,7 @@ public class GroundControl extends Game {
 
 	public void startMP() {
 		//setScreen(new SecondPlayerScreen(this));
-		setScreen(new NetworkScreen(this));
+		//setScreen(new NetworkScreen(this));
 	}
 
     public void startMainMenu() {

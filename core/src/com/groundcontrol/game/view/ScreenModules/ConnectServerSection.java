@@ -11,6 +11,7 @@ import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.network.Server;
+import com.groundcontrol.game.view.network.ServerConnector;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -28,8 +29,10 @@ public class ConnectServerSection implements Section{
 
     private Server server;
     private boolean serverUp;
+    Button connect;
 
     String message;
+    ServerConnector connector;
 
     public ConnectServerSection(GameView gameView) {
 
@@ -37,7 +40,10 @@ public class ConnectServerSection implements Section{
         this.game = gv.game;
         loadAssets();
 
+        server= new Server();
+
         stage = createStage();
+        font.getData().scale(10);
 
     }
 
@@ -53,11 +59,11 @@ public class ConnectServerSection implements Section{
 
     @Override
     public void update(float delta) {
-        if(!serverUp){
-            message= "To connect press start";
-            return;
-        }
 
+        if(server.isAlive()){
+            gv.multiplayerServer.setServer(server);
+            gv.multiplayerServer.transition();
+        }
 
         Socket s = null;
         String serverIP="";
@@ -72,14 +78,13 @@ public class ConnectServerSection implements Section{
         }
 
         if(!serverIP.equals(""))
-            message="Enter the following ip on the other device" + serverIP;
+            message="Press start and enter the following ip on the other device" + serverIP;
     }
 
     @Override
     public void display(float delta) {
         // drawBackground();
-
-        font.draw(game.getBatch(), message, Gdx.graphics.getWidth()/6, Gdx.graphics.getHeight()/10);
+        font.draw(game.getBatch(), message, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/3);
 
     }
 
@@ -93,23 +98,20 @@ public class ConnectServerSection implements Section{
     }
 
 
-
     @Override
     public Stage createStage() {
-        ButtonFactory buttonFactory = new ButtonFactory();
 
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
+        ButtonFactory buttonFactory = new ButtonFactory();
 
-        Button connect= buttonFactory.makeButton(gv.game.getAssetManager().get("connect.png",Texture.class),gv.game.getAssetManager().get("connect.png",Texture.class),  3*w/5,3*h/5, (int)(w/3),(int)(h)/10);
+        connect= buttonFactory.makeButton(gv.game.getAssetManager().get("connect.png",Texture.class),gv.game.getAssetManager().get("connect.png",Texture.class),  3*w/5,3*h/5, (int)(w/3),(int)(h)/10);
         connect.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                serverUp=true;
-                server = new Server();
-                server.start(8500);
-                serverUp=false;
-
+                //substituteButton();
+                connector= new ServerConnector(server);
+                connector.start();
             }
         });
 
@@ -117,7 +119,18 @@ public class ConnectServerSection implements Section{
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                if(serverUp) server.stop();
+                if(server.serverSocket!=null){
+                    try {
+                        server.serverSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    server.serverSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 gv.menuSection.transition();
             }
         });

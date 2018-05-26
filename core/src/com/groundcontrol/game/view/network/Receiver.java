@@ -29,13 +29,16 @@ public class Receiver  extends Thread{
 
                 BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String msg = br.readLine();
-                System.out.println("Read:"+ msg);
+                if(messagesToReceive==null || msg==null){
+                    this.finished=true;
+                    return;
+                }
                 messagesToReceive.add(msg);
 
             } catch (IOException e) {
                 System.out.println("Caught exception on run() in Receiver");
-               //stopCom();
                 e.printStackTrace();
+                this.finished=true;
             }
         }
         System.out.println("Ending receive communication");
@@ -44,6 +47,5 @@ public class Receiver  extends Thread{
     public void stopCom(){
         System.out.println("Stopping communication...");
         this.interrupt();
-        this.finished=true;
     }
 }
