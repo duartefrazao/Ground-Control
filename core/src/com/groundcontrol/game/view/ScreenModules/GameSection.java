@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.model.elements.CometModel;
 import com.groundcontrol.game.model.elements.ExplosionModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
@@ -100,6 +101,9 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             currentInput = StateInput.SPACE_BUTTON;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            gv.pauseSection.transition();
         }
         //======================
 
