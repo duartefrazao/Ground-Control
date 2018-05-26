@@ -4,7 +4,7 @@ public class ExplosionModel extends ElementModel{
 
     private float timeLeft;
 
-    private final static float EXPLOSION_TIME = 1.3f;
+    private final static float EXPLOSION_TIME = 3f;
 
     public ExplosionModel(float x, float y, float rotation){
         super(x,y, rotation);
@@ -15,10 +15,7 @@ public class ExplosionModel extends ElementModel{
 
         timeLeft -= delta;
 
-        if(timeLeft <= 0)
-            return true;
-
-        return  false;
+        return timeLeft <= 0;
     }
 
     public void initializeExplosionTime(){

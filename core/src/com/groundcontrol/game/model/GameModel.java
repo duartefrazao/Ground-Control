@@ -23,9 +23,14 @@ public class GameModel {
      */
     private PlayerModel player;
 
-
+    /**
+     * Number of Planets
+     */
     private static final int PLANET_COUNT = 7;
 
+    /**
+     * Score
+     */
     private int score = 0;
 
     /**
@@ -74,17 +79,26 @@ public class GameModel {
 
     public void update(float delta) {
 
-        Iterator<ExplosionModel> iter = this.explosions.iterator();
+        Iterator<ExplosionModel> iterator = this.explosions.iterator();
 
-        while(iter.hasNext()){
+        while(iterator.hasNext()){
 
-            ExplosionModel em = iter.next();
+            ExplosionModel em = iterator.next();
 
             if(em.isExplosionOver(delta)){
 
-                iter.remove();
+                iterator.remove();
 
             }
+
+        }
+
+
+        for(CometModel comet : this.comets){
+
+            if( comet.isOutOfBonds(delta))
+                comet.setToBeRemoved(true);
+
 
         }
 
@@ -118,30 +132,22 @@ public class GameModel {
         comet.setX(x);
         comet.setY(y);
         comet.setRotation(0);
+        comet.resetTime();
 
         comets.add(comet);
 
         return comet;
     }
 
-    public PlanetModel createPlanet(float x, float y){
-
-        PlanetModel planet = new PlanetModel(x, y, 0, random.nextBoolean() ? PlanetModel.PlanetSize.BIG : PlanetModel.PlanetSize.MEDIUM);
-
-        planet.setToBeRemoved(false);
-
-        planets.add(planet);
-
-        return  planet;
+    public void addPlanet(PlanetModel model){
+        planets.add(model);
     }
 
     public void createExplosion(float x, float y){
 
-        ExplosionModel explosion = new ExplosionModel(0, 0, 0);
+        ExplosionModel explosion = new ExplosionModel(x, y, 0);
 
         explosion.setToBeRemoved(false);
-        explosion.setX(x);
-        explosion.setY(y);
         explosion.setRotation(0);
         explosion.initializeExplosionTime();
 
@@ -150,8 +156,9 @@ public class GameModel {
 
     public void removeModel(ElementModel model){
 
-        if (model instanceof  PlanetModel)
+        if (model instanceof  PlanetModel) {
             this.planets.remove(model);
+        }
         else if (model instanceof CometModel){
             this.comets.remove(model);
             this.cometPoll.free((CometModel) model);

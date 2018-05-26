@@ -5,10 +5,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.model.elements.ElementModel;
 
-
 public class CometController extends  ElementController{
 
-    private Vector2 initialVelocity = new Vector2((float) ( Math.random() + 0.5) * 20 ,(float) (Math.random() + 0.5 ) * 15 );
+    private Vector2 initialVelocity = new Vector2((float) ( Math.random() + 0.7) * 25 ,(float) (Math.random() + 0.7) * 25 );
 
     private float maxAngularVelocity = 0.5f;
 
@@ -24,9 +23,10 @@ public class CometController extends  ElementController{
 
         super(world, model, BodyDef.BodyType.DynamicBody);
 
+
         float density = 11000f,
                 friction = 1f,
-                restitution = 0.0f;
+                restitution = 0.3f;
         this.width = 233;
         this.height = 400;
 
@@ -52,7 +52,7 @@ public class CometController extends  ElementController{
 
         this.body.setLinearVelocity(initialVelocity);
 
-        this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y,(float) Math.PI - (float) (Math.PI/2.0 - this.initialVelocity.angleRad()));
+        this.body.setTransform(this.body.getPosition().x, this.body.getPosition().y,(float) (Math.PI/2.0 + this.initialVelocity.angleRad()));
 
     }
 
