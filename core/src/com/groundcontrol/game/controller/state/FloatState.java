@@ -2,9 +2,8 @@ package com.groundcontrol.game.controller.state;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.elements.PlayerController;
-
-import java.util.ArrayList;
 
 import static java.lang.Math.abs;
 
@@ -39,7 +38,7 @@ public class FloatState implements PlayerState {
 
     }
 
-    public void setRotation(PlayerController context, ArrayList<Body> objects) {
+    public void setRotation(PlayerController context, Array<Body> objects) {
 
         for (Body e : objects) {
 
@@ -62,7 +61,7 @@ public class FloatState implements PlayerState {
     }
 
 
-    public void applyPullForce(PlayerController context, ArrayList<Body> objects) {
+    public void applyPullForce(PlayerController context, Array<Body> objects) {
 
         for (Body e : objects) {
             Vector2 force = context.calculatePullForce(e);

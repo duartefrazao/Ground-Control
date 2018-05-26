@@ -33,7 +33,7 @@ public abstract class ElementController {
         this.toBeRemoved = rem;
     }
 
-    final Body body;
+    protected Body body;
 
     protected float artificialGravity = 0f;
 
@@ -51,9 +51,11 @@ public abstract class ElementController {
         bodydef.type = bodyType;
 
         bodydef.position.set(model.getX(), model.getY());
+
         bodydef.angle = model.getRotation();
 
         body = world.createBody(bodydef);
+
         body.setUserData(model);
 
         this.toBeRemoved = false;

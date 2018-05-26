@@ -71,9 +71,15 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     @Override
     public void update(float delta) {
 
-        gv.gameController.handleInput(currentInput);
+        gv.gameController.removeFlagged();
+
+        gv.gameController.createNewPlanets();
+
+        gv.gameController.checkForNewComet(delta);
 
         gv.gameController.update(delta);
+
+        gv.gameController.handleInput(currentInput);
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             gv.gameController.handleInput(StateInput.LEFT_BUTTON);
@@ -94,7 +100,6 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         }
 
         gv.gameController.setPlanetForce(delta, -vx, -vy);
-
 
     }
 

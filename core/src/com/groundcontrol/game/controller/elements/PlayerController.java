@@ -4,17 +4,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.state.FloatState;
 import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.controller.state.PlayerState;
 import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 
-import java.util.ArrayList;
-
 public class PlayerController extends ElementController {
 
-    private final static float runningRelativeVelocity = 0.5f;
+    private final static float runningRelativeVelocity = 1.3f;
 
     public final static int walkToPullRation = 40;
 
@@ -149,6 +148,14 @@ public class PlayerController extends ElementController {
 
     public void jump() {
 
+        if(this.getPlanet() == null){
+
+            System.out.println("Null jump");
+            return;
+
+
+        }
+
         float rot = this.getAngleBetween(this.getPlanet());
 
         this.jumpingTime = 0.5f;
@@ -196,11 +203,11 @@ public class PlayerController extends ElementController {
         return this.currentPlanet;
     }
 
-    public void setRotation(ArrayList<Body> objects) {
+    public void setRotation(Array<Body> objects) {
         this.state.setRotation(this, objects);
     }
 
-    public void applyPullForce(ArrayList<Body> objects) {
+    public void applyPullForce(Array<Body> objects) {
         if(this.jumpingTime == 0)
           this.state.applyPullForce(this, objects);
     }
@@ -222,7 +229,7 @@ public class PlayerController extends ElementController {
         }
     }
 
-    public void update(ArrayList<Body> planets, float delta) {
+    public void update(Array<Body> planets, float delta) {
 
         this.state.updateTime(this, delta);
 
