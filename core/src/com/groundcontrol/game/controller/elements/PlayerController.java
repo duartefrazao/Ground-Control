@@ -13,7 +13,7 @@ import com.groundcontrol.game.model.elements.PlayerModel;
 
 public class PlayerController extends ElementController {
 
-    private final static float runningRelativeVelocity = 2f;
+    private final static float runningRelativeVelocity = 3.5f;
 
     public final static int walkToPullRation = 40;
 

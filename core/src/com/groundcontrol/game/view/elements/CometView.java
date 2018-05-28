@@ -10,9 +10,9 @@ import com.groundcontrol.game.GroundControl;
 
 public class CometView extends ElementView {
 
-    private static final int numberOfStates =11;
+    private static final int numberOfStates =6;
 
-    private static final float FRAME_TIME = 0.1f;
+    private static final float FRAME_TIME = 0.15f;
 
     private boolean stop = false;
 
@@ -24,9 +24,9 @@ public class CometView extends ElementView {
         super(game);
     }
 
-    private Animation<TextureRegion> createRunningAnimation(GroundControl game) {
+    private Animation<TextureRegion> createBurningAnimation(GroundControl game) {
 
-        Texture burningAnimation = game.getAssetManager().get("cometSheet.png");
+        Texture burningAnimation = game.getAssetManager().get("Comet_Array.png");
         TextureRegion[][] burnRegion = TextureRegion.split(burningAnimation, burningAnimation.getWidth() / numberOfStates, burningAnimation.getHeight());
 
         TextureRegion[] frames = new TextureRegion[numberOfStates];
@@ -48,7 +48,7 @@ public class CometView extends ElementView {
 
     public Sprite createSprite(GroundControl game) {
         Texture texture = game.getAssetManager().get("comet.png");
-        this.burningAnimation = createRunningAnimation(game);
+        this.burningAnimation = createBurningAnimation(game);
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 

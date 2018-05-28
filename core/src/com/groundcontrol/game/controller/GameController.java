@@ -10,7 +10,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.elements.BigPlanetController;
 import com.groundcontrol.game.controller.elements.CometController;
-import com.groundcontrol.game.controller.elements.PlanetController;
+import com.groundcontrol.game.controller.elements.MediumBigPlanetController;
+import com.groundcontrol.game.controller.elements.MediumPlanetController;
+import com.groundcontrol.game.controller.elements.SmallPlanetController;
 import com.groundcontrol.game.controller.elements.PlayerController;
 import com.groundcontrol.game.controller.gameflow.ForceController;
 import com.groundcontrol.game.controller.gameflow.ScoreController;
@@ -37,6 +39,8 @@ public class GameController implements ContactListener {
 
     private static final float TIME_BETWEEN_COMETS = 3f;
 
+    private static final float PLANET_GENERATION_OFFSET = 5;
+
     protected final World world;
 
     protected final PlayerController playerController;
@@ -55,6 +59,22 @@ public class GameController implements ContactListener {
 
     private List<PlanetModel> planetsToAdd = new ArrayList<PlanetModel>();
 
+
+    private void createNewPlanet(PlanetModel p){
+
+        if (p.getSize() == PlanetModel.PlanetSize.MEDIUM)
+            new MediumPlanetController(world, p);
+        else if(p.getSize() == PlanetModel.PlanetSize.MEDIUM_BIG)
+            new MediumBigPlanetController(world, p);
+        else if(p.getSize() == PlanetModel.PlanetSize.BIG)
+            new BigPlanetController(world, p);
+        else
+            new SmallPlanetController(world, p);
+
+
+
+    }
+
     public GameController(GameModel gameModel) {
         world = new World(new Vector2(0, 0), true);
 
@@ -66,10 +86,8 @@ public class GameController implements ContactListener {
 
         for (PlanetModel p : planets) {
 
-            if (p.getSize() == PlanetModel.PlanetSize.MEDIUM)
-                new PlanetController(world, p);
-            else
-                new BigPlanetController(world, p);
+            this.createNewPlanet(p);
+
         }
 
         this.decoder = new InputDecoder();
@@ -95,13 +113,15 @@ public class GameController implements ContactListener {
 
             if (!(body.getUserData() instanceof PlayerModel || body.getUserData() instanceof CometModel)) {
 
-                float random = (float) (0.7 + Math.random() * (1.4 - 0.7));
+                float randomMultiplier = (float) (0.7 + Math.random() * (1.4 - 0.7));
 
                 Vector2 randomForce = new Vector2();
-                randomForce.x = forceController.getForce().x * random;
-                randomForce.y = forceController.getForce().y * random;
+                randomForce.x = forceController.getForce().x * randomMultiplier;
+                randomForce.y = forceController.getForce().y * randomMultiplier;
 
                 body.setLinearVelocity(randomForce);
+
+                if (random.nextBoolean() && random.nextBoolean()) body.setAngularVelocity(0.5f);
 
 
             }
@@ -174,17 +194,15 @@ public class GameController implements ContactListener {
         if (body.getUserData() instanceof CometModel || body.getUserData() instanceof PlayerModel)
             return;
 
-        if (body.getPosition().x < -10)
-            body.setTransform(ARENA_WIDTH + 10, body.getPosition().y, body.getAngle());
+        if (body.getPosition().x < -PLANET_GENERATION_OFFSET)
+            body.setTransform(ARENA_WIDTH + PLANET_GENERATION_OFFSET, body.getPosition().y, body.getAngle());
+        else if (body.getPosition().x > (ARENA_WIDTH + PLANET_GENERATION_OFFSET))
+            body.setTransform(-PLANET_GENERATION_OFFSET, body.getPosition().y, body.getAngle());
 
-        if (body.getPosition().y < -10)
-            body.setTransform(body.getPosition().x, ARENA_HEIGHT + 10, body.getAngle());
-
-        if (body.getPosition().x > ARENA_WIDTH + 10)
-            body.setTransform(-10, body.getPosition().y, body.getAngle());
-
-        if (body.getPosition().y > ARENA_HEIGHT + 10)
-            body.setTransform(body.getPosition().x, -10, body.getAngle());
+        if (body.getPosition().y < -PLANET_GENERATION_OFFSET)
+            body.setTransform(body.getPosition().x, ARENA_HEIGHT + PLANET_GENERATION_OFFSET, body.getAngle());
+        else if (body.getPosition().y > (ARENA_HEIGHT + PLANET_GENERATION_OFFSET))
+            body.setTransform(body.getPosition().x, -PLANET_GENERATION_OFFSET, body.getAngle());
 
     }
 
@@ -194,10 +212,7 @@ public class GameController implements ContactListener {
 
             this.gameModel.addPlanet(pm);
 
-            if (pm.getSize() == PlanetModel.PlanetSize.MEDIUM)
-                new PlanetController(world, pm);
-            else
-                new BigPlanetController(world, pm);
+            this.createNewPlanet(pm);
 
         }
 
@@ -281,9 +296,9 @@ public class GameController implements ContactListener {
 
         planetModel.setToBeRemoved(true);
 
-        Vector2 r = generateRandomPeripheralPoints(0);
+        Vector2 r = generateRandomPeripheralPoints(PLANET_GENERATION_OFFSET);
 
-        planetsToAdd.add(new PlanetModel(r.x, r.y, 0, random.nextBoolean() ? PlanetModel.PlanetSize.BIG : PlanetModel.PlanetSize.MEDIUM));
+        planetsToAdd.add(new PlanetModel(r.x, r.y, 0));
 
     }
 
@@ -340,10 +355,10 @@ public class GameController implements ContactListener {
         float r = random.nextFloat();
 
         if (random.nextBoolean()) {
-            x = random.nextBoolean() ? 0 : ARENA_WIDTH;
+            x = random.nextBoolean() ? -offset : ARENA_WIDTH + offset;
             y = r * ARENA_HEIGHT;
         } else {
-            y = random.nextBoolean() ? 0 : ARENA_HEIGHT;
+            y = random.nextBoolean() ? -offset : ARENA_HEIGHT + offset;
             x = r * ARENA_WIDTH;
         }
 

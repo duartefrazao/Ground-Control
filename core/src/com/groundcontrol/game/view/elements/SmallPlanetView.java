@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.groundcontrol.game.GroundControl;
 
-public class BigPlanetView extends ElementView{
+public class SmallPlanetView extends ElementView{
 
-    public BigPlanetView(GroundControl game){
+    public SmallPlanetView(GroundControl game){
         super(game);
     }
 
     public Sprite createSprite(GroundControl game){
-        Texture texture = game.getAssetManager().get("BigPlanet.png");
+        Texture texture = game.getAssetManager().get("SmallPlanet.png");
 
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
