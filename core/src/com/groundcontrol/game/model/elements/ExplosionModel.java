@@ -4,7 +4,7 @@ public class ExplosionModel extends ElementModel{
 
     private float timeLeft;
 
-    private final static float EXPLOSION_TIME = 3f;
+    private final static float EXPLOSION_TIME = 0.8f;
 
     public ExplosionModel(float x, float y, float rotation){
         super(x,y, rotation);

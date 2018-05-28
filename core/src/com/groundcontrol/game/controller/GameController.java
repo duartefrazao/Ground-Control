@@ -10,7 +10,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.elements.BigPlanetController;
 import com.groundcontrol.game.controller.elements.CometController;
-import com.groundcontrol.game.controller.elements.PlanetController;
+import com.groundcontrol.game.controller.elements.MediumBigPlanetController;
+import com.groundcontrol.game.controller.elements.MediumPlanetController;
+import com.groundcontrol.game.controller.elements.SmallPlanetController;
 import com.groundcontrol.game.controller.elements.PlayerController;
 import com.groundcontrol.game.controller.gameflow.ForceController;
 import com.groundcontrol.game.controller.gameflow.ScoreController;
@@ -69,9 +71,13 @@ public class GameController implements ContactListener {
         for (PlanetModel p : planets) {
 
             if (p.getSize() == PlanetModel.PlanetSize.MEDIUM)
-                new PlanetController(world, p);
-            else
+                new MediumPlanetController(world, p);
+            else if(p.getSize() == PlanetModel.PlanetSize.MEDIUM_BIG)
+                new MediumBigPlanetController(world, p);
+            else if(p.getSize() == PlanetModel.PlanetSize.BIG)
                 new BigPlanetController(world, p);
+            else
+                new SmallPlanetController(world, p);
         }
 
         this.decoder = new InputDecoder();
@@ -197,7 +203,7 @@ public class GameController implements ContactListener {
             this.gameModel.addPlanet(pm);
 
             if (pm.getSize() == PlanetModel.PlanetSize.MEDIUM)
-                new PlanetController(world, pm);
+                new SmallPlanetController(world, pm);
             else
                 new BigPlanetController(world, pm);
 

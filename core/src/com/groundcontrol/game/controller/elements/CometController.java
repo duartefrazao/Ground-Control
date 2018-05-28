@@ -27,8 +27,8 @@ public class CometController extends  ElementController{
         float density = 1f,
                 friction = 1f,
                 restitution = 0.3f;
-        this.width = 233;
-        this.height = 400;
+        this.width = 218;
+        this.height = 371;
 
         createFixture(body, new float[]{
                     94, 283,

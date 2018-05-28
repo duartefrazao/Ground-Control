@@ -10,7 +10,7 @@ import com.groundcontrol.game.GroundControl;
 
 public class ExplosionView extends ElementView{
 
-    private static final int numberOfStates =13;
+    private static final int numberOfStates =8;
 
     private static final float FRAME_TIME = 0.1f;
 
@@ -26,7 +26,7 @@ public class ExplosionView extends ElementView{
 
     private Animation<TextureRegion> createRunningAnimation(GroundControl game) {
 
-        Texture exploAnimation = game.getAssetManager().get("explosionSheet.png");
+        Texture exploAnimation = game.getAssetManager().get("Explosion_Array.png");
         TextureRegion[][] exploRegion = TextureRegion.split(exploAnimation, exploAnimation.getWidth() / numberOfStates, exploAnimation.getHeight());
 
         TextureRegion[] frames = new TextureRegion[numberOfStates];
@@ -39,7 +39,7 @@ public class ExplosionView extends ElementView{
 
 
     public Sprite createSprite(GroundControl game) {
-        Texture texture = game.getAssetManager().get("explosionSheet.png");
+        Texture texture = game.getAssetManager().get("explosion.png");
         this.explosionAnimation = createRunningAnimation(game);
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }

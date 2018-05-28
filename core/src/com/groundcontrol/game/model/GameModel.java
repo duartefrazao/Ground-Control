@@ -73,11 +73,16 @@ public class GameModel {
 
 
         for (int i = 0; i < PLANET_COUNT; i++) {
+
+            PlanetModel.PlanetSize size = PlanetModel.PlanetSize.values()[(int) (Math.random()* PlanetModel.PlanetSize.values().length)];
+
+            System.out.println(size);
+
             planets.add(new PlanetModel(
                     random.nextFloat() * ARENA_WIDTH,
                     random.nextFloat() * ARENA_HEIGHT,
                     (float) Math.toRadians(random.nextFloat() * 360),
-                    random.nextBoolean() ? PlanetModel.PlanetSize.BIG : PlanetModel.PlanetSize.MEDIUM));
+                    size));
         }
 
 

@@ -4,10 +4,11 @@ public class PlanetModel extends ElementModel {
 
 
     public enum PlanetSize {
+        SMALL,
         MEDIUM,
+        MEDIUM_BIG,
         BIG
     }
-
 
     private PlanetSize size;
 
@@ -25,8 +26,12 @@ public class PlanetModel extends ElementModel {
     public ModelType getType() {
         if (this.size == PlanetSize.BIG)
             return ModelType.BigPlanet;
-        else
+        else if(this.size == PlanetSize.MEDIUM_BIG)
+            return ModelType.MediumBigPlanet;
+        else if(this.size == PlanetSize.MEDIUM)
             return ModelType.MediumPlanet;
+        else
+            return ModelType.SmallPlanet;
     }
 
 
