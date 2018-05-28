@@ -133,7 +133,7 @@ public class MultiplayerClientSection implements Section{
 
         this.currTime+=delta;
 
-        if(delta>30){
+        if(currTime>30){
             this.currTime=0;
         }else return;
 

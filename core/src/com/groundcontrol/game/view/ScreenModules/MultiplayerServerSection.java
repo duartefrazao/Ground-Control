@@ -33,11 +33,7 @@ public class MultiplayerServerSection extends GameSection{
     public void update(float delta) {
         boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 
-        if(accAvailable) {
-
-            vx = Gdx.input.getAccelerometerX();
-            vy = Gdx.input.getAccelerometerY();
-        }else if(!Gdx.input.isTouched()){
+        if(!Gdx.input.isTouched()){
             currentInput=StateInput.IDLE;
         }
 
@@ -74,6 +70,7 @@ public class MultiplayerServerSection extends GameSection{
         messageReceived = server.receiveMessage();
 
         if(messageReceived != null){
+            System.out.println(messageReceived);
             if(messageReceived.equals("PAUSE"))
             {
                 gv.pauseFirstSection.setServer(server);
