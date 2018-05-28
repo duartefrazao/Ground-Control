@@ -59,6 +59,22 @@ public class GameController implements ContactListener {
 
     private List<PlanetModel> planetsToAdd = new ArrayList<PlanetModel>();
 
+
+    private void createNewPlanet(PlanetModel p){
+
+        if (p.getSize() == PlanetModel.PlanetSize.MEDIUM)
+            new MediumPlanetController(world, p);
+        else if(p.getSize() == PlanetModel.PlanetSize.MEDIUM_BIG)
+            new MediumBigPlanetController(world, p);
+        else if(p.getSize() == PlanetModel.PlanetSize.BIG)
+            new BigPlanetController(world, p);
+        else
+            new SmallPlanetController(world, p);
+
+
+
+    }
+
     public GameController(GameModel gameModel) {
         world = new World(new Vector2(0, 0), true);
 
@@ -70,14 +86,8 @@ public class GameController implements ContactListener {
 
         for (PlanetModel p : planets) {
 
-            if (p.getSize() == PlanetModel.PlanetSize.MEDIUM)
-                new MediumPlanetController(world, p);
-            else if(p.getSize() == PlanetModel.PlanetSize.MEDIUM_BIG)
-                new MediumBigPlanetController(world, p);
-            else if(p.getSize() == PlanetModel.PlanetSize.BIG)
-                new BigPlanetController(world, p);
-            else
-                new SmallPlanetController(world, p);
+            this.createNewPlanet(p);
+
         }
 
         this.decoder = new InputDecoder();
@@ -202,10 +212,7 @@ public class GameController implements ContactListener {
 
             this.gameModel.addPlanet(pm);
 
-            if (pm.getSize() == PlanetModel.PlanetSize.MEDIUM)
-                new SmallPlanetController(world, pm);
-            else
-                new BigPlanetController(world, pm);
+            this.createNewPlanet(pm);
 
         }
 
@@ -291,7 +298,7 @@ public class GameController implements ContactListener {
 
         Vector2 r = generateRandomPeripheralPoints(PLANET_GENERATION_OFFSET);
 
-        planetsToAdd.add(new PlanetModel(r.x, r.y, 0, random.nextBoolean() ? PlanetModel.PlanetSize.BIG : PlanetModel.PlanetSize.MEDIUM));
+        planetsToAdd.add(new PlanetModel(r.x, r.y, 0));
 
     }
 

@@ -18,6 +18,15 @@ public class PlanetModel extends ElementModel {
         this.size = size;
     }
 
+    public PlanetModel(float x, float y, float rotation){
+
+
+        super(x, y, rotation);
+
+        this.size = PlanetSize.values()[(int) (Math.random()* PlanetModel.PlanetSize.values().length)];
+
+    }
+
     public PlanetSize getSize() {
         return this.size;
     }

@@ -10,7 +10,7 @@ public class ForceController {
 
     private int currentMax = 15;
 
-    private int absoluteMax = 25;
+    private int absoluteMax = 27;
 
     private float timeToVelocityRatio = 4f / 70f;
 
