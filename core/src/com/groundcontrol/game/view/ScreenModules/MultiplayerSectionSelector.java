@@ -52,9 +52,6 @@ public class MultiplayerSectionSelector implements Section{
 
     @Override
     public void display(float delta) {
-        // drawBackground();
-
-
     }
 
     @Override

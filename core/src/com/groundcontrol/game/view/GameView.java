@@ -24,7 +24,7 @@ public class GameView extends ScreenAdapter {
     public final GroundControl game;
     private final OrthographicCamera camera;
     public final static float PIXEL_TO_METER = 0.009f;
-    private static final float VIEWPORT_WIDTH = 50;
+    public static final float VIEWPORT_WIDTH = 50;
     public Section currentSection;
     public GameSection gameSection;
     public final ConnectClientSection connectClientSection;
