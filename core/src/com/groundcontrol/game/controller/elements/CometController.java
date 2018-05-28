@@ -7,7 +7,7 @@ import com.groundcontrol.game.model.elements.ElementModel;
 
 public class CometController extends  ElementController{
 
-    private Vector2 initialVelocity = new Vector2((float) ( Math.random() + 0.7) * 25 ,(float) (Math.random() + 0.7) * 25 );
+    private Vector2 initialVelocity = new Vector2((float) ( Math.random() + 0.7) * 20 ,(float) (Math.random() + 0.7) * 20);
 
     private float maxAngularVelocity = 0.5f;
 
@@ -24,7 +24,7 @@ public class CometController extends  ElementController{
         super(world, model, BodyDef.BodyType.DynamicBody);
 
 
-        float density = 11000f,
+        float density = 1f,
                 friction = 1f,
                 restitution = 0.3f;
         this.width = 233;

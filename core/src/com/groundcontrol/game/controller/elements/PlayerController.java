@@ -13,13 +13,15 @@ import com.groundcontrol.game.model.elements.PlayerModel;
 
 public class PlayerController extends ElementController {
 
-    private final static float runningRelativeVelocity = 1.3f;
+    private final static float runningRelativeVelocity = 2f;
 
     public final static int walkToPullRation = 40;
 
     private final static float maxVelocity = 13;
 
     private final static float maxAngularVelocity = 0.02f;
+
+    private final static float maximumAllowedDistance = 64;
 
     private float jumpingTime = 0f;
 
@@ -148,12 +150,8 @@ public class PlayerController extends ElementController {
 
     public void jump() {
 
-        if(this.getPlanet() == null){
-
-            System.out.println("Null jump");
+        if(this.getPlanet() == null) {
             return;
-
-
         }
 
         float rot = this.getAngleBetween(this.getPlanet());
@@ -164,7 +162,9 @@ public class PlayerController extends ElementController {
 
         Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
 
-        this.applyForceToCenter(direction.rotate(180).scl((float) Math.pow(this.calculatePullForce(this.getPlanet()).len(), 4)), true);
+        this.applyForceToCenter(direction.rotate(180).scl((float) ( Math.pow(this.calculatePullForce(this.getPlanet()).len(),  4))), true);
+
+        this.limitVelocity();
 
         this.removeFromPlanet();
 
@@ -223,7 +223,7 @@ public class PlayerController extends ElementController {
     public void verifyInPlanet() {
         if (!this.isInPlanet())
             return;
-        if (this.getPosition().dst2(this.getPlanet().getPosition()) > 64) {
+        if (this.getPosition().dst2(this.getPlanet().getPosition()) > maximumAllowedDistance) {
             this.removeFromPlanet();
             this.setState(new FloatState());
         }
@@ -270,8 +270,12 @@ public class PlayerController extends ElementController {
 
         }
 
-
     }
+
+    public float getTimeLeft(){
+        return this.state.getTime();
+    }
+
 
 
 }

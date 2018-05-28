@@ -16,7 +16,8 @@ public class PlayerView extends ElementView {
 
     private static final int numberOfIdleStates = 3;
 
-    private static final float FRAME_TIME = 0.1f;
+    private static final float RUNNING_FRAME_TIME = 0.1f;
+    private static final float IDLE_FRAME_TIME = 0.3f;
 
     private boolean stop = false;
 
@@ -43,7 +44,7 @@ public class PlayerView extends ElementView {
 
         System.arraycopy(runRegion[0], 0, frames, 0, numberOfRunningStates);
 
-        return new Animation<TextureRegion>(FRAME_TIME, frames);
+        return new Animation<TextureRegion>(RUNNING_FRAME_TIME, frames);
 
     }
 
@@ -56,7 +57,7 @@ public class PlayerView extends ElementView {
 
         System.arraycopy(idleRegion[0], 0, frames, 0, numberOfIdleStates);
 
-        return new Animation<TextureRegion>(FRAME_TIME, frames);
+        return new Animation<TextureRegion>(IDLE_FRAME_TIME, frames);
 
     }
 

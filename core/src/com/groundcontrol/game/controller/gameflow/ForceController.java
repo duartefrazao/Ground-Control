@@ -29,8 +29,8 @@ public class ForceController {
     public void updateForce(float delta, float x, float y) {
 
         elapsedTime += delta;
-        force.x += x * delta;
-        force.y += y * delta;
+        force.x += x * 0.8;
+        force.y += y * 0.8;
         updateMaxForceValue();
 
         force.limit(currentMax);

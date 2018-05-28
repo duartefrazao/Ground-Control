@@ -33,6 +33,12 @@ public class GameModel {
      */
     private int score = 0;
 
+
+    /**
+     * Time Left
+     */
+    private float timeLeft = 0;
+
     /**
      * Planets
      */
@@ -99,7 +105,6 @@ public class GameModel {
             if( comet.isOutOfBonds(delta))
                 comet.setToBeRemoved(true);
 
-
         }
 
     }
@@ -107,6 +112,10 @@ public class GameModel {
     public void setScore(int score){ this.score = score;}
 
     public int getScore(){ return this.score; }
+
+    public float getTimeLeft() { return this.timeLeft; }
+
+    public void setTimeLeft(float time) { this.timeLeft = time;  }
 
     public PlayerModel getPlayer() {
         return player;

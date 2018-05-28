@@ -9,9 +9,10 @@ import static java.lang.Math.abs;
 
 public class FloatState implements PlayerState {
 
-    private static float floatTime = 30f;
 
     private final static float INTIAL_TIME = 30f;
+
+    private static float floatTime = INTIAL_TIME;
 
     public float getTime(){
         return this.floatTime;
@@ -43,7 +44,6 @@ public class FloatState implements PlayerState {
         for (Body e : objects) {
 
             if(e == null) {
-                System.out.println("null gravity");
                 continue;
             }
 

@@ -93,11 +93,20 @@ public class GameController implements ContactListener {
 
         for (Body body : bodies) {
 
-            if (!(body.getUserData() instanceof PlayerModel || body.getUserData() instanceof CometModel))
-                body.setLinearVelocity(forceController.getForce());
+            if (!(body.getUserData() instanceof PlayerModel || body.getUserData() instanceof CometModel)) {
+
+                float random = (float) (0.7 + Math.random() * (1.4 - 0.7));
+
+                Vector2 randomForce = new Vector2();
+                randomForce.x = forceController.getForce().x * random;
+                randomForce.y = forceController.getForce().y * random;
+
+                body.setLinearVelocity(randomForce);
+
+
+            }
 
         }
-
     }
 
     public void handleInput(GameSection.StateInput input) {
@@ -132,6 +141,8 @@ public class GameController implements ContactListener {
         }
 
         this.updateModelInfo();
+
+        bodies.clear();
     }
 
     private void updateModelInfo() {
@@ -147,9 +158,14 @@ public class GameController implements ContactListener {
             ((ElementModel) body.getUserData()).setRotation(body.getAngle());
         }
 
+
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
 
-        this.gameModel.setScore(scoreController.getScore());
+        //this.gameModel.setScore(scoreController.getScore());
+
+        this.gameModel.setTimeLeft(playerController.getTimeLeft());
+
+        bodies.clear();
 
     }
 

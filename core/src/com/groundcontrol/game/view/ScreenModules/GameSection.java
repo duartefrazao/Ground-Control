@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.model.elements.CometModel;
 import com.groundcontrol.game.model.elements.ExplosionModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
@@ -25,6 +24,7 @@ import com.groundcontrol.game.view.elements.ElementView;
 import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
@@ -47,14 +47,24 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     protected Color whiteColor = new Color(Color.WHITE);
     protected float vx=0,vy=0;
 
+    //Time Components
+    protected float timeLeft;
+    protected Label timeLabel;
+    private DecimalFormat df = new DecimalFormat();
+
     public GameSection(GameView gameView){
 
         this.gv =gameView;
         loadAssets();
         stage=createStage();
-        stage.addActor(createScoreTable());
+        //stage.addActor(createScoreTable());
+        stage.addActor(createTimeTable());
         ip.addProcessor(stage);
         ip.addProcessor(new GestureDetector(this));
+
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
     }
 
     private Table createScoreTable() {
@@ -65,6 +75,17 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         font = new BitmapFont();
         scoreLabel = new Label(Integer.toString(score), new Label.LabelStyle(font, whiteColor));
         table.add(scoreLabel).height(Gdx.graphics.getHeight() / 10);
+        table.setFillParent(true);
+        return table;
+    }
+
+    private Table createTimeTable(){
+        Table table = new Table();
+        table.center().top();
+        timeLeft = 0;
+        font = new BitmapFont();
+        timeLabel = new Label(Float.toString(timeLeft), new Label.LabelStyle(font, whiteColor));
+        table.add(timeLabel).height(Gdx.graphics.getHeight() / 5);
         table.setFillParent(true);
         return table;
     }
@@ -83,8 +104,6 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 
         if(accAvailable) {
-            gv.gameController.update(delta);
-
             vx = Gdx.input.getAccelerometerX();
             vy = Gdx.input.getAccelerometerY();
         }
@@ -231,8 +250,11 @@ public class GameSection implements Section, GestureDetector.GestureListener{
 
     @Override
     public void drawStages(float delta) {
+
+        //this.scoreLabel.setText(Integer.toString(gv.gameModel.getScore()));
+        this.timeLabel.setText(df.format((gv.gameModel.getTimeLeft())));
+
         stage.draw();
-        this.scoreLabel.setText(Integer.toString(gv.gameModel.getScore()));
 
     }
 
