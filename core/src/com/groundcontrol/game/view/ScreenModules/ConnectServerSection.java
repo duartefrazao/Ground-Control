@@ -52,6 +52,8 @@ public class ConnectServerSection implements Section{
 
         this.serverUp=false;
         this.message="";
+        connector= new ServerConnector(server);
+        connector.start();
 
         Gdx.input.setInputProcessor(stage);
         gv.currentSection = gv.connectServerSection;
@@ -110,8 +112,6 @@ public class ConnectServerSection implements Section{
             @Override
             public void clicked(InputEvent event, float x, float y){
                 //substituteButton();
-                connector= new ServerConnector(server);
-                connector.start();
             }
         });
 
@@ -126,11 +126,7 @@ public class ConnectServerSection implements Section{
                         e.printStackTrace();
                     }
                 }
-                try {
-                    server.serverSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
                 gv.menuSection.transition();
             }
         });

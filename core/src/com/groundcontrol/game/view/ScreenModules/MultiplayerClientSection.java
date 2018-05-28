@@ -133,7 +133,7 @@ public class MultiplayerClientSection implements Section{
 
         this.currTime+=delta;
 
-        if(currTime>30){
+        if(currTime>0.050){
             this.currTime=0;
         }else return;
 
@@ -143,7 +143,7 @@ public class MultiplayerClientSection implements Section{
 
             float vx = Gdx.input.getAccelerometerX();
             float vy = Gdx.input.getAccelerometerY();
-
+            System.out.println("Sending .,.");
             client.sendMessage("vx"+Float.toString(vx));
             client.sendMessage("vy"+Float.toString(vy));
         }
