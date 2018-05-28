@@ -265,7 +265,8 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     public void drawBackground() {
         Texture background = gv.game.getAssetManager().get("background.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        gv.game.getBatch().draw(background, 0, 0, 0, 0, (int) (ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
+        gv.game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
+
 
     }
 

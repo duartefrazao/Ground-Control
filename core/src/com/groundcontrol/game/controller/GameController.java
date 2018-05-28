@@ -1,5 +1,6 @@
 package com.groundcontrol.game.controller;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -310,6 +311,8 @@ public class GameController implements ContactListener {
         playerController.setInPlanet(planet);
 
         playerController.handleInput(InputDecoder.Input.PLANET_LAND);
+
+        Gdx.input.vibrate(200);
 
     }
 
