@@ -14,10 +14,10 @@ public class PlayerView extends ElementView {
 
     private static final int numberOfRunningStates = 6;
 
-    private static final int numberOfIdleStates = 3;
+    private static final int numberOfIdleStates = 4;
 
     private static final float RUNNING_FRAME_TIME = 0.1f;
-    private static final float IDLE_FRAME_TIME = 0.3f;
+    private static final float IDLE_FRAME_TIME = 0.12f;
 
     private boolean stop = false;
 
@@ -37,7 +37,7 @@ public class PlayerView extends ElementView {
 
     private Animation<TextureRegion> createRunningAnimation(GroundControl game) {
 
-        Texture runningTexture = game.getAssetManager().get("runningSheet.png");
+        Texture runningTexture = game.getAssetManager().get("RunningAssassin.png");
         TextureRegion[][] runRegion = TextureRegion.split(runningTexture, runningTexture.getWidth() / numberOfRunningStates, runningTexture.getHeight());
 
         TextureRegion[] frames = new TextureRegion[numberOfRunningStates];
@@ -50,7 +50,7 @@ public class PlayerView extends ElementView {
 
     private Animation<TextureRegion> createIdleAnimation(GroundControl game) {
 
-        Texture idleTexture = game.getAssetManager().get("idleSheet.png");
+        Texture idleTexture = game.getAssetManager().get("IdleAssassin.png");
         TextureRegion[][] idleRegion = TextureRegion.split(idleTexture, idleTexture.getWidth() / numberOfIdleStates, idleTexture.getHeight());
 
         TextureRegion[] frames = new TextureRegion[numberOfIdleStates];
@@ -62,7 +62,7 @@ public class PlayerView extends ElementView {
     }
 
     public Sprite createSprite(GroundControl game) {
-        Texture texture = game.getAssetManager().get("player.png");
+        Texture texture = game.getAssetManager().get("assassin.png");
         this.runningAnimation = createRunningAnimation(game);
         this.idleAnimation = createIdleAnimation(game);
         return new Sprite(texture, texture.getWidth(), texture.getHeight());

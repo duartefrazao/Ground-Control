@@ -237,8 +237,9 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         gv.game.getAssetManager().load("Planets/MediumPlanet.png", Texture.class);
         gv.game.getAssetManager().load("Planets/SmallPlanet.png", Texture.class);
 
-        gv.game.getAssetManager().load("runningSheet.png", Texture.class);
-        gv.game.getAssetManager().load("idleSheet.png", Texture.class);
+        gv.game.getAssetManager().load("IdleAssassin.png", Texture.class);
+        gv.game.getAssetManager().load("assassin.png", Texture.class);
+        gv.game.getAssetManager().load("RunningAssassin.png", Texture.class);
 
         gv.game.getAssetManager().load("Comet/comet.png", Texture.class);
         gv.game.getAssetManager().load("Comet/Comet_Array.png", Texture.class);
