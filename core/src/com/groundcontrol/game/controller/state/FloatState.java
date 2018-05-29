@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.elements.PlayerController;
+import com.groundcontrol.game.model.elements.PlayerModel;
 
 import static java.lang.Math.abs;
 
@@ -46,11 +47,13 @@ public class FloatState implements PlayerState {
             if(e == null) {
                 continue;
             }
+            else if(e.getUserData() instanceof PlayerModel)
+                continue;
 
             float distance = abs(e.getPosition().x - context.getX());
             distance += abs(e.getPosition().y - context.getY());
 
-            if (distance < 7) {
+            if (distance < 8) {
 
                 context.setTransform(context.getX(), context.getY(), context.getAngleBetween(e));
 
