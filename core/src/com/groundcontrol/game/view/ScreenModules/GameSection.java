@@ -106,7 +106,7 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         if(accAvailable) {
             vx = Gdx.input.getAccelerometerX();
             vy = Gdx.input.getAccelerometerY();
-        }
+        }else currentInput=StateInput.IDLE;
 
         gv.gameController.setPlanetForce(delta, -vx, -vy);
 

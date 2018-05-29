@@ -30,22 +30,6 @@ public class GroundControl extends Game {
 	}
 
 	private void startGame()  {
-
-
-		/*Socket s = null;
-		try {
-			s = new Socket("google.pt", 80);
-
-			String serverIP = s.getLocalAddress().getHostAddress();
-
-			System.out.println("IP->" +serverIP);
-			s.close();
-		} catch (IOException e) {
-			//System.exit(1);
-			e.printStackTrace();
-		}
-*/
-
 		GameModel gameModel = new GameModel();
 
 		GameController gameController = new GameController(gameModel);

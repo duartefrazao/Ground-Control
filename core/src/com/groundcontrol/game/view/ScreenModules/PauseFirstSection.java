@@ -78,6 +78,7 @@ public class PauseFirstSection extends PauseSection {
         List<ExplosionModel> explosions = gv.gameModel.getExplosions();
         for(ExplosionModel e : explosions){
             ElementView view = ViewFactory.makeView(gv.game, e);
+            view.draw(gv.game.getBatch());
         }
     }
 

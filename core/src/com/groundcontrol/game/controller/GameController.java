@@ -1,6 +1,7 @@
 package com.groundcontrol.game.controller;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -62,6 +63,7 @@ public class GameController implements ContactListener {
     private List<PlanetModel> planetsToAdd = new ArrayList<PlanetModel>();
 
     Sound sound;
+    //private final Music music;
 
     private void createNewPlanet(PlanetModel p){
 
@@ -74,13 +76,12 @@ public class GameController implements ContactListener {
         else
             new SmallPlanetController(world, p);
 
-
-
     }
 
     public GameController(GameModel gameModel) {
 
-//        sound = Gdx.audio.newSound(Gdx.files.internal("Sounds/s3.wav"));
+        //music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/som.mp3"));
+        sound = Gdx.audio.newSound(Gdx.files.internal("Sounds/som3.mp3"));
 
         world = new World(new Vector2(0, 0), true);
 
@@ -317,7 +318,7 @@ public class GameController implements ContactListener {
 
         playerController.handleInput(InputDecoder.Input.PLANET_LAND);
 
-       // sound.play(1.0f);
+        sound.play(1.0f);
         Gdx.input.vibrate(200);
 
     }
