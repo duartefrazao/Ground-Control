@@ -32,7 +32,7 @@ public class GroundControl extends Game {
 	private void startGame()  {
 
 
-		Socket s = null;
+		/*Socket s = null;
 		try {
 			s = new Socket("google.pt", 80);
 
@@ -44,7 +44,7 @@ public class GroundControl extends Game {
 			//System.exit(1);
 			e.printStackTrace();
 		}
-
+*/
 
 		GameModel gameModel = new GameModel();
 
