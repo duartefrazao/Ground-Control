@@ -231,16 +231,20 @@ public class GameSection implements Section, GestureDetector.GestureListener{
 
     @Override
     public void loadAssets() {
-        gv.game.getAssetManager().load("comet.png", Texture.class);
-        gv.game.getAssetManager().load("BigPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("MediumBigPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("MediumPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("SmallPlanet.png", Texture.class);
+
+        gv.game.getAssetManager().load("Planets/BigPlanet.png", Texture.class);
+        gv.game.getAssetManager().load("Planets/MediumBigPlanet.png", Texture.class);
+        gv.game.getAssetManager().load("Planets/MediumPlanet.png", Texture.class);
+        gv.game.getAssetManager().load("Planets/SmallPlanet.png", Texture.class);
+
         gv.game.getAssetManager().load("runningSheet.png", Texture.class);
-        gv.game.getAssetManager().load("Comet_Array.png", Texture.class);
         gv.game.getAssetManager().load("idleSheet.png", Texture.class);
-        gv.game.getAssetManager().load("Explosion_Array.png", Texture.class);
-        gv.game.getAssetManager().load("explosion.png", Texture.class);
+
+        gv.game.getAssetManager().load("Comet/comet.png", Texture.class);
+        gv.game.getAssetManager().load("Comet/Comet_Array.png", Texture.class);
+
+        this.loadExplosion();
+
         gv.game.getAssetManager().load("background.png", Texture.class);
         gv.game.getAssetManager().load("Buttons/left.png", Texture.class);
         gv.game.getAssetManager().load("Buttons/right.png", Texture.class);
@@ -249,6 +253,15 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         gv.game.getAssetManager().load("resume.png", Texture.class);
 
         gv.game.getAssetManager().finishLoading();
+    }
+
+
+    private void loadExplosion(){
+
+        for(int i = 1; i <= 8; i++){
+            gv.game.getAssetManager().load("Explosion/explosion[" + i + "].png", Texture.class);
+        }
+
     }
 
     @Override

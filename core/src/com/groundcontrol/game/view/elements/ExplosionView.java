@@ -24,14 +24,15 @@ public class ExplosionView extends ElementView{
         super(game);
     }
 
-    private Animation<TextureRegion> createRunningAnimation(GroundControl game) {
-
-        Texture exploAnimation = game.getAssetManager().get("Explosion_Array.png");
-        TextureRegion[][] exploRegion = TextureRegion.split(exploAnimation, exploAnimation.getWidth() / numberOfStates, exploAnimation.getHeight());
+    private Animation<TextureRegion> createExplosionAnimation(GroundControl game) {
 
         TextureRegion[] frames = new TextureRegion[numberOfStates];
 
-        System.arraycopy(exploRegion[0], 0, frames, 0, numberOfStates);
+        for(int i = 1; i <= 8; i++){
+                Texture tFrame = game.getAssetManager().get("Explosion/explosion[" + i + "].png");
+                TextureRegion rFrame = new TextureRegion(tFrame);
+                frames[i-1] = rFrame;
+        }
 
         return new Animation<TextureRegion>(FRAME_TIME, frames);
 
@@ -39,8 +40,8 @@ public class ExplosionView extends ElementView{
 
 
     public Sprite createSprite(GroundControl game) {
-        Texture texture = game.getAssetManager().get("explosion.png");
-        this.explosionAnimation = createRunningAnimation(game);
+        Texture texture = game.getAssetManager().get("Explosion/explosion[3].png");
+        this.explosionAnimation = createExplosionAnimation(game);
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 

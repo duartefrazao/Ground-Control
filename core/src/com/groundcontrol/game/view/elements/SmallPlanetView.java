@@ -11,7 +11,7 @@ public class SmallPlanetView extends ElementView{
     }
 
     public Sprite createSprite(GroundControl game){
-        Texture texture = game.getAssetManager().get("SmallPlanet.png");
+        Texture texture = game.getAssetManager().get("Planets/SmallPlanet.png");
 
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }

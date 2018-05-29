@@ -26,7 +26,7 @@ public class CometView extends ElementView {
 
     private Animation<TextureRegion> createBurningAnimation(GroundControl game) {
 
-        Texture burningAnimation = game.getAssetManager().get("Comet_Array.png");
+        Texture burningAnimation = game.getAssetManager().get("Comet/Comet_Array.png");
         TextureRegion[][] burnRegion = TextureRegion.split(burningAnimation, burningAnimation.getWidth() / numberOfStates, burningAnimation.getHeight());
 
         TextureRegion[] frames = new TextureRegion[numberOfStates];
@@ -47,7 +47,7 @@ public class CometView extends ElementView {
 
 
     public Sprite createSprite(GroundControl game) {
-        Texture texture = game.getAssetManager().get("comet.png");
+        Texture texture = game.getAssetManager().get("Comet/comet.png");
         this.burningAnimation = createBurningAnimation(game);
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }

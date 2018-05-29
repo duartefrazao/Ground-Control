@@ -11,7 +11,7 @@ public class MediumPlanetView extends  ElementView{
     }
 
     public Sprite createSprite(GroundControl game){
-        Texture texture = game.getAssetManager().get("MediumPlanet.png");
+        Texture texture = game.getAssetManager().get("Planets/MediumPlanet.png");
 
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
