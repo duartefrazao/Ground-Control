@@ -1,7 +1,6 @@
 package com.groundcontrol.game.view.ScreenModules;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,8 +15,6 @@ import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
 
-import java.io.IOException;
-
 public class MultiplayerServerSection extends GameSection{
 
 
@@ -31,28 +28,20 @@ public class MultiplayerServerSection extends GameSection{
 
     @Override
     public void update(float delta) {
-        boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 
+        /*
         if(!Gdx.input.isTouched()){
             currentInput=StateInput.IDLE;
         }
+        */
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            currentInput =StateInput.LEFT_BUTTON;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            currentInput = StateInput.RIGHT_BUTTON;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            currentInput = StateInput.SPACE_BUTTON;
-        }
-
-        gv.gameController.update(delta);
 
         gv.gameController.handleInput(currentInput);
 
-        if(server.isAlive())
+
+        if(server.isAlive()) {
             server.tick();
+        }
         else {
             server.stop();
             gv.gameModel=new GameModel();
@@ -63,6 +52,8 @@ public class MultiplayerServerSection extends GameSection{
         receiveInputs(delta);
 
         gv.gameController.setPlanetForce(delta, -vx, -vy);
+
+        gv.gameController.update(delta);
     }
 
     private void receiveInputs(float delta) {

@@ -1,7 +1,6 @@
 package com.groundcontrol.game.controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -11,14 +10,10 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.groundcontrol.game.controller.elements.BigPlanetController;
 import com.groundcontrol.game.controller.elements.CometController;
-import com.groundcontrol.game.controller.elements.MediumBigPlanetController;
-import com.groundcontrol.game.controller.elements.MediumPlanetController;
-import com.groundcontrol.game.controller.elements.SmallPlanetController;
+import com.groundcontrol.game.controller.elements.PlanetFactory;
 import com.groundcontrol.game.controller.elements.PlayerController;
 import com.groundcontrol.game.controller.gameflow.ForceController;
-import com.groundcontrol.game.controller.gameflow.ScoreController;
 import com.groundcontrol.game.controller.state.InputDecoder;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.model.elements.CometModel;
@@ -44,6 +39,10 @@ public class GameController implements ContactListener {
 
     private static final float PLANET_GENERATION_OFFSET = 5;
 
+    private static final float ROTATION_PROBABILITY = 0.25f;
+
+    private static final float INITIAL_ROTATION = 0.5f;
+
     protected final World world;
 
     protected final PlayerController playerController;
@@ -52,31 +51,13 @@ public class GameController implements ContactListener {
 
     protected GameModel gameModel;
 
-    protected ScoreController scoreController;
-
     protected ForceController forceController;
 
     protected float timeToNextComet;
-
-    private InputDecoder decoder;
-
-    private List<PlanetModel> planetsToAdd = new ArrayList<PlanetModel>();
-
     Sound sound;
+    private InputDecoder decoder;
+    private List<PlanetModel> planetsToAdd = new ArrayList<PlanetModel>();
     //private final Music music;
-
-    private void createNewPlanet(PlanetModel p){
-
-        if (p.getSize() == PlanetModel.PlanetSize.MEDIUM)
-            new MediumPlanetController(world, p);
-        else if(p.getSize() == PlanetModel.PlanetSize.MEDIUM_BIG)
-            new MediumBigPlanetController(world, p);
-        else if(p.getSize() == PlanetModel.PlanetSize.BIG)
-            new BigPlanetController(world, p);
-        else
-            new SmallPlanetController(world, p);
-
-    }
 
     public GameController(GameModel gameModel) {
 
@@ -93,13 +74,11 @@ public class GameController implements ContactListener {
 
         for (PlanetModel p : planets) {
 
-            this.createNewPlanet(p);
+            PlanetFactory.createPlanet(p, this.world);
 
         }
 
         this.decoder = new InputDecoder();
-
-        this.scoreController = new ScoreController();
 
         this.forceController = new ForceController();
 
@@ -120,16 +99,10 @@ public class GameController implements ContactListener {
 
             if (!(body.getUserData() instanceof PlayerModel || body.getUserData() instanceof CometModel)) {
 
-                float randomMultiplier = (float) (0.7 + Math.random() * (1.4 - 0.7));
+                body.setLinearVelocity(this.forceController.getForceMult());
 
-                Vector2 randomForce = new Vector2();
-                randomForce.x = forceController.getForce().x * randomMultiplier;
-                randomForce.y = forceController.getForce().y * randomMultiplier;
-
-                body.setLinearVelocity(randomForce);
-
-                if (random.nextBoolean() && random.nextBoolean()) body.setAngularVelocity(0.5f);
-
+                if (Math.random() <= ROTATION_PROBABILITY)
+                    body.setAngularVelocity(INITIAL_ROTATION);
 
             }
 
@@ -146,8 +119,6 @@ public class GameController implements ContactListener {
     public void update(float delta) {
 
         this.gameModel.update(delta);
-
-        this.scoreController.update(delta);
 
         Array<Body> bodies = new Array<Body>();
 
@@ -188,8 +159,6 @@ public class GameController implements ContactListener {
 
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
 
-        //this.gameModel.setScore(scoreController.getScore());
-
         this.gameModel.setTimeLeft(playerController.getTimeLeft());
 
         bodies.clear();
@@ -219,7 +188,7 @@ public class GameController implements ContactListener {
 
             this.gameModel.addPlanet(pm);
 
-            this.createNewPlanet(pm);
+            PlanetFactory.createPlanet(pm, this.world);
 
         }
 
@@ -292,6 +261,8 @@ public class GameController implements ContactListener {
 
     private void cometObjectCollision(Body comet, Body planet) {
 
+        Gdx.input.vibrate(200);
+
         if (this.playerController.getPlanet() == planet)
             playerController.jump();
 
@@ -317,9 +288,6 @@ public class GameController implements ContactListener {
         playerController.setInPlanet(planet);
 
         playerController.handleInput(InputDecoder.Input.PLANET_LAND);
-
-        sound.play(1.0f);
-        Gdx.input.vibrate(200);
 
     }
 

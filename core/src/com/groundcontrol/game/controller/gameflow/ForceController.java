@@ -6,15 +6,19 @@ public class ForceController {
 
     private Vector2 force;
 
-    private int minimumVy = 6;
+    private final static  int minimumVy = 6;
 
-    private int currentMax = 15;
+    private static  int currentMax = 15;
 
-    private int absoluteMax = 27;
+    private final static  int absoluteMax = 27;
 
-    private float timeToVelocityRatio = 4f / 70f;
+    private final static  float timeToVelocityRatio = 4f / 70f;
 
-    private float initialMaxVelocity = 10;
+    private final static float initialMaxVelocity = 10;
+
+    private final static float minMult = 0.7f;
+
+    private final static float maxMult = 1.4f;
 
     private double elapsedTime;
 
@@ -39,6 +43,23 @@ public class ForceController {
     public Vector2 getForce() {
         return force;
     }
+
+    public Vector2 getForceMult(){
+
+        float randomMultiplier = (float) (minMult + Math.random() * (maxMult - minMult));
+
+        Vector2 randomForce = new Vector2();
+
+        randomForce.x = this.force.x * randomMultiplier;
+
+        randomForce.y = this.force.y * randomMultiplier;
+
+        return randomForce;
+
+
+
+    }
+
 
     private void updateMaxForceValue() {
 

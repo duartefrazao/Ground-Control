@@ -28,12 +28,6 @@ public class TestModelCreation {
     }
 
     @Test
-    public void testInitialScore(){
-        GameModel gm = new GameModel();
-        assertEquals(0,gm.getScore());
-    }
-
-    @Test
     public void testRemoveModel(){
         GameModel gm = new GameModel();
         CometModel cm = gm.createComet(5,5);

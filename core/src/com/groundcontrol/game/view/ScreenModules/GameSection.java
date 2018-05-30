@@ -30,34 +30,25 @@ import java.util.List;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
-public class GameSection implements Section, GestureDetector.GestureListener{
+public class GameSection implements Section, GestureDetector.GestureListener {
 
     protected GameView gv;
     protected InputMultiplexer ip = new InputMultiplexer();
-    protected  Stage stage;
-
-    public enum StateInput {RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, IDLE}
-    protected StateInput currentInput =StateInput.IDLE;
-
-
-    //Score Components
-    protected int score;
-    protected BitmapFont font = new BitmapFont();
-    protected Label scoreLabel;
-    protected Color whiteColor = new Color(Color.WHITE);
-    protected float vx=0,vy=0;
-
+    protected Stage stage;
+    protected StateInput currentInput = StateInput.IDLE;
     //Time Components
+    protected BitmapFont font = new BitmapFont();
+    protected Color whiteColor = new Color(Color.WHITE);
+    protected float vx = 0, vy = 0;
     protected float timeLeft;
     protected Label timeLabel;
     private DecimalFormat df = new DecimalFormat();
 
-    public GameSection(GameView gameView){
+    public GameSection(GameView gameView) {
 
-        this.gv =gameView;
+        this.gv = gameView;
         loadAssets();
-        stage=createStage();
-        //stage.addActor(createScoreTable());
+        stage = createStage();
         stage.addActor(createTimeTable());
         ip.addProcessor(stage);
         ip.addProcessor(new GestureDetector(this));
@@ -67,19 +58,7 @@ public class GameSection implements Section, GestureDetector.GestureListener{
 
     }
 
-    private Table createScoreTable() {
-        Table table = new Table();
-        table.center();
-        table.top();
-        score = 0;
-        font = new BitmapFont();
-        scoreLabel = new Label(Integer.toString(score), new Label.LabelStyle(font, whiteColor));
-        table.add(scoreLabel).height(Gdx.graphics.getHeight() / 10);
-        table.setFillParent(true);
-        return table;
-    }
-
-    private Table createTimeTable(){
+    private Table createTimeTable() {
         Table table = new Table();
         table.center().top();
         timeLeft = 0;
@@ -103,28 +82,12 @@ public class GameSection implements Section, GestureDetector.GestureListener{
 
         boolean accAvailable = Gdx.input.isPeripheralAvailable(Input.Peripheral.Accelerometer);
 
-        if(accAvailable) {
+        if (accAvailable) {
             vx = Gdx.input.getAccelerometerX();
             vy = Gdx.input.getAccelerometerY();
-        }else currentInput=StateInput.IDLE;
+        }
 
         gv.gameController.setPlanetForce(delta, -vx, -vy);
-
-
-        //====DESKTOP INPUTS====
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            currentInput =StateInput.LEFT_BUTTON;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            currentInput = StateInput.RIGHT_BUTTON;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            currentInput = StateInput.SPACE_BUTTON;
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
-            gv.pauseSection.transition();
-        }
-        //======================
 
         gv.gameController.update(delta);
 
@@ -135,24 +98,24 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         drawBackground();
 
         PlayerModel player = gv.gameModel.getPlayer();
-        ElementView viewPlayer = ViewFactory.makeView(gv.game,player);
+        ElementView viewPlayer = ViewFactory.makeView(gv.game, player);
         viewPlayer.update(player);
         viewPlayer.draw(gv.game.getBatch());
 
         List<PlanetModel> planets = gv.gameModel.getPlanets();
-        for(PlanetModel p : planets){
-            ElementView view = ViewFactory.makeView(gv.game,p);
+        for (PlanetModel p : planets) {
+            ElementView view = ViewFactory.makeView(gv.game, p);
             view.update(p);
             view.draw(gv.game.getBatch());
         }
         List<CometModel> comets = gv.gameModel.getComets();
-        for(CometModel c : comets){
+        for (CometModel c : comets) {
             ElementView view = ViewFactory.makeView(gv.game, c);
             view.update(c);
             view.draw(gv.game.getBatch());
         }
         List<ExplosionModel> explosions = gv.gameModel.getExplosions();
-        for(ExplosionModel e : explosions){
+        for (ExplosionModel e : explosions) {
             ElementView view = ViewFactory.makeView(gv.game, e);
             view.update(e);
             view.draw(gv.game.getBatch());
@@ -162,64 +125,63 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     @Override
     public void transition() {
         PlayerModel player = gv.gameModel.getPlayer();
-        PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
+        PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game, player);
         viewPlayer.removeStopped();
         Gdx.input.setInputProcessor(this.ip);
 
-        gv.currentSection= gv.gameSection;
+        gv.currentSection = gv.gameSection;
 
     }
-
 
     @Override
     public Stage createStage() {
         ButtonFactory butFac = new ButtonFactory();
 
-        float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
+        float w = Gdx.graphics.getWidth(), h = Gdx.graphics.getHeight();
 
-        Button leftButton=butFac.makeButton( gv.game.getAssetManager().get("Buttons/left.png",Texture.class),gv.game.getAssetManager().get("Buttons/left.png",Texture.class),w/3f,2*h/20f,(int)(w+h)/16,(int)(h+w)/16);
-        leftButton.addListener(new ClickListener(){
+        Button leftButton = butFac.makeButton(gv.game.getAssetManager().get("Buttons/left.png", Texture.class), gv.game.getAssetManager().get("Buttons/left.png", Texture.class), w / 3f, 2 * h / 20f, (int) (w + h) / 16, (int) (h + w) / 16);
+        leftButton.addListener(new ClickListener() {
             @Override
-            public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                currentInput=StateInput.LEFT_BUTTON;
+            public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
+                currentInput = StateInput.LEFT_BUTTON;
                 return true;
             }
 
             @Override
-            public void touchUp (InputEvent e, float x, float y, int pointer, int button){
-                currentInput=StateInput.IDLE;
+            public void touchUp(InputEvent e, float x, float y, int pointer, int button) {
+                currentInput = StateInput.IDLE;
             }
         });
 
-        Button rightButton=butFac.makeButton(gv.game.getAssetManager().get("Buttons/right.png",Texture.class),gv.game.getAssetManager().get("Buttons/right.png",Texture.class),2*w/3f,2*h/20f,(int)(w+h)/16,(int)(h+w)/16);
-        rightButton.addListener(new ClickListener(){
+        Button rightButton = butFac.makeButton(gv.game.getAssetManager().get("Buttons/right.png", Texture.class), gv.game.getAssetManager().get("Buttons/right.png", Texture.class), 2 * w / 3f, 2 * h / 20f, (int) (w + h) / 16, (int) (h + w) / 16);
+        rightButton.addListener(new ClickListener() {
             @Override
-            public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                currentInput=StateInput.RIGHT_BUTTON;
+            public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
+                currentInput = StateInput.RIGHT_BUTTON;
                 return true;
             }
 
             @Override
-            public void touchUp (InputEvent e, float x, float y, int pointer, int button){
-                currentInput=StateInput.IDLE;
+            public void touchUp(InputEvent e, float x, float y, int pointer, int button) {
+                currentInput = StateInput.IDLE;
             }
         });
 
-        Button pauseButton=butFac.makeButton(gv.game.getAssetManager().get("Buttons/pause.png",Texture.class),gv.game.getAssetManager().get("Buttons/pause.png",Texture.class),19*w/20f,19*h/20f,(int)(w+h)/20,(int)(h+w)/20);
-        pauseButton.addListener(new ClickListener(){
+        Button pauseButton = butFac.makeButton(gv.game.getAssetManager().get("Buttons/pause.png", Texture.class), gv.game.getAssetManager().get("Buttons/pause.png", Texture.class), 19 * w / 20f, 19 * h / 20f, (int) (w + h) / 20, (int) (h + w) / 20);
+        pauseButton.addListener(new ClickListener() {
             @Override
-            public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
+            public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
                 gv.pauseSection.transition();
                 return true;
             }
 
             @Override
-            public void touchUp (InputEvent e, float x, float y, int pointer, int button){
+            public void touchUp(InputEvent e, float x, float y, int pointer, int button) {
             }
         });
 
 
-        Stage stage= new Stage();
+        Stage stage = new Stage();
 
         stage.addActor(leftButton);
         stage.addActor(rightButton);
@@ -256,10 +218,9 @@ public class GameSection implements Section, GestureDetector.GestureListener{
         gv.game.getAssetManager().finishLoading();
     }
 
+    private void loadExplosion() {
 
-    private void loadExplosion(){
-
-        for(int i = 1; i <= 8; i++){
+        for (int i = 1; i <= 8; i++) {
             gv.game.getAssetManager().load("Explosion/explosion[" + i + "].png", Texture.class);
         }
 
@@ -268,7 +229,6 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     @Override
     public void drawStages(float delta) {
 
-        //this.scoreLabel.setText(Integer.toString(gv.gameModel.getScore()));
         this.timeLabel.setText(df.format((gv.gameModel.getTimeLeft())));
 
         stage.draw();
@@ -279,7 +239,7 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     public void drawBackground() {
         Texture background = gv.game.getAssetManager().get("background.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        gv.game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
+        gv.game.getBatch().draw(background, 0, 0, 0, 0, (int) (ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
 
 
     }
@@ -332,6 +292,8 @@ public class GameSection implements Section, GestureDetector.GestureListener{
     public void pinchStop() {
 
     }
+
+    public enum StateInput {RIGHT_BUTTON, LEFT_BUTTON, SPACE_BUTTON, IDLE}
 
 
 }

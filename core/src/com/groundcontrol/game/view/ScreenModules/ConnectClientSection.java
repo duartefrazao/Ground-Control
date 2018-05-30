@@ -37,21 +37,6 @@ public class ConnectClientSection implements Section{
 
     }
 
-    public Button createButton(String filePath, float x, float y, int w, int h,  String ipAdd){
-        ButtonFactory butFac = new ButtonFactory();
-        Button but= butFac.makeButton(game.getAssetManager().get(filePath,Texture.class),game.getAssetManager().get(filePath,Texture.class), w/2,h/4, (int)(w/2),(int)(h)/8);
-
-        final String toAdd= ipAdd;
-        but.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                ip = ip + toAdd;
-            }
-        });
-
-        return but;
-    }
-
     @Override
     public void update(float delta) {
 
@@ -104,14 +89,6 @@ public class ConnectClientSection implements Section{
 
     }
 
-    public String hexToDec(String hex){
-        String result="";
-
-        for(int i = 0;i < hex.length();i+=2){
-            result+=Integer.parseInt(hex.substring(i,i+2),16)+".";
-        }
-        return result.substring(0,result.length()-1);
-    }
 
     @Override
     public void transition() {

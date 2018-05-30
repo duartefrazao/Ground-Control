@@ -3,7 +3,6 @@ package TestController;
 
 import com.groundcontrol.game.controller.ForceController;
 import com.groundcontrol.game.controller.GameController;
-import com.groundcontrol.game.controller.ScoreController;
 import com.groundcontrol.game.controller.elements.ElementController;
 import com.groundcontrol.game.controller.elements.PlayerController;
 import com.groundcontrol.game.controller.state.InputDecoder;
@@ -54,13 +53,6 @@ public class MockController extends GameController{
         this.decoder = decoder;
     }
 
-    public ScoreController getScoreController() {
-        return scoreController;
-    }
-
-    public void setScoreController(ScoreController scoreController) {
-        this.scoreController = scoreController;
-    }
 
     public ForceController getForceController() {
         return forceController;

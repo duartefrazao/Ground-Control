@@ -9,9 +9,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.elements.ElementModel;
 
-import static com.badlogic.gdx.math.MathUtils.random;
-import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
-import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 import static com.groundcontrol.game.view.GameView.PIXEL_TO_METER;
 
 public abstract class ElementController {
@@ -185,35 +182,6 @@ public abstract class ElementController {
         this.body.setAngularVelocity(omega);
     }
 
-
-    public void applyArtificialGravity(Vector2 planetForce) {
-        this.body.setLinearVelocity(planetForce.x * this.artificialGravity, planetForce.y * this.artificialGravity);
-    }
-
-    public void verifyBounds() {
-
-        if (body.getPosition().x + this.width_meters / 2.0f < 0)
-            body.setTransform(ARENA_WIDTH + this.width_meters / 2.0f, body.getPosition().y * random.nextFloat(), body.getAngle());
-        else if (body.getPosition().x - this.width_meters / 2.0 > ARENA_WIDTH)
-            body.setTransform(-this.width_meters / 2.0f, body.getPosition().y * random.nextFloat(), body.getAngle());
-
-        if (body.getPosition().y + this.height_meters / 2.0f < 0)
-            body.setTransform(body.getPosition().x * random.nextFloat(), ARENA_HEIGHT + this.height_meters / 2.0f, body.getAngle());
-        else if (body.getPosition().y - this.height_meters / 2.0 > ARENA_HEIGHT)
-            body.setTransform(body.getPosition().x * random.nextFloat(), -this.height_meters / 2.0f, body.getAngle());
-
-    }
-
-    public boolean isOutOfBonds(){
-
-        if(this.body.getPosition().x < -WORLD_OFFSET || this.body.getPosition().x > (ARENA_WIDTH + WORLD_OFFSET))
-            return true;
-        else if(this.body.getPosition().y < -WORLD_OFFSET || this.body.getPosition().y > (ARENA_WIDTH + WORLD_OFFSET))
-                return true;
-
-
-        return false;
-    }
 
 
 }

@@ -28,11 +28,6 @@ public class GameModel {
      */
     private static final int PLANET_COUNT = 7;
 
-    /**
-     * Score
-     */
-    private int score = 0;
-
 
     /**
      * Time Left
@@ -109,10 +104,6 @@ public class GameModel {
         }
 
     }
-
-    public void setScore(int score){ this.score = score;}
-
-    public int getScore(){ return this.score; }
 
     public float getTimeLeft() { return this.timeLeft; }
 
