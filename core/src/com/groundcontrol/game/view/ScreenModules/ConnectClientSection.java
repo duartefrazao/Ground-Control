@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.GameView;
@@ -86,13 +87,21 @@ public class ConnectClientSection implements Section{
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
         Stage stage= new Stage();
+        Image background = new Image(new Texture(Gdx.files.internal("background.png")));
 
-        final String nums[] = {"zero","one","two","three","four","five","six","seven","eight","nine"};
+        background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        background.setPosition(0,0 );
+        stage.addActor(background);
+
+        final String nums[] = {"six","seven","eight","four","five","nine","one","two","three"};
         ArrayList<Button> buts = new ArrayList<Button>();
 
 
-        for(int i = 0; i < nums.length; i++){
-            buts.add(buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/" + nums[i]+".png",Texture.class),gv.game.getAssetManager().get("Numbers/"+nums[i]+".png",Texture.class), w/4,h/6, (int)(w/3),(int)(h)/8));
+        int iW=0,iH=0;
+        for(int i = 0; i < nums.length; i++,iW= (i%3)){
+            if(i%3==0) iH++;
+
+            buts.add(buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/" + nums[i]+".png",Texture.class),gv.game.getAssetManager().get("Numbers/"+nums[i]+".png",Texture.class), (iW+1)*w/4,(1+iH)*h/6, (int)(w+h)/10,(int)(w+h)/10));
             final int ind = i;
             buts.get(i).addListener(new ClickListener(){
                 @Override
@@ -103,7 +112,15 @@ public class ConnectClientSection implements Section{
             stage.addActor(buts.get(i));
         }
 
-        Button dot= buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/zero.png",Texture.class),gv.game.getAssetManager().get("Numbers/zero.png",Texture.class),  w/4,4*h/6, (int)(w/3)/2,(int)(h)/8/2);
+        Button zero= buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/zero.png",Texture.class),gv.game.getAssetManager().get("Numbers/zero.png",Texture.class),  2*w/4,1*h/6, (int)(w+h)/10,(int)(w+h)/10);
+        zero.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y){
+                ip += "0";
+            }
+        });
+
+        Button dot= buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/point.png",Texture.class),gv.game.getAssetManager().get("Numbers/point.png",Texture.class),  30+w/4,50+1*h/6, (int)(w+h)/10,(int)(w+h)/10);
         dot.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -111,7 +128,7 @@ public class ConnectClientSection implements Section{
             }
         });
 
-        Button correct= buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/correct.png",Texture.class),gv.game.getAssetManager().get("Numbers/correct.png",Texture.class),  3*w/4,4*h/6, (int)(w/3)/5,(int)(h)/8/5);
+        Button correct= buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/correct.png",Texture.class),gv.game.getAssetManager().get("Numbers/correct.png",Texture.class),  3*w/4,1*h/6, (int)(w+h)/10,(int)(w+h)/10);
         correct.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -120,7 +137,7 @@ public class ConnectClientSection implements Section{
             }
         });
 
-        Button connectButton= buttonFactory.makeButton( gv.game.getAssetManager().get("connect.png",Texture.class),gv.game.getAssetManager().get("connect.png",Texture.class),3*w/5,5*h/6, (int)(w/6),(int)(h)/6);
+        Button connectButton= buttonFactory.makeButton( gv.game.getAssetManager().get("connect.png",Texture.class),gv.game.getAssetManager().get("connect.png",Texture.class),3*w/5,5*h/6, (int)(w+h)/10,(int)(w+h)/10);
         connectButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -130,7 +147,7 @@ public class ConnectClientSection implements Section{
             }
         });
 
-        Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/5,5*h/6, (int)(w/6),(int)(h)/6);
+        Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/5,5*h/6, (int)(w+h)/10,(int)(w+h)/10);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -138,9 +155,9 @@ public class ConnectClientSection implements Section{
             }
         });
 
-
         stage.addActor(connectButton);
         stage.addActor(exitButton);
+        stage.addActor(zero);
         stage.addActor(dot);
         stage.addActor(correct);
 
@@ -149,7 +166,7 @@ public class ConnectClientSection implements Section{
 
     @Override
     public void loadAssets() {
-        String nums[] = {"zero","one","two","three","four","five","six","seven","eight","nine","correct"};
+        String nums[] = {"zero","one","two","three","four","five","six","seven","eight","nine","correct","point"};
 
         for(int i = 0; i < nums.length; i++){
             gv.game.getAssetManager().load("Numbers/" + nums[i]+ ".png", Texture.class);
@@ -165,17 +182,12 @@ public class ConnectClientSection implements Section{
 
     @Override
     public void drawStages(float delta) {
-
         stage.act(delta);
         stage.draw();
     }
 
     @Override
     public void drawBackground() {
-        Texture background = game.getAssetManager().get("background.png", Texture.class);
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-
 
     }
 }

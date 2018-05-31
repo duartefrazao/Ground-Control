@@ -1,11 +1,15 @@
 package com.groundcontrol.game.view.ScreenModules;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.GameView;
@@ -29,7 +33,8 @@ public class ConnectServerSection implements Section{
 
     private Server server;
     private boolean serverUp;
-    Button connect;
+    protected Color whiteColor = new Color(Color.WHITE);
+    Label ipLabel;
 
     String message;
     ServerConnector connector;
@@ -42,8 +47,8 @@ public class ConnectServerSection implements Section{
 
         server= new Server();
 
+
         stage = createStage();
-        font.getData().scale(10);
     }
 
     @Override
@@ -78,35 +83,27 @@ public class ConnectServerSection implements Section{
             e.printStackTrace();
         }
 
-        if(!serverIP.equals(""))
-            message="Press start and enter the following ip on the other device" + serverIP;
+        if(!serverIP.equals("")) {
+            message=""+ serverIP;
+            this.ipLabel.setText(message);
+        }
     }
 
     @Override
     public void display(float delta) {
-        // drawBackground();
-        font.draw(game.getBatch(), message, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/3);
-
-    }
-
-    public String hexToDec(String hex){
-        String result="";
-
-        for(int i = 0;i < hex.length();i+=2){
-            result+=Integer.parseInt(hex.substring(i,i+2),16)+".";
-        }
-        return result.substring(0,result.length()-1);
     }
 
 
     @Override
     public Stage createStage() {
 
+        Stage stage= new Stage();
+
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
         ButtonFactory buttonFactory = new ButtonFactory();
 
-        Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/5,3*h/5, (int)(w/6),(int)(h)/10);
+        Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/4,2*h/5, (int)(w/2),(int)(h)/10);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -122,11 +119,35 @@ public class ConnectServerSection implements Section{
             }
         });
 
-        Stage stage= new Stage();
+        Image background = new Image(new Texture(Gdx.files.internal("background.png")));
 
+        background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        background.setPosition(0,0 );
+
+
+
+
+
+
+
+        stage.addActor(background);
+        stage.addActor(createIpTable());
         stage.addActor(exitButton);
 
         return stage;
+    }
+
+    private Table createIpTable() {
+        Table table = new Table();
+        table.center();
+
+        font = new BitmapFont();
+        font.getData().scale(3);
+        ipLabel = new Label(message, new Label.LabelStyle(font, whiteColor));
+        table.add(ipLabel);
+        table.padBottom(Gdx.graphics.getHeight()/3);
+        table.setFillParent(true);
+        return table;
     }
 
     @Override
@@ -147,10 +168,5 @@ public class ConnectServerSection implements Section{
 
     @Override
     public void drawBackground() {
-        Texture background = game.getAssetManager().get("background.png", Texture.class);
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-
-
     }
 }

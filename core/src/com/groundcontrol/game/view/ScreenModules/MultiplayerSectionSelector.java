@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.GameView;
@@ -56,12 +57,22 @@ public class MultiplayerSectionSelector implements Section{
 
     @Override
     public Stage createStage() {
+
+        Stage stage= new Stage();
+
+        Image background = new Image(new Texture(Gdx.files.internal("background.png")));
+
+        background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        background.setPosition(0,0 );
+        stage.addActor(background);
+
+
         ButtonFactory buttonFactory = new ButtonFactory();
 
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
 
-        Button first= buttonFactory.makeButton(gv.game.getAssetManager().get("first.png",Texture.class),gv.game.getAssetManager().get("first.png",Texture.class),  2*w/5,h/6, (int)(w/2),(int)(h)/6);
+        Button first= buttonFactory.makeButton(gv.game.getAssetManager().get("first.png",Texture.class),gv.game.getAssetManager().get("first.png",Texture.class), 2*w/4,5*h/6, (int)(w/2),(int)(h)/6);
         first.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -70,7 +81,7 @@ public class MultiplayerSectionSelector implements Section{
             }
         });
 
-        Button second=buttonFactory.makeButton(gv.game.getAssetManager().get("second.png",Texture.class),gv.game.getAssetManager().get("second.png",Texture.class),2*w/5,3*h/6, (int)(w/2),(int)(h)/6);
+        Button second=buttonFactory.makeButton(gv.game.getAssetManager().get("second.png",Texture.class),gv.game.getAssetManager().get("second.png",Texture.class),2* w/4,3*h/6, (int)(w/2),(int)(h)/6);
         second.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -78,7 +89,7 @@ public class MultiplayerSectionSelector implements Section{
             }
         });
 
-        Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/5,5*h/6, (int)(w/2),(int)(h)/6);
+        Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/4,h/6, (int)(w/2),(int)(h)/6);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -86,7 +97,6 @@ public class MultiplayerSectionSelector implements Section{
             }
         });
 
-        Stage stage= new Stage();
 
         stage.addActor(first);
         stage.addActor(second);
@@ -114,10 +124,5 @@ public class MultiplayerSectionSelector implements Section{
 
     @Override
     public void drawBackground() {
-        Texture background = game.getAssetManager().get("background.png", Texture.class);
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-
-
     }
 }

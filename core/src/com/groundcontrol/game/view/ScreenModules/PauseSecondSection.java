@@ -61,10 +61,6 @@ public class PauseSecondSection extends PauseSection  {
 
     @Override
     public void drawBackground() {
-        /*Texture background = game.getAssetManager().get("backgroundSecond.png", Texture.class);
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-*/
     }
 
     @Override
@@ -82,7 +78,7 @@ public class PauseSecondSection extends PauseSection  {
             }
         });
 
-        Button exitButton=butFac.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),w/2,h/3, (int)(w/2),(int)(h)/4);
+        Button exitButton=butFac.makeButton(gv.game.getAssetManager().get("exitMM.png",Texture.class),gv.game.getAssetManager().get("exitMM.png",Texture.class),w/2,h/3, (int)(w/2),(int)(h)/4);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

@@ -155,7 +155,7 @@ public class GameSection implements Section, GestureDetector.GestureListener {
             }
         });
 
-        Button pauseButton = butFac.makeButton(gv.game.getAssetManager().get("Buttons/pause.png", Texture.class), gv.game.getAssetManager().get("Buttons/pause.png", Texture.class), 19 * w / 20f, 19 * h / 20f, (int) (w + h) / 20, (int) (h + w) / 20);
+        Button pauseButton = butFac.makeButton(gv.game.getAssetManager().get("Buttons/pause.png", Texture.class), gv.game.getAssetManager().get("Buttons/pause.png", Texture.class), -20 + 19 * w / 20f, 19 * h / 20f, (int) (w + h) / 20, (int) (h + w) / 20);
         pauseButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
@@ -228,8 +228,6 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         Texture background = gv.game.getAssetManager().get("background.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         gv.game.getBatch().draw(background, 0, 0, 0, 0, (int) (ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-
-
     }
 
     @Override
