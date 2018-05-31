@@ -359,6 +359,7 @@ public class PlayerController extends ElementController {
         this.updateMovementState();
     }
 
+
     private void updateJumpTime(float delta) {
 
         jumpingTime -= delta;

@@ -111,6 +111,7 @@ public class GameController implements ContactListener {
 
     /**
      * Class constructor specifying the game Model to be used
+     *
      * @param gameModel
      */
     public GameController(GameModel gameModel) {
@@ -141,9 +142,10 @@ public class GameController implements ContactListener {
 
     /**
      * Updates the current force to be applied to the planets
+     *
      * @param delta time elapsed after last step
-     * @param x x component of the force
-     * @param y y component of the force
+     * @param x     x component of the force
+     * @param y     y component of the force
      */
     public void setPlanetForce(float delta, float x, float y) {
 
@@ -170,6 +172,7 @@ public class GameController implements ContactListener {
     /**
      * Handles the input sent by the GameView
      * Calls upon a InputDecoder to convert the input
+     *
      * @param input the input sent
      */
     public void handleInput(GameSection.StateInput input) {
@@ -180,6 +183,7 @@ public class GameController implements ContactListener {
 
     /**
      * Runs the physics engine in each step
+     *
      * @param delta time elapsed after the last step
      */
     public void update(float delta) {
@@ -208,11 +212,24 @@ public class GameController implements ContactListener {
         bodies.clear();
     }
 
+    private void checkPlayerPosition(){
+
+        if(this.playerController.getBody().getPosition().x < -PLANET_GENERATION_OFFSET || this.playerController.getBody().getPosition().x > (ARENA_WIDTH + PLANET_GENERATION_OFFSET))
+            this.playerController.setLost(true);
+
+        else if(this.playerController.getBody().getPosition().y < -PLANET_GENERATION_OFFSET || this.playerController.getBody().getPosition().y > (ARENA_HEIGHT + PLANET_GENERATION_OFFSET))
+            this.playerController.setLost(true);
+
+
+    }
+
     private void updateModelInfo() {
 
         Array<Body> bodies = new Array<Body>();
 
         world.getBodies(bodies);
+
+        this.checkPlayerPosition();
 
         for (Body body : bodies) {
             verifyBounds(body);
@@ -221,9 +238,9 @@ public class GameController implements ContactListener {
             ((ElementModel) body.getUserData()).setRotation(body.getAngle());
         }
 
-
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
         ((PlayerModel) playerController.getBody().getUserData()).setLost(playerController.hasLost());
+
 
         this.gameModel.setTimeLeft(playerController.getTimeLeft());
 
@@ -250,7 +267,8 @@ public class GameController implements ContactListener {
     }
 
     /**
-     * Creates all the new planets in the beginning of the step
+     * Creates all the needed new planets in the beginning of the step.
+     * The need for new planets arises when an older one is destroyed.
      */
     public void createNewPlanets() {
 
@@ -268,6 +286,7 @@ public class GameController implements ContactListener {
 
     /**
      * Checks for new comets in the beginning of the step
+     *
      * @param delta the time elapsed
      */
     public void checkForNewComet(float delta) {
@@ -302,14 +321,14 @@ public class GameController implements ContactListener {
         if (A.getUserData() instanceof CometModel) {
 
             if (B.getUserData() instanceof PlayerModel)
-                cometPlayerCollision(A, B);
+                cometPlayerCollision();
             else if (B.getUserData() instanceof PlanetModel)
                 cometObjectCollision(A, B);
 
         } else if (B.getUserData() instanceof CometModel) {
 
             if (A.getUserData() instanceof PlayerModel)
-                cometPlayerCollision(B, A);
+                cometPlayerCollision();
             else if (A.getUserData() instanceof PlanetModel)
                 cometObjectCollision(B, A);
 
@@ -327,9 +346,9 @@ public class GameController implements ContactListener {
 
     }
 
-    private void cometPlayerCollision(Body comet, Body player) {
+    private void cometPlayerCollision() {
 
-        System.out.println("YOU LOST!");
+        this.playerController.setLost(true);
 
     }
 
