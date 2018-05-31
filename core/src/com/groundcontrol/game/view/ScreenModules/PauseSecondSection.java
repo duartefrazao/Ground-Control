@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
@@ -60,10 +61,10 @@ public class PauseSecondSection extends PauseSection  {
 
     @Override
     public void drawBackground() {
-        Texture background = game.getAssetManager().get("backgroundSecond.png", Texture.class);
+        /*Texture background = game.getAssetManager().get("backgroundSecond.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-
+*/
     }
 
     @Override
@@ -90,8 +91,14 @@ public class PauseSecondSection extends PauseSection  {
             }
         });
 
+        Image background = new Image(new Texture(Gdx.files.internal("backgroundSecond.png")));
+
+        background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        background.setPosition(0,0 );
+
         Stage stage= new Stage();
 
+        stage.addActor(background);
         stage.addActor(resumeButton);
         stage.addActor(exitButton);
 
