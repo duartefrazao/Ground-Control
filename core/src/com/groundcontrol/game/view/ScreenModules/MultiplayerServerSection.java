@@ -8,10 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
-import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
 
@@ -80,9 +78,9 @@ public class MultiplayerServerSection extends GameSection{
 
     @Override
     public void transition() {
-        PlayerModel player = gv.gameModel.getPlayer();
-        PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game, player);
-        viewPlayer.removeStopFrame();
+
+        ViewFactory.updatePause(gv.gameModel.getPlayer(), gv, false);
+
         Gdx.input.setInputProcessor(this.ip);
 
         gv.currentSection = gv.multiplayerServer;

@@ -12,7 +12,6 @@ import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.elements.ElementView;
-import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
 
@@ -58,22 +57,20 @@ public class PauseFirstSection extends PauseSection {
         viewPlayer.update(player);
         viewPlayer.draw(gv.game.getBatch());
 
-        Utils.drawAllElements(gv.gameModel.getPlanets(), gv);
-        Utils.drawAllElements(gv.gameModel.getComets(), gv);
-        Utils.drawAllElements(gv.gameModel.getExplosions(), gv);
+        ViewFactory.drawAllElements(gv.gameModel.getPlanets(), gv);
+        ViewFactory.drawAllElements(gv.gameModel.getComets(), gv);
+        ViewFactory.drawAllElements(gv.gameModel.getExplosions(), gv);
 
     }
 
     @Override
     public void transition() {
 
-        PlayerModel player = gv.gameModel.getPlayer();
-        PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
-        viewPlayer.setStopFrame();
+        ViewFactory.updatePause(gv.gameModel.getPlayer(), gv, true);
 
-        Utils.drawPausedElements(gv.gameModel.getExplosions(), gv);
+        ViewFactory.updatePauseElements(gv.gameModel.getExplosions(), gv, true);
 
-        Utils.drawPausedElements(gv.gameModel.getComets(), gv);
+        ViewFactory.updatePauseElements(gv.gameModel.getComets(), gv, true);
 
         Gdx.input.setInputProcessor(stage);
 

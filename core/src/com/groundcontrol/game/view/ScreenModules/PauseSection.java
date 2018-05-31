@@ -9,16 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
-import com.groundcontrol.game.model.elements.CometModel;
-import com.groundcontrol.game.model.elements.PlanetModel;
-import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-import com.groundcontrol.game.view.elements.ElementView;
-import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
-
-import java.util.List;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
@@ -48,21 +41,11 @@ public class PauseSection implements Section{
     public void display(float delta) {
         drawBackground();
 
-        PlayerModel player = gv.gameModel.getPlayer();
-        ElementView viewPlayer = ViewFactory.makeView(gv.game,player);
-        viewPlayer.update(player);
-        viewPlayer.draw(gv.game.getBatch());
+        ViewFactory.drawElement(gv.gameModel.getPlayer(), gv);
 
-        List<PlanetModel> planets = gv.gameModel.getPlanets();
-        for(PlanetModel p : planets){
-            ElementView view = ViewFactory.makeView(gv.game,p);
-            view.draw(gv.game.getBatch());
-        }
-        List<CometModel> comets = gv.gameModel.getComets();
-        for(CometModel c : comets){
-            ElementView view = ViewFactory.makeView(gv.game, c);
-            view.draw(gv.game.getBatch());
-        }
+        ViewFactory.drawAllElements(gv.gameModel.getPlanets(), gv);
+
+        ViewFactory.drawAllElements(gv.gameModel.getComets(), gv);
       /*  List<ExplosionModel> explosions = gv.gameModel.getExplosions();
         for(ExplosionModel e : explosions){
             ElementView view = ViewFactory.makeView(gv.game, e);
@@ -74,14 +57,11 @@ public class PauseSection implements Section{
     @Override
     public void transition() {
 
+        ViewFactory.updatePause(gv.gameModel.getPlayer(), gv, true);
 
-        PlayerModel player = gv.gameModel.getPlayer();
-        PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
-        viewPlayer.setStopFrame();
+        ViewFactory.updatePauseElements(gv.gameModel.getExplosions(), gv, true);
 
-        Utils.drawPausedElements(gv.gameModel.getExplosions(), gv);
-
-        Utils.drawPausedElements(gv.gameModel.getComets(), gv);
+        ViewFactory.updatePauseElements(gv.gameModel.getComets(), gv, true);
 
         Gdx.input.setInputProcessor(stage);
 

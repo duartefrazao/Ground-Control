@@ -12,12 +12,8 @@ public abstract class ElementView {
 
     protected boolean stopFrame;
 
-    public void setStopFrame(){
-        this.stopFrame = true;
-    }
-
-    public void removeStopFrame(){
-        this.stopFrame = false;
+    public void setStopFrame(boolean pause){
+        this.stopFrame = pause;
     }
 
     ElementView(GroundControl game){

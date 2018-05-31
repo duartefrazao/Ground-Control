@@ -12,9 +12,7 @@ public class CometView extends ElementView {
 
     private static final int numberOfStates =6;
 
-    private static final float FRAME_TIME = 0.15f;
-
-    private boolean stop = false;
+    private static final float FRAME_TIME = 0.1f;
 
     private float stateTime = 0;
 
@@ -37,14 +35,6 @@ public class CometView extends ElementView {
 
     }
 
-    public void setStopped() {
-        this.stop = true;
-    }
-
-    public void removeStopped() {
-        this.stop = false;
-    }
-
 
     public Sprite createSprite(GroundControl game) {
         Texture texture = game.getAssetManager().get("Comet/comet.png");
@@ -55,7 +45,7 @@ public class CometView extends ElementView {
     @Override
     public void draw(SpriteBatch batch) {
 
-        if (!stop)
+        if (!stopFrame)
             this.stateTime += Gdx.graphics.getDeltaTime();
 
 

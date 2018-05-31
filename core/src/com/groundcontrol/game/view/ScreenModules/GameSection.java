@@ -28,6 +28,8 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import javax.swing.text.View;
+
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
@@ -98,22 +100,21 @@ public class GameSection implements Section, GestureDetector.GestureListener {
     public void display(float delta) {
         drawBackground();
 
-        PlayerModel player = gv.gameModel.getPlayer();
-        ElementView viewPlayer = ViewFactory.makeView(gv.game, player);
-        viewPlayer.update(player);
-        viewPlayer.draw(gv.game.getBatch());
+        ViewFactory.drawElement(gv.gameModel.getPlayer(), gv);
 
-        Utils.drawAllElements(gv.gameModel.getPlanets(), gv);
-        Utils.drawAllElements(gv.gameModel.getComets(), gv);
-        Utils.drawAllElements(gv.gameModel.getExplosions(), gv);
+        ViewFactory.drawAllElements(gv.gameModel.getPlanets(), gv);
+        ViewFactory.drawAllElements(gv.gameModel.getComets(), gv);
+        ViewFactory.drawAllElements(gv.gameModel.getExplosions(), gv);
 
     }
 
     @Override
     public void transition() {
-        PlayerModel player = gv.gameModel.getPlayer();
-        PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game, player);
-        viewPlayer.removeStopFrame();
+
+        ViewFactory.updatePause(gv.gameModel.getPlayer(), gv, false);
+        ViewFactory.updatePauseElements(gv.gameModel.getComets(), gv, false);
+        ViewFactory.updatePauseElements(gv.gameModel.getComets(), gv, false);
+
         Gdx.input.setInputProcessor(this.ip);
 
         gv.currentSection = gv.gameSection;

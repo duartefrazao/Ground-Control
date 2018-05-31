@@ -2,8 +2,10 @@ package com.groundcontrol.game.view.elements;
 
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.model.elements.ElementModel;
+import com.groundcontrol.game.view.GameView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.groundcontrol.game.model.elements.ElementModel.ModelType.BigPlanet;
@@ -42,4 +44,36 @@ public class ViewFactory {
 
     }
 
+    public static <T extends ElementModel> void drawAllElements(List<T> models, GameView gv) {
+
+        for (T e : models) {
+
+            drawElement(e, gv);
+
+        }
+
+    }
+
+    public static <T extends ElementModel> void updatePauseElements(List<T> models, GameView gv, boolean pause) {
+
+        for (T e : models) {
+            updatePause(e, gv, pause);
+        }
+
+    }
+
+    public static <T extends ElementModel> void drawElement(T model, GameView gv) {
+
+        ElementView view = ViewFactory.makeView(gv.game, model);
+        view.update(model);
+        view.draw(gv.game.getBatch());
+
+    }
+
+    public static <T extends ElementModel> void updatePause(T model, GameView gv, boolean pause) {
+
+        ElementView view = ViewFactory.makeView(gv.game, model);
+        view.setStopFrame(pause);
+
+    }
 }
