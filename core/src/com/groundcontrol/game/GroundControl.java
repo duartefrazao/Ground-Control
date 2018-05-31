@@ -6,20 +6,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.GameView;
-import com.groundcontrol.game.view.network.Client;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URL;
 
 public class GroundControl extends Game {
+
 	private SpriteBatch batch;
+
 	private AssetManager assetManager;
-
-
 
 	@Override
 	public void create () {
@@ -47,10 +39,18 @@ public class GroundControl extends Game {
 		assetManager.dispose();
 	}
 
+	/**
+	 * Accessor to the game batch
+	 * @return batch
+	 */
 	public SpriteBatch getBatch() {
 		return batch;
 	}
 
+	/**
+	 * Accessor to the game asset manager
+	 * @return assetManager
+	 */
 	public AssetManager getAssetManager() {
 		return assetManager;
 	}

@@ -18,6 +18,10 @@ public class ExplosionView extends ElementView{
 
     private Animation<TextureRegion> explosionAnimation;
 
+    /**
+     * Default constructor
+     * @param game the game to which the view will be associated
+     */
     public ExplosionView(GroundControl game) {
         super(game);
     }
@@ -37,6 +41,7 @@ public class ExplosionView extends ElementView{
     }
 
 
+    @Override
     public Sprite createSprite(GroundControl game) {
         Texture texture = game.getAssetManager().get("Explosion/explosion[3].png");
         this.explosionAnimation = createExplosionAnimation(game);

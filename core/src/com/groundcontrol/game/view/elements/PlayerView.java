@@ -59,6 +59,7 @@ public class PlayerView extends ElementView {
 
     }
 
+    @Override
     public Sprite createSprite(GroundControl game) {
         Texture texture = game.getAssetManager().get("assassin.png");
         this.runningAnimation = createRunningAnimation(game);

@@ -19,13 +19,33 @@ import com.groundcontrol.game.view.ScreenModules.PauseSecondSection;
 import com.groundcontrol.game.view.ScreenModules.PauseSection;
 import com.groundcontrol.game.view.ScreenModules.Section;
 
+/**
+ * MVC View. Provides an UI and shows all the elements to the user.
+ */
 public class GameView extends ScreenAdapter {
 
+    /**
+     * The current game instance.
+     * Provides access to the asset manager.
+     */
     public final GroundControl game;
     private final OrthographicCamera camera;
+
+    /**
+     * Pixel to meter relation
+     */
     public final static float PIXEL_TO_METER = 0.009f;
+
+    /**
+     * Viewport width
+     */
     public static final float VIEWPORT_WIDTH = 50;
+
+    /**
+     * Represents our game current section, i.e., game section, pause section etc...
+     */
     public Section currentSection;
+
     public GameSection gameSection;
     public final ConnectClientSection connectClientSection;
     public final ConnectServerSection connectServerSection;
@@ -34,15 +54,20 @@ public class GameView extends ScreenAdapter {
     public  final MultiplayerSectionSelector multiplayerSectionSelector;
     public  MultiplayerServerSection multiplayerServer;
     public  MultiplayerClientSection multiplayerClient;
-
-
-
-
-    public GameController gameController;
-    public GameModel gameModel;
     public PauseSecondSection pauseSecondSection;
     public PauseFirstSection pauseFirstSection;
 
+
+
+    /**
+     * The Controller of the MVC design
+     */
+    public GameController gameController;
+
+    /**
+     * The Model of the MVC design
+     */
+    public GameModel gameModel;
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
         this.game= game;
 

@@ -18,6 +18,10 @@ public class CometView extends ElementView {
 
     private Animation<TextureRegion> burningAnimation;
 
+    /**
+     * Default constructor
+     * @param game the game to which the view will be associated
+     */
     public CometView(GroundControl game) {
         super(game);
     }
@@ -35,7 +39,7 @@ public class CometView extends ElementView {
 
     }
 
-
+    @Override
     public Sprite createSprite(GroundControl game) {
         Texture texture = game.getAssetManager().get("Comet/comet.png");
         this.burningAnimation = createBurningAnimation(game);
