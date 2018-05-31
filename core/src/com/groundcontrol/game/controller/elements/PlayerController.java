@@ -13,9 +13,9 @@ import com.groundcontrol.game.model.elements.PlayerModel;
 
 public class PlayerController extends ElementController {
 
-    private final static float runningRelativeVelocity = 3.5f;
-
     public final static int walkToPullRation = 40;
+
+    private final static float runningRelativeVelocity = 3.5f;
 
     private final static float maxVelocity = 13;
 
@@ -24,6 +24,16 @@ public class PlayerController extends ElementController {
     private final static float maximumAllowedDistance = 64;
 
     private final static float jumpBonusTime = 1f;
+
+    private static int imageWidth = 244;
+
+    private static int imageHeight = 423;
+
+    private static float density = 20;
+
+    private static float friction = 1f;
+
+    private static float restitution = 0.0f;
 
     private float jumpingTime = 0f;
 
@@ -39,14 +49,11 @@ public class PlayerController extends ElementController {
 
         state = new FloatState();
 
-        float density = 20f,
-                friction = 1f,
-                restitution = 0.0f;
-        this.width = 244;
-        this.height = 423;
+        this.width = imageWidth;
+        this.height = imageHeight;
 
-        //Head
-        createFixture(body, new float[]{
+        //head
+        FixtureInfo info = new FixtureInfo(new float[]{
                 62, 186,
                 32, 122,
                 57, 67,
@@ -54,21 +61,28 @@ public class PlayerController extends ElementController {
                 160, 53,
                 207, 123,
                 193, 195,
-                62, 186,
-        }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                62, 186
+        }, width, height);
 
-        //Corns
-        createFixture(body, new float[]{
+        info.physicsComponents(density, friction, restitution);
+
+        info.collisionComponents(PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY | COMET_BODY));
+
+        createFixture(body, info);
+
+        //corns
+        info.vertexes = new float[]{
                 114, 49,
                 118, 33,
                 109, 19,
                 142, 13,
                 142, 26,
                 129, 33,
-                114, 49,
-        }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                114, 49};
 
-        createFixture(body, new float[]{
+        createFixture(body, info);
+
+        info.vertexes = new float[]{
                 191, 83,
                 207, 66,
                 215, 52,
@@ -76,28 +90,32 @@ public class PlayerController extends ElementController {
                 241, 34,
                 232, 52,
                 219, 76,
-                191, 83,
-        }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                191, 83};
 
-        //Arms
-        createFixture(body, new float[]{
+        createFixture(body, info);
+
+        //arms
+        info.vertexes = new float[]{
                 61, 196,
                 23, 198,
                 3, 217,
                 21, 268,
-                61, 196,
-        }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                61, 196};
 
-        createFixture(body, new float[]{
+        createFixture(body, info);
+
+        info.vertexes = new float[]{
                 150, 229,
                 175, 285,
                 166, 316,
                 156, 330,
-                150, 229,
-        }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                150, 229};
 
-        //Legs
-        createFixture(body, new float[]{
+        createFixture(body, info);
+
+
+        //legs
+        info.vertexes = new float[]{
                 31, 332,
                 37, 370,
                 36, 401,
@@ -105,21 +123,24 @@ public class PlayerController extends ElementController {
                 90, 418,
                 85, 403,
                 81, 374,
-                31, 332,
-        }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                31, 332};
 
-        createFixture(body, new float[]{
+        createFixture(body, info);
+
+        info.vertexes = new float[]{
                 107, 359,
                 102, 395,
                 106, 418,
                 161, 417,
                 144, 397,
                 107, 359,
-                152, 327,
-        }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                152, 327};
+
+        createFixture(body, info);
+
 
         //Belly
-        createFixture(body, new float[]{
+        info.vertexes = new float[]{
                 75, 219,
                 17, 283,
                 41, 346,
@@ -127,8 +148,9 @@ public class PlayerController extends ElementController {
                 143, 330,
                 151, 280,
                 138, 227,
-                75, 219,
-        }, width, height, density, friction, restitution, PLAYER_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                75, 219};
+
+        createFixture(body, info);
 
         this.body.setGravityScale(0);
         this.body.setAngularDamping(0.7f);
@@ -152,7 +174,7 @@ public class PlayerController extends ElementController {
 
     public void jump() {
 
-        if(this.getPlanet() == null) {
+        if (this.getPlanet() == null) {
             return;
         }
 
@@ -164,7 +186,7 @@ public class PlayerController extends ElementController {
 
         Vector2 direction = new Vector2((float) Math.cos(rot), (float) Math.sin(rot)).nor();
 
-        this.applyForceToCenter(direction.rotate(180).scl((float) ( Math.pow(this.calculatePullForce(this.getPlanet()).len(),  4))), true);
+        this.applyForceToCenter(direction.rotate(180).scl((float) (Math.pow(this.calculatePullForce(this.getPlanet()).len(), 4))), true);
 
         this.limitVelocity();
 
@@ -176,7 +198,7 @@ public class PlayerController extends ElementController {
 
     }
 
-    public void walk(int dir){
+    public void walk(int dir) {
 
         float rot = this.getAngleBetween(this.getPlanet());
 
@@ -210,8 +232,8 @@ public class PlayerController extends ElementController {
     }
 
     public void applyPullForce(Array<Body> objects) {
-        if(this.jumpingTime == 0)
-          this.state.applyPullForce(this, objects);
+        if (this.jumpingTime == 0)
+            this.state.applyPullForce(this, objects);
     }
 
     public float getMaxVelocity() {
@@ -250,11 +272,11 @@ public class PlayerController extends ElementController {
         this.updateMovementState();
     }
 
-    private void updateJumpTime(float delta){
+    private void updateJumpTime(float delta) {
 
         jumpingTime -= delta;
 
-        if(jumpingTime < 0)
+        if (jumpingTime < 0)
             jumpingTime = 0;
 
     }
@@ -274,10 +296,9 @@ public class PlayerController extends ElementController {
 
     }
 
-    public float getTimeLeft(){
+    public float getTimeLeft() {
         return this.state.getTime();
     }
-
 
 
 }

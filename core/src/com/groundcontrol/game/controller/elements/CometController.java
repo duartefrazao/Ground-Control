@@ -39,7 +39,7 @@ public class CometController extends ElementController {
 
         info.physicsComponents(density, friction, restitution);
 
-        info.collisionComponents(COMET_BODY, (short) (COMET_BODY | PLANET_BODY | PLAYER_BODY));
+        info.collisionComponents(COMET_BODY, (short) (COMET_BODY | PLANET_BODY | PLAYER_BODY | COMET_BODY) );
 
         createFixture(body, info);
 

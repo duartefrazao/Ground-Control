@@ -41,7 +41,7 @@ public class SmallPlanetController extends ElementController {
 
         info.physicsComponents(density, friction, restitution);
 
-        info.collisionComponents(PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+        info.collisionComponents(PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY | COMET_BODY));
 
         createFixture(body, info);
 
