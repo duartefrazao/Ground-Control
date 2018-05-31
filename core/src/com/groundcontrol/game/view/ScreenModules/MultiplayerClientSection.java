@@ -130,10 +130,6 @@ public class MultiplayerClientSection implements Section{
 
     @Override
     public void drawBackground() {
-     /*   Texture background = gv.game.getAssetManager().get("backgroundSecond.png", Texture.class);
-        background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-        gv.game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-*/
     }
 
     private void handleInputs(float delta){

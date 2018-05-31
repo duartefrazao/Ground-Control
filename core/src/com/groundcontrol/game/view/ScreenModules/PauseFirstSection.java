@@ -105,8 +105,6 @@ public class PauseFirstSection extends PauseSection {
 
     public void exitToMainMenu(){
         server.stop();
-        gv.gameModel=new GameModel();
-        gv.gameController = new GameController(gv.gameModel);
         gv.menuSection.transition();
     }
 

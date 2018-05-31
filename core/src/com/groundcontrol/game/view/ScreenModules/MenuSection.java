@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.groundcontrol.game.GroundControl;
+import com.groundcontrol.game.controller.GameController;
+import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 
@@ -44,11 +46,12 @@ public class MenuSection implements Section{
 
     @Override
     public void display(float delta) {
-        //drawBackground();
     }
 
     @Override
     public void transition() {
+        gv.gameModel=new GameModel();
+        gv.gameController = new GameController(gv.gameModel);
         Gdx.input.setInputProcessor(stage);
         gv.currentSection=gv.menuSection;
     }

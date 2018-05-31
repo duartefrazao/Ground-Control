@@ -93,8 +93,6 @@ public class PauseSection implements Section{
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                gv.gameModel=new GameModel();
-                gv.gameController = new GameController(gv.gameModel);
                 gv.menuSection.transition();
             }
         });

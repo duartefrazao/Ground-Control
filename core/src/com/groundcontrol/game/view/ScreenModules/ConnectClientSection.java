@@ -2,12 +2,15 @@ package com.groundcontrol.game.view.ScreenModules;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.GameView;
@@ -25,6 +28,8 @@ public class ConnectClientSection implements Section{
     private final GameView gv;
     private final GroundControl game;
     private final Stage stage;
+    protected Color whiteColor = new Color(Color.WHITE);
+    Label ipLabel;
 
     BitmapFont font=new BitmapFont();
 
@@ -65,7 +70,6 @@ public class ConnectClientSection implements Section{
 
     @Override
     public void display(float delta) {
-        font.draw(gv.game.getBatch(),"--->" + ip,Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/3);
 
     }
 
@@ -78,6 +82,17 @@ public class ConnectClientSection implements Section{
     }
 
 
+    private Table createIpTable() {
+        Table table = new Table();
+        table.center().bottom();
+        table.padBottom(Gdx.graphics.getHeight()/22);
+        font = new BitmapFont();
+        font.getData().scale(3);
+        ipLabel = new Label(ip, new Label.LabelStyle(font, whiteColor));
+        table.add(ipLabel);
+        table.setFillParent(true);
+        return table;
+    }
 
 
     @Override
@@ -106,7 +121,7 @@ public class ConnectClientSection implements Section{
             buts.get(i).addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y){
-                    ip = ip + nums[ind];
+                    ip = ip + ind;
                 }
             });
             stage.addActor(buts.get(i));
@@ -155,6 +170,7 @@ public class ConnectClientSection implements Section{
             }
         });
 
+        stage.addActor(createIpTable());
         stage.addActor(connectButton);
         stage.addActor(exitButton);
         stage.addActor(zero);
@@ -182,6 +198,7 @@ public class ConnectClientSection implements Section{
 
     @Override
     public void drawStages(float delta) {
+        ipLabel.setText(ip);
         stage.act(delta);
         stage.draw();
     }
