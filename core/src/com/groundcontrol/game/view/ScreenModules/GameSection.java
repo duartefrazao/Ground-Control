@@ -14,21 +14,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.groundcontrol.game.model.elements.CometModel;
-import com.groundcontrol.game.model.elements.ElementModel;
-import com.groundcontrol.game.model.elements.ExplosionModel;
-import com.groundcontrol.game.model.elements.PlanetModel;
-import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-import com.groundcontrol.game.view.elements.ElementView;
-import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
 
 import java.text.DecimalFormat;
-import java.util.List;
-
-import javax.swing.text.View;
 
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
@@ -105,6 +95,10 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         ViewFactory.drawAllElements(gv.gameModel.getPlanets(), gv);
         ViewFactory.drawAllElements(gv.gameModel.getComets(), gv);
         ViewFactory.drawAllElements(gv.gameModel.getExplosions(), gv);
+
+        if(gv.gameModel.getPlayer().hasLost()){
+            gv.menuSection.transition();
+        }
 
     }
 

@@ -14,7 +14,7 @@ public class FloatState implements PlayerState {
 
     private final static float MAX_PLANET_DISTANCE = 8;
 
-    private final static float INITIAL_TIME = 30f;
+    private final static float INITIAL_TIME = 15f;
 
     private final static float OVERFLOW_CHECK = 0.01f;
 

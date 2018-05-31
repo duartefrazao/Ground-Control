@@ -223,6 +223,7 @@ public class GameController implements ContactListener {
 
 
         ((PlayerModel) playerController.getBody().getUserData()).setRightSide(playerController.isRightSide());
+        ((PlayerModel) playerController.getBody().getUserData()).setLost(playerController.hasLost());
 
         this.gameModel.setTimeLeft(playerController.getTimeLeft());
 

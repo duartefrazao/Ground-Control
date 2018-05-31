@@ -7,6 +7,8 @@ public class PlayerModel extends ElementModel {
 
     private boolean rightSide;
 
+    private boolean lost;
+
     private animationState currentState;
 
     /**
@@ -23,6 +25,16 @@ public class PlayerModel extends ElementModel {
 
         this.currentState = animationState.IDLE;
 
+        this.lost = false;
+
+    }
+
+    public boolean hasLost(){
+        return this.lost;
+    }
+
+    public void setLost(boolean lost){
+        this.lost = lost;
     }
 
     @Override

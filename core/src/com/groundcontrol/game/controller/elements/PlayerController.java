@@ -49,8 +49,11 @@ public class PlayerController extends ElementController {
 
     private boolean rightSide = true;
 
+    private boolean lost;
+
     /**
      * Creates a new player Controller and add its to the current world.
+     *
      * @param world the current world
      * @param model the player model
      */
@@ -164,10 +167,13 @@ public class PlayerController extends ElementController {
 
         this.body.setGravityScale(0);
         this.body.setAngularDamping(0.7f);
+
+        this.lost = false;
     }
 
     /**
      * Tells if the player is facing the right side or left side
+     *
      * @return true if facing right side, false otherwise
      */
     public boolean isRightSide() {
@@ -176,6 +182,7 @@ public class PlayerController extends ElementController {
 
     /**
      * Sets the player current facing direction
+     *
      * @param side if true, sets it to the right, left otherwise
      */
     public void setRightSide(boolean side) {
@@ -184,6 +191,7 @@ public class PlayerController extends ElementController {
 
     /**
      * Updates the current player state
+     *
      * @param state the new state
      */
     public void setState(PlayerState state) {
@@ -192,6 +200,7 @@ public class PlayerController extends ElementController {
 
     /**
      * Handles the input given by the view
+     *
      * @param input
      */
     public void handleInput(InputDecoder.Input input) {
@@ -232,6 +241,7 @@ public class PlayerController extends ElementController {
 
     /**
      * Makes the player walk in the direction the user wants, if he is in a planet
+     *
      * @param dir - the direction given by the user
      */
     public void walk(int dir) {
@@ -249,6 +259,7 @@ public class PlayerController extends ElementController {
 
     /**
      * Tells if the user is in a planet
+     *
      * @return true if is, false otherwise
      */
     public boolean isInPlanet() {
@@ -257,6 +268,7 @@ public class PlayerController extends ElementController {
 
     /**
      * Sets the player in a planet
+     *
      * @param b the planet
      */
     public void setInPlanet(Body b) {
@@ -272,6 +284,7 @@ public class PlayerController extends ElementController {
 
     /**
      * Returns the body of the current planet
+     *
      * @return the body of the planet
      */
     public Body getPlanet() {
@@ -280,6 +293,7 @@ public class PlayerController extends ElementController {
 
     /**
      * Alters the player rotation, given the current state
+     *
      * @param objects - surrounding bodies
      */
     public void setRotation(Array<Body> objects) {
@@ -289,6 +303,7 @@ public class PlayerController extends ElementController {
     /**
      * Applies the current gravity force to the player, given its current state
      * If the player is still in jumping time, it doesn't do nothing
+     *
      * @param objects surrounding bodies
      */
     public void applyPullForce(Array<Body> objects) {
@@ -321,14 +336,15 @@ public class PlayerController extends ElementController {
 
     /**
      * Updates all the aspects related to the player in each step
+     *
      * @param planets surrounding bodies
-     * @param delta time elapsed after the last sped
+     * @param delta   time elapsed after the last sped
      */
     public void update(Array<Body> planets, float delta) {
 
         this.state.updateTime(this, delta);
 
-        this.updateJumpTime(delta);
+        updateJumpTime(delta);
 
         this.applyPullForce(planets);
 
@@ -350,6 +366,8 @@ public class PlayerController extends ElementController {
         if (jumpingTime < 0)
             jumpingTime = 0;
 
+
+        this.lost = jumpingTime < 0;
     }
 
     private void updateMovementState() {
@@ -369,10 +387,19 @@ public class PlayerController extends ElementController {
 
     /**
      * Returns the time the player still has left
+     *
      * @return time
      */
     public float getTimeLeft() {
         return this.state.getTime();
+    }
+
+    /**
+     * Tells if the player has lost or not
+     * @return true if lost, false otherwise
+     */
+    public boolean hasLost(){
+        return this.lost;
     }
 
 
