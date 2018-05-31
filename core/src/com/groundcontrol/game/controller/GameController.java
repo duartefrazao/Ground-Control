@@ -71,37 +71,37 @@ public class GameController implements ContactListener {
     /**
      * Our world
      */
-    protected final World world;
+    private final World world;
 
     /**
      * The player controller
      */
-    protected final PlayerController playerController;
+    private final PlayerController playerController;
 
     /**
      * frame accumulator
      */
-    protected float accumulator;
+    private float accumulator;
 
     /**
      * The game model that is updated
      */
-    protected GameModel gameModel;
+    private GameModel gameModel;
 
     /**
      * Force controller that manages the force applied to the planets
      */
-    protected ForceController forceController;
+    private ForceController forceController;
 
     /**
      * Current Time to the next comet
      */
-    protected float timeToNextComet;
+    private float timeToNextComet;
 
     /**
      * Game sounds
      */
-    Sound sound;
+    private Sound sound;
 
     /**
      * List of planets to add in each step after they collide with a comet
