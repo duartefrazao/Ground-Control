@@ -55,7 +55,7 @@ public class GameController implements ContactListener {
 
     protected float timeToNextComet;
     Sound sound;
-    private InputDecoder decoder;
+
     private List<PlanetModel> planetsToAdd = new ArrayList<PlanetModel>();
     //private final Music music;
 
@@ -77,8 +77,6 @@ public class GameController implements ContactListener {
             PlanetFactory.createPlanet(p, this.world);
 
         }
-
-        this.decoder = new InputDecoder();
 
         this.forceController = new ForceController();
 
@@ -111,7 +109,7 @@ public class GameController implements ContactListener {
 
     public void handleInput(GameSection.StateInput input) {
 
-        this.playerController.handleInput(this.decoder.convertViewInput(input));
+        this.playerController.handleInput(InputDecoder.convertViewInput(input));
 
     }
 
@@ -135,7 +133,6 @@ public class GameController implements ContactListener {
         while (accumulator >= 1 / 60f) {
             world.step(1 / 60f, 6, 2);
             accumulator -= 1 / 60f;
-
         }
 
         this.updateModelInfo();
@@ -202,7 +199,7 @@ public class GameController implements ContactListener {
 
         if (timeToNextComet <= 0) {
 
-            Vector2 r = generateRandomPeripheralPoints(0);
+            Vector2 r = generateRandomPeripheralPoints(PLANET_GENERATION_OFFSET);
 
             CometModel comet = this.gameModel.createComet(r.x, r.y);
 

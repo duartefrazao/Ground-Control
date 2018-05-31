@@ -4,23 +4,23 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.elements.PlayerController;
-import com.groundcontrol.game.model.elements.PlayerModel;
 
 import static java.lang.Math.abs;
 
 public class FloatState implements PlayerState {
 
+    private final static float MAX_PLANET_DISTANCE = 8;
 
-    private final static float INTIAL_TIME = 30f;
+    private final static float INITIAL_TIME = 30f;
 
-    private static float floatTime = INTIAL_TIME;
+    private static float floatTime = INITIAL_TIME;
 
     public float getTime(){
         return this.floatTime;
     }
 
     public FloatState(){
-        this.floatTime = INTIAL_TIME;
+        this.floatTime = INITIAL_TIME;
     }
 
     public FloatState(float time){
@@ -44,16 +44,10 @@ public class FloatState implements PlayerState {
 
         for (Body e : objects) {
 
-            if(e == null) {
-                continue;
-            }
-            else if(e.getUserData() instanceof PlayerModel)
-                continue;
-
             float distance = abs(e.getPosition().x - context.getX());
             distance += abs(e.getPosition().y - context.getY());
 
-            if (distance < 8) {
+            if (distance < MAX_PLANET_DISTANCE && distance > 0.01) {
 
                 context.setTransform(context.getX(), context.getY(), context.getAngleBetween(e));
 
