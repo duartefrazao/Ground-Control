@@ -3,27 +3,14 @@ package com.groundcontrol.game.model.elements;
 public class PlanetModel extends ElementModel {
 
 
-    public enum PlanetSize {
-        SMALL,
-        MEDIUM,
-        MEDIUM_BIG,
-        BIG
-    }
-
     private PlanetSize size;
 
-    public PlanetModel(float x, float y, float rotation, PlanetSize size) {
-
-        super(x, y, rotation);
-        this.size = size;
-    }
-
-    public PlanetModel(float x, float y, float rotation){
+    public PlanetModel(float x, float y, float rotation) {
 
 
         super(x, y, rotation);
 
-        this.size = PlanetSize.values()[(int) (Math.random()* PlanetModel.PlanetSize.values().length)];
+        this.size = PlanetSize.values()[(int) (Math.random() * PlanetModel.PlanetSize.values().length)];
 
     }
 
@@ -33,14 +20,25 @@ public class PlanetModel extends ElementModel {
 
     @Override
     public ModelType getType() {
-        if (this.size == PlanetSize.BIG)
-            return ModelType.BigPlanet;
-        else if(this.size == PlanetSize.MEDIUM_BIG)
-            return ModelType.MediumBigPlanet;
-        else if(this.size == PlanetSize.MEDIUM)
-            return ModelType.MediumPlanet;
-        else
-            return ModelType.SmallPlanet;
+
+        switch (this.size) {
+            case BIG:
+                return ModelType.BigPlanet;
+            case MEDIUM_BIG:
+                return ModelType.MediumBigPlanet;
+            case MEDIUM:
+                return ModelType.MediumPlanet;
+            default:
+                return ModelType.SmallPlanet;
+        }
+
+    }
+
+    public enum PlanetSize {
+        SMALL,
+        MEDIUM,
+        MEDIUM_BIG,
+        BIG
     }
 
 

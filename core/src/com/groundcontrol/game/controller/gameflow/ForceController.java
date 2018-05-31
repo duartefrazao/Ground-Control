@@ -40,10 +40,6 @@ public class ForceController {
         force.limit(currentMax);
     }
 
-    public Vector2 getForce() {
-        return force;
-    }
-
     public Vector2 getForceMult(){
 
         float randomMultiplier = (float) (minMult + Math.random() * (maxMult - minMult));
@@ -59,7 +55,6 @@ public class ForceController {
 
 
     }
-
 
     private void updateMaxForceValue() {
 

@@ -95,7 +95,6 @@ public class GameModel {
 
         }
 
-
         for(CometModel comet : this.comets){
 
             if( comet.isOutOfBonds(delta))

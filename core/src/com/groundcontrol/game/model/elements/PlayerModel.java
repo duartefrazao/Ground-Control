@@ -7,7 +7,7 @@ public class PlayerModel extends ElementModel {
 
     private animationState currentState;
 
-    public enum animationState {IDLE, RUNNING, JUMPING }
+    public enum animationState {IDLE, RUNNING }
 
     public PlayerModel(float x, float y, float rotation) {
         super(x, y, rotation);
