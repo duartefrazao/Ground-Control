@@ -16,23 +16,9 @@ public abstract class ElementController {
     //Collision Handling
     final static short PLANET_BODY = 0x0001;
     final static short PLAYER_BODY = 0x0002;
-    final static short COMET_BODY  = 0x0003;
-
-    private static float WORLD_OFFSET = 30;
-
-    private boolean toBeRemoved;
-
-    public boolean isToBeRemoved(){
-        return toBeRemoved == true;
-    }
-
-    public void setToBeRemoved(boolean rem){
-        this.toBeRemoved = rem;
-    }
+    final static short COMET_BODY = 0x0003;
 
     protected Body body;
-
-    protected float artificialGravity = 0f;
 
     protected int width;
     protected int height;
@@ -54,8 +40,6 @@ public abstract class ElementController {
         body = world.createBody(bodydef);
 
         body.setUserData(model);
-
-        this.toBeRemoved = false;
     }
 
 
@@ -181,7 +165,6 @@ public abstract class ElementController {
 
         this.body.setAngularVelocity(omega);
     }
-
 
 
 }

@@ -4,22 +4,14 @@ import com.badlogic.gdx.math.Vector2;
 
 public class ForceController {
 
-    private Vector2 force;
-
-    private final static  int minimumVy = 6;
-
-    private static  int currentMax = 15;
-
-    private final static  int absoluteMax = 27;
-
-    private final static  float timeToVelocityRatio = 4f / 70f;
-
+    private final static int minimumVy = 6;
+    private final static int absoluteMax = 27;
+    private final static float timeToVelocityRatio = 4f / 70f;
     private final static float initialMaxVelocity = 10;
-
     private final static float minMult = 0.7f;
-
     private final static float maxMult = 1.4f;
-
+    private static int currentMax = 15;
+    private Vector2 force;
     private double elapsedTime;
 
     public ForceController() {
@@ -40,7 +32,7 @@ public class ForceController {
         force.limit(currentMax);
     }
 
-    public Vector2 getForceMult(){
+    public Vector2 getForceMult() {
 
         float randomMultiplier = (float) (minMult + Math.random() * (maxMult - minMult));
 
@@ -51,7 +43,6 @@ public class ForceController {
         randomForce.y = this.force.y * randomMultiplier;
 
         return randomForce;
-
 
 
     }

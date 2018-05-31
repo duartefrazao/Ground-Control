@@ -60,7 +60,6 @@ public class MediumBigPlanetController extends ElementController{
 
 
         this.body.setAngularDamping(0.9f);
-        this.artificialGravity = (float) Math.random() + 0.5f;
 
     }
 }
