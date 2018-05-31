@@ -22,7 +22,7 @@ public class IdleState implements PlayerState {
         this.timeInPlanet -= delta;
 
         if(this.timeInPlanet < 0){
-            context.jump();
+            context.setLost(true);
         }
 
     }

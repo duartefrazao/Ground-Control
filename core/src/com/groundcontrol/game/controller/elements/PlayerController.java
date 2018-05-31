@@ -330,7 +330,7 @@ public class PlayerController extends ElementController {
             return;
         if (this.getPosition().dst2(this.getPlanet().getPosition()) > maximumAllowedDistance) {
             this.removeFromPlanet();
-            this.setState(new FloatState());
+            this.setState(new FloatState(this.state.getTime()));
         }
     }
 
@@ -365,9 +365,6 @@ public class PlayerController extends ElementController {
 
         if (jumpingTime < 0)
             jumpingTime = 0;
-
-
-        this.lost = jumpingTime < 0;
     }
 
     private void updateMovementState() {
@@ -400,6 +397,10 @@ public class PlayerController extends ElementController {
      */
     public boolean hasLost(){
         return this.lost;
+    }
+
+    public void setLost(boolean lost){
+        this.lost = lost;
     }
 
 
