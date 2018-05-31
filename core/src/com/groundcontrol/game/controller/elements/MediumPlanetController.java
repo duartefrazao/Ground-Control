@@ -10,25 +10,24 @@ public class MediumPlanetController extends ElementController {
 
     private final static float maxAngularVelocity = 0.02f;
 
-    public  float getMaxVelocity(){
-        return this.maxVelocity;
-    }
+    private static int imageWidth = 712;
 
-    public float getMaxAngular(){
-        return this.maxAngularVelocity;
-    }
+    private static int imageHeight = 678;
+
+    private static float density = 9000f;
+
+    private static float friction = 1f;
+
+    private static float restitution = 0.0f;
 
     public MediumPlanetController(World world, ElementModel model) {
 
         super(world, model, BodyDef.BodyType.DynamicBody);
 
-        float density = 9000f,
-                friction = 1f,
-                restitution = 0.0f;
-        this.width = 712;
-        this.height = 678;
+        this.width = imageWidth;
+        this.height = imageHeight;
 
-        createFixture(body, new float[]{
+        FixtureInfo info = new FixtureInfo(new float[]{
                 342, 1,
                 479, 1,
                 662, 80,
@@ -37,9 +36,15 @@ public class MediumPlanetController extends ElementController {
                 462, 675,
                 336, 669,
                 165, 56
-        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+        }, width, height);
 
-        createFixture(body, new float[]{
+        info.physicsComponents(density, friction, restitution);
+
+        info.collisionComponents(PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+
+        createFixture(body, info);
+
+        info.vertexes = new float[]{
                 165, 56,
                 52, 92,
                 1, 247,
@@ -47,11 +52,20 @@ public class MediumPlanetController extends ElementController {
                 73, 567,
                 160, 645,
                 336, 669,
-                221, 42
-        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                221, 42};
+
+        createFixture(body, info);
 
         this.body.setAngularDamping(0.9f);
 
+    }
+
+    public float getMaxVelocity() {
+        return this.maxVelocity;
+    }
+
+    public float getMaxAngular() {
+        return this.maxAngularVelocity;
     }
 
 }

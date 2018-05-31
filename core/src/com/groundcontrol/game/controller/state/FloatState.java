@@ -13,6 +13,8 @@ public class FloatState implements PlayerState {
 
     private final static float INITIAL_TIME = 30f;
 
+    private final static float OVERFLOW_CHECK = 0.01f;
+
     private static float floatTime = INITIAL_TIME;
 
     public float getTime(){
@@ -47,7 +49,7 @@ public class FloatState implements PlayerState {
             float distance = abs(e.getPosition().x - context.getX());
             distance += abs(e.getPosition().y - context.getY());
 
-            if (distance < MAX_PLANET_DISTANCE && distance > 0.01) {
+            if (distance < MAX_PLANET_DISTANCE && distance > OVERFLOW_CHECK) {
 
                 context.setTransform(context.getX(), context.getY(), context.getAngleBetween(e));
 

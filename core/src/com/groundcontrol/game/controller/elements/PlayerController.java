@@ -23,6 +23,8 @@ public class PlayerController extends ElementController {
 
     private final static float maximumAllowedDistance = 64;
 
+    private final static float jumpBonusTime = 1f;
+
     private float jumpingTime = 0f;
 
     private PlayerState state;
@@ -170,7 +172,7 @@ public class PlayerController extends ElementController {
 
         float time = this.state.getTime();
 
-        this.setState(new FloatState(time + 2f));
+        this.setState(new FloatState(time + jumpBonusTime));
 
     }
 

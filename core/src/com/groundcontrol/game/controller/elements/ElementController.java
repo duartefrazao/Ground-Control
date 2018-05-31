@@ -43,6 +43,51 @@ public abstract class ElementController {
     }
 
 
+    final private void fixVertexes(float[] vertexes) {
+
+        for (int i = 0; i < vertexes.length; i++) {
+            if (i % 2 == 0)
+                vertexes[i] -= width / 2;
+            if (i % 2 != 0)
+                vertexes[i] -= height / 2;
+
+            if (i % 2 != 0)
+                vertexes[i] *= -1;
+
+            vertexes[i] *= PIXEL_TO_METER;
+        }
+
+
+    }
+
+    final void createFixture(Body body, FixtureInfo info) {
+
+        this.height_meters = (int) ((float) this.height * PIXEL_TO_METER);
+
+        this.width_meters = (int) ((float) this.width * PIXEL_TO_METER);
+
+        this.fixVertexes(info.vertexes);
+
+        PolygonShape polygon = new PolygonShape();
+        polygon.set(info.vertexes);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = polygon;
+
+        fixtureDef.density = info.density;
+
+        fixtureDef.friction = info.friction;
+        fixtureDef.restitution = info.restitution;
+        fixtureDef.filter.categoryBits = info.category;
+        fixtureDef.filter.maskBits = info.mask;
+
+        body.createFixture(fixtureDef);
+
+        polygon.dispose();
+
+    }
+
+
     final void createFixture(Body body, float[] vertexes, int width, int height, float density, float friction, float restitution, short category, short mask) {
 
         this.height_meters = (int) ((float) this.height * PIXEL_TO_METER);

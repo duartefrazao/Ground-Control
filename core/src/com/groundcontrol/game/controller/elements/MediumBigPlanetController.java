@@ -4,31 +4,30 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.model.elements.ElementModel;
 
-public class MediumBigPlanetController extends ElementController{
+public class MediumBigPlanetController extends ElementController {
 
     private final static int maxVelocity = 9;
 
     private final static float maxAngularVelocity = 0.02f;
 
-    public  float getMaxVelocity(){
-        return this.maxVelocity;
-    }
+    private static int imageWidth = 853;
 
-    public float getMaxAngular(){
-        return this.maxAngularVelocity;
-    }
+    private static int imageHeight = 812;
+
+    private static float density = 8000f;
+
+    private static float friction = 1f;
+
+    private static float restitution = 0.0f;
 
     public MediumBigPlanetController(World world, ElementModel model) {
 
         super(world, model, BodyDef.BodyType.DynamicBody);
 
-        float density = 8000f,
-                friction = 1f,
-                restitution = 0.0f;
-        this.width = 854;
-        this.height = 812;
+        this.width = imageWidth;
+        this.height = imageHeight;
 
-        createFixture(body, new float[]{
+        FixtureInfo info = new FixtureInfo(new float[]{
                 216, 21,
                 49, 139,
                 39, 250,
@@ -37,9 +36,15 @@ public class MediumBigPlanetController extends ElementController{
                 51, 624,
                 147, 753,
                 531, 1
-        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+        }, width, height);
 
-        createFixture(body, new float[]{
+        info.physicsComponents(density, friction, restitution);
+
+        info.collisionComponents(PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+
+        createFixture(body, info);
+
+        info.vertexes = new float[]{
                 531, 1,
                 784, 127,
                 825, 187,
@@ -47,19 +52,28 @@ public class MediumBigPlanetController extends ElementController{
                 850, 522,
                 625, 753,
                 396, 808,
-                447, 3
-        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                447, 3};
 
+        createFixture(body, info);
 
-        createFixture(body, new float[]{
+        info.vertexes = new float[]{
                 396, 808,
                 259, 780,
                 159, 760,
-                663, 55
-        }, width, height, density, friction, restitution, PLANET_BODY, (short) (PLANET_BODY | PLAYER_BODY));
+                663, 55};
+
+        createFixture(body, info);
 
 
         this.body.setAngularDamping(0.9f);
 
+    }
+
+    public float getMaxVelocity() {
+        return this.maxVelocity;
+    }
+
+    public float getMaxAngular() {
+        return this.maxAngularVelocity;
     }
 }
