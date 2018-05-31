@@ -8,10 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
-import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-import com.groundcontrol.game.view.elements.ElementView;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
 
@@ -52,10 +50,7 @@ public class PauseFirstSection extends PauseSection {
     public void display(float delta) {
         drawBackground();
 
-        PlayerModel player = gv.gameModel.getPlayer();
-        ElementView viewPlayer = ViewFactory.makeView(gv.game,player);
-        viewPlayer.update(player);
-        viewPlayer.draw(gv.game.getBatch());
+        ViewFactory.drawElement(gv.gameModel.getPlayer(), gv);
 
         ViewFactory.drawAllElements(gv.gameModel.getPlanets(), gv);
         ViewFactory.drawAllElements(gv.gameModel.getComets(), gv);
