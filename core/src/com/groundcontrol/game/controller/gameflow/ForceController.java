@@ -10,6 +10,7 @@ public class ForceController {
     private final static float initialMaxVelocity = 10;
     private final static float minMult = 0.7f;
     private final static float maxMult = 1.4f;
+    private final static float accelaration = 0.8f;
     private static int currentMax = 15;
     private Vector2 force;
     private double elapsedTime;
@@ -25,8 +26,8 @@ public class ForceController {
     public void updateForce(float delta, float x, float y) {
 
         elapsedTime += delta;
-        force.x += x * 0.8;
-        force.y += y * 0.8;
+        force.x += x * accelaration;
+        force.y += y * accelaration;
         updateMaxForceValue();
 
         force.limit(currentMax);

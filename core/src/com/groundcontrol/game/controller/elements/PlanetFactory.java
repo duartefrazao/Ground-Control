@@ -7,14 +7,20 @@ public class PlanetFactory {
 
     public static void createPlanet(PlanetModel p, World world){
 
-        if (p.getSize() == PlanetModel.PlanetSize.MEDIUM)
-            new MediumPlanetController(world, p);
-        else if(p.getSize() == PlanetModel.PlanetSize.MEDIUM_BIG)
-            new MediumBigPlanetController(world, p);
-        else if(p.getSize() == PlanetModel.PlanetSize.BIG)
-            new BigPlanetController(world, p);
-        else
-            new SmallPlanetController(world, p);
+        switch ((p.getSize())){
+            case BIG:
+                new BigPlanetController(world, p);
+                return;
+            case MEDIUM_BIG:
+                new MediumBigPlanetController(world, p);
+                return;
+            case MEDIUM:
+                new MediumPlanetController(world, p);
+                return;
+            case SMALL:
+                new SmallPlanetController(world, p);
+                return;
+        }
 
     }
 
