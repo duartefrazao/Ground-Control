@@ -27,38 +27,92 @@ import java.util.List;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
+/**
+ * MVC Controller. Runs the physics engine in each step.
+ */
 public class GameController implements ContactListener {
 
+    /**
+     * The arena width in meters
+     */
     public static final int ARENA_WIDTH = 50;
 
+    /**
+     * The arena height in meter
+     */
     public static final int ARENA_HEIGHT = 100;
 
+    /**
+     * Our world's gravitational constant
+     */
     public static final double G = Math.pow(3.667, -2);
 
+    /**
+     * Time between comets
+     */
     private static final float TIME_BETWEEN_COMETS = 3f;
 
+    /**
+     * Offset, in meters, in which the planets will be generated.
+     * Makes appearance smoother
+     */
     private static final float PLANET_GENERATION_OFFSET = 5;
 
+    /**
+     * Probability of a planet showing up with rotation
+     */
     private static final float ROTATION_PROBABILITY = 0.25f;
 
+    /**
+     * Planet initial rotation, if applied
+     */
     private static final float INITIAL_ROTATION = 0.5f;
 
-    protected final World world;
+    /**
+     * Our world
+     */
+    private final World world;
 
-    protected final PlayerController playerController;
+    /**
+     * The player controller
+     */
+    private final PlayerController playerController;
 
-    protected float accumulator;
+    /**
+     * frame accumulator
+     */
+    private float accumulator;
 
-    protected GameModel gameModel;
+    /**
+     * The game model that is updated
+     */
+    private GameModel gameModel;
 
-    protected ForceController forceController;
+    /**
+     * Force controller that manages the force applied to the planets
+     */
+    private ForceController forceController;
 
-    protected float timeToNextComet;
-    Sound sound;
+    /**
+     * Current Time to the next comet
+     */
+    private float timeToNextComet;
 
+    /**
+     * Game sounds
+     */
+    private Sound sound;
+
+    /**
+     * List of planets to add in each step after they collide with a comet
+     */
     private List<PlanetModel> planetsToAdd = new ArrayList<PlanetModel>();
     //private final Music music;
 
+    /**
+     * Class constructor specifying the game Model to be used
+     * @param gameModel
+     */
     public GameController(GameModel gameModel) {
 
         //music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/som.mp3"));
@@ -85,6 +139,12 @@ public class GameController implements ContactListener {
         world.setContactListener(this);
     }
 
+    /**
+     * Updates the current force to be applied to the planets
+     * @param delta time elapsed after last step
+     * @param x x component of the force
+     * @param y y component of the force
+     */
     public void setPlanetForce(float delta, float x, float y) {
 
         this.forceController.updateForce(delta, x, y);
@@ -107,13 +167,21 @@ public class GameController implements ContactListener {
         }
     }
 
+    /**
+     * Handles the input sent by the GameView
+     * Calls upon a InputDecoder to convert the input
+     * @param input the input sent
+     */
     public void handleInput(GameSection.StateInput input) {
 
         this.playerController.handleInput(InputDecoder.convertViewInput(input));
 
     }
 
-
+    /**
+     * Runs the physics engine in each step
+     * @param delta time elapsed after the last step
+     */
     public void update(float delta) {
 
         this.gameModel.update(delta);
@@ -162,6 +230,7 @@ public class GameController implements ContactListener {
 
     }
 
+
     private void verifyBounds(Body body) {
 
         if (body.getUserData() instanceof CometModel || body.getUserData() instanceof PlayerModel)
@@ -179,6 +248,9 @@ public class GameController implements ContactListener {
 
     }
 
+    /**
+     * Creates all the new planets in the beginning of the step
+     */
     public void createNewPlanets() {
 
         for (PlanetModel pm : planetsToAdd) {
@@ -193,6 +265,10 @@ public class GameController implements ContactListener {
 
     }
 
+    /**
+     * Checks for new comets in the beginning of the step
+     * @param delta the time elapsed
+     */
     public void checkForNewComet(float delta) {
 
         this.timeToNextComet -= delta;
@@ -303,6 +379,9 @@ public class GameController implements ContactListener {
 
     }
 
+    /**
+     * Removes all the flagged bodies after a step
+     */
     public void removeFlagged() {
 
         Array<Body> bodies = new Array<Body>();

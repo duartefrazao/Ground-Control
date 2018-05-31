@@ -11,6 +11,12 @@ import com.groundcontrol.game.controller.state.PlayerState;
 import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 
+/**
+ * Player Controller
+ * The player has a countdown timer. If the timer reaches 0, he loses.
+ * While he is floating through space, the timer freezes. While he is on a planet it works normally.
+ * After each jump, the player receives a small time bonus.
+ */
 public class PlayerController extends ElementController {
 
     public final static int walkToPullRation = 40;
@@ -43,7 +49,11 @@ public class PlayerController extends ElementController {
 
     private boolean rightSide = true;
 
-
+    /**
+     * Creates a new player Controller and add its to the current world.
+     * @param world the current world
+     * @param model the player model
+     */
     public PlayerController(World world, ElementModel model) {
         super(world, model, BodyDef.BodyType.DynamicBody);
 
@@ -156,22 +166,44 @@ public class PlayerController extends ElementController {
         this.body.setAngularDamping(0.7f);
     }
 
+    /**
+     * Tells if the player is facing the right side or left side
+     * @return true if facing right side, false otherwise
+     */
     public boolean isRightSide() {
         return rightSide;
     }
 
+    /**
+     * Sets the player current facing direction
+     * @param side if true, sets it to the right, left otherwise
+     */
     public void setRightSide(boolean side) {
         this.rightSide = side;
     }
 
+    /**
+     * Updates the current player state
+     * @param state the new state
+     */
     public void setState(PlayerState state) {
         this.state = state;
     }
 
+    /**
+     * Handles the input given by the view
+     * @param input
+     */
     public void handleInput(InputDecoder.Input input) {
         this.state.handleInput(this, input);
     }
 
+    /**
+     * Makes the player jump if he is in a planet
+     * When it is in a planet, sets the jump time to the default in order to avoid small jumps.
+     * Our gravity will only apply after that time has elapsed.
+     * After each successful jump, a small bonus is added to the time the player has left
+     */
     public void jump() {
 
         if (this.getPlanet() == null) {
@@ -198,6 +230,10 @@ public class PlayerController extends ElementController {
 
     }
 
+    /**
+     * Makes the player walk in the direction the user wants, if he is in a planet
+     * @param dir - the direction given by the user
+     */
     public void walk(int dir) {
 
         float rot = this.getAngleBetween(this.getPlanet());
@@ -211,39 +247,69 @@ public class PlayerController extends ElementController {
         this.applyLinearImpulseToCenter(direction.rotate90(dir), true);
     }
 
+    /**
+     * Tells if the user is in a planet
+     * @return true if is, false otherwise
+     */
     public boolean isInPlanet() {
         return this.currentPlanet != null;
     }
 
+    /**
+     * Sets the player in a planet
+     * @param b the planet
+     */
     public void setInPlanet(Body b) {
         this.currentPlanet = b;
     }
 
+    /**
+     * Removes the player from the current planet
+     */
     public void removeFromPlanet() {
         this.currentPlanet = null;
     }
 
+    /**
+     * Returns the body of the current planet
+     * @return the body of the planet
+     */
     public Body getPlanet() {
         return this.currentPlanet;
     }
 
+    /**
+     * Alters the player rotation, given the current state
+     * @param objects - surrounding bodies
+     */
     public void setRotation(Array<Body> objects) {
         this.state.setRotation(this, objects);
     }
 
+    /**
+     * Applies the current gravity force to the player, given its current state
+     * If the player is still in jumping time, it doesn't do nothing
+     * @param objects surrounding bodies
+     */
     public void applyPullForce(Array<Body> objects) {
         if (this.jumpingTime == 0)
             this.state.applyPullForce(this, objects);
     }
 
+    @Override
     public float getMaxVelocity() {
         return this.maxVelocity;
     }
 
+    @Override
     public float getMaxAngular() {
         return this.maxAngularVelocity;
     }
 
+    /**
+     * Checks if the player hasn't drifted away too much from a player
+     * If so, removes it from the planet
+     */
     public void verifyInPlanet() {
         if (!this.isInPlanet())
             return;
@@ -253,6 +319,11 @@ public class PlayerController extends ElementController {
         }
     }
 
+    /**
+     * Updates all the aspects related to the player in each step
+     * @param planets surrounding bodies
+     * @param delta time elapsed after the last sped
+     */
     public void update(Array<Body> planets, float delta) {
 
         this.state.updateTime(this, delta);
@@ -296,6 +367,10 @@ public class PlayerController extends ElementController {
 
     }
 
+    /**
+     * Returns the time the player still has left
+     * @return time
+     */
     public float getTimeLeft() {
         return this.state.getTime();
     }

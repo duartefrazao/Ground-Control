@@ -1,12 +1,22 @@
 package com.groundcontrol.game.model.elements;
 
+/**
+ * Planet Model
+ */
 public class PlanetModel extends ElementModel {
 
 
     private PlanetSize size;
 
-    public PlanetModel(float x, float y, float rotation) {
 
+    /**
+     * Creates a new planet model in a position
+     *
+     * @param x        planet's x position
+     * @param y        planet's y position
+     * @param rotation planet's rotation
+     */
+    public PlanetModel(float x, float y, float rotation) {
 
         super(x, y, rotation);
 
@@ -14,6 +24,10 @@ public class PlanetModel extends ElementModel {
 
     }
 
+    /**
+     * Returns the planet size
+     * @return planet size
+     */
     public PlanetSize getSize() {
         return this.size;
     }
@@ -34,6 +48,9 @@ public class PlanetModel extends ElementModel {
 
     }
 
+    /**
+     * Planets possible sizes
+     */
     public enum PlanetSize {
         SMALL,
         MEDIUM,

@@ -11,6 +11,10 @@ import com.groundcontrol.game.model.elements.ElementModel;
 
 import static com.groundcontrol.game.view.GameView.PIXEL_TO_METER;
 
+/**
+ * Abstract element controller.
+ * Represents all the elements in our controller
+ */
 public abstract class ElementController {
 
     //Collision Handling
@@ -26,7 +30,12 @@ public abstract class ElementController {
     protected int width_meters;
     protected int height_meters;
 
-
+    /**
+     * Creates a new element controller in a world, following a body type and a model
+     * @param world
+     * @param model
+     * @param bodyType
+     */
     ElementController(World world, ElementModel model, BodyDef.BodyType bodyType) {
 
         BodyDef bodydef = new BodyDef();
@@ -86,39 +95,87 @@ public abstract class ElementController {
         polygon.dispose();
 
     }
-    
+
+    /**
+     * Returns the element body
+     * @return body
+     */
     public Body getBody() {
         return this.body;
     }
 
+    /**
+     * Wraps the getX method from the Box2D body class.
+     *
+     * @return the x-coordinate of this body.
+     */
     public float getX() {
         return body.getPosition().x;
     }
 
+    /**
+     * Wraps the getY method from the Box2D body class.
+     *
+     * @return the y-coordinate of this body.
+     */
     public float getY() {
         return body.getPosition().y;
     }
 
+    /**
+     * Wraps the setTransform method from the Box2D body class.
+     *
+     * @param x the new x-coordinate for this body
+     * @param y the new y-coordinate for this body
+     * @param angle the new rotation angle for this body
+     */
     public void setTransform(float x, float y, float angle) {
         body.setTransform(x, y, angle);
     }
 
+    /**
+     * Wraps the applyForceToCenter method from the Box2D body class.
+     *
+     * @param v the force to be applied
+     * @param awake should the body be awaken
+     */
     public void applyForceToCenter(Vector2 v, boolean awake) {
         body.applyForceToCenter(v, awake);
     }
 
+    /**
+     * Wraps the applyLinearImpulseToCenter method from the Box2D body class.
+     *
+     * @param v the force to be applied
+     * @param awake should the body be awaken
+     */
     public void applyLinearImpulseToCenter(Vector2 v, boolean awake) {
         body.applyLinearImpulse(v, body.getLocalCenter(), awake);
     }
 
+    /**
+     * Wraps the getPosition method from the Box2D body class.
+     *
+     * @return the position of this body.
+     */
     public Vector2 getPosition() {
         return body.getPosition();
     }
 
+    /**
+     * Wraps the getMass method from the Box2D body class.
+     *
+     * @return the mass of this body.
+     */
     public float getMass() {
         return body.getMass();
     }
 
+    /**
+     * Returns the angle between this body and another
+     * @param body the other body
+     * @return the angle between them
+     */
     public float getAngleBetween(Body body) {
         float rot = (float) Math.atan2(body.getPosition().y - this.getY(), body.getPosition().x - this.getX());
 
@@ -127,6 +184,11 @@ public abstract class ElementController {
         return rot;
     }
 
+    /**
+     * Calculates the pull force between two bodies following Newton's formula
+     * @param body the other body
+     * @return the vector representing the force
+     */
     public Vector2 calculatePullForce(Body body) {
 
         double distanceSquared = body.getPosition().dst2(this.getPosition());
@@ -144,8 +206,15 @@ public abstract class ElementController {
         return force;
     }
 
+    /**
+     * Returns the max velocity allowed for this controller
+     * @return the max velocity
+     */
     public abstract float getMaxVelocity();
 
+    /**
+     * Limits this controller velocity to it's max velocity
+     */
     public void limitVelocity() {
 
         float x = this.body.getLinearVelocity().x;
@@ -160,8 +229,16 @@ public abstract class ElementController {
         this.body.setLinearVelocity(x, y);
     }
 
+
+    /**
+     * Returns the max angular velocity allowed for this controller
+     * @return the max angular velocity
+     */
     public abstract float getMaxAngular();
 
+    /**
+     * Limits this controller angular velocity to it's max angular velocity
+     */
     public void limitAngularVelocity() {
 
         float omega = this.body.getAngularVelocity();

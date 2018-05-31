@@ -7,6 +7,9 @@ import com.groundcontrol.game.controller.elements.PlayerController;
 
 import static java.lang.Math.abs;
 
+/**
+ * Represents the state in which the player is floating through the space
+ */
 public class FloatState implements PlayerState {
 
     private final static float MAX_PLANET_DISTANCE = 8;
@@ -17,18 +20,27 @@ public class FloatState implements PlayerState {
 
     private static float floatTime = INITIAL_TIME;
 
+    @Override
     public float getTime(){
         return this.floatTime;
     }
 
+    /**
+     * Default constructor. Initializes the state time to a default value.
+     */
     public FloatState(){
         this.floatTime = INITIAL_TIME;
     }
 
+    /**
+     * Class constructor given the time
+     * @param time
+     */
     public FloatState(float time){
         floatTime = time;
     }
 
+    @Override
     public void updateTime(PlayerController context, float delta){
 
     }
@@ -42,6 +54,7 @@ public class FloatState implements PlayerState {
 
     }
 
+    @Override
     public void setRotation(PlayerController context, Array<Body> objects) {
 
         for (Body e : objects) {
@@ -59,7 +72,7 @@ public class FloatState implements PlayerState {
 
     }
 
-
+    @Override
     public void applyPullForce(PlayerController context, Array<Body> objects) {
 
         for (Body e : objects) {

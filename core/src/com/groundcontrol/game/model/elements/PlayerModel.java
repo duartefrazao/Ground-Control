@@ -1,14 +1,21 @@
 package com.groundcontrol.game.model.elements;
 
-
+/**
+ * Player Model
+ */
 public class PlayerModel extends ElementModel {
 
     private boolean rightSide;
 
     private animationState currentState;
 
-    public enum animationState {IDLE, RUNNING }
-
+    /**
+     * Creates a new player model in a position
+     *
+     * @param x        player's x position
+     * @param y        player's y position
+     * @param rotation player's rotation
+     */
     public PlayerModel(float x, float y, float rotation) {
         super(x, y, rotation);
 
@@ -23,17 +30,40 @@ public class PlayerModel extends ElementModel {
         return ModelType.Player;
     }
 
-    public animationState getCurrentState() { return this.currentState; }
+    /**
+     * Returns the current animation state
+     * @return the current animation state
+     */
+    public animationState getCurrentState() {
+        return this.currentState;
+    }
 
-    public void setCurrentState(animationState state){
+    /**
+     * Changes the current animation state
+     * @param state
+     */
+    public void setCurrentState(animationState state) {
         this.currentState = state;
     }
 
-    public boolean isRightSide(){
+    /**
+     * Checks if the player is facing the right side
+     * @return true if right side, false otherwise
+     */
+    public boolean isRightSide() {
         return rightSide;
     }
 
-    public void setRightSide(boolean side){
+    /**
+     * Sets the player to face a certain side
+     * @param side if true, facing right, left otherwise
+     */
+    public void setRightSide(boolean side) {
         this.rightSide = side;
     }
+
+    /**
+     * Player possible animations
+     */
+    public enum animationState {IDLE, RUNNING}
 }
