@@ -44,7 +44,6 @@ public class ConnectServerSection implements Section{
 
         stage = createStage();
         font.getData().scale(10);
-
     }
 
     @Override
@@ -107,14 +106,6 @@ public class ConnectServerSection implements Section{
 
         ButtonFactory buttonFactory = new ButtonFactory();
 
-        connect= buttonFactory.makeButton(gv.game.getAssetManager().get("connect.png",Texture.class),gv.game.getAssetManager().get("connect.png",Texture.class),  3*w/5,3*h/5, (int)(w/3),(int)(h)/10);
-        connect.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y){
-                //substituteButton();
-            }
-        });
-
         Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/5,3*h/5, (int)(w/6),(int)(h)/10);
         exitButton.addListener(new ClickListener(){
             @Override
@@ -133,7 +124,6 @@ public class ConnectServerSection implements Section{
 
         Stage stage= new Stage();
 
-        stage.addActor(connect);
         stage.addActor(exitButton);
 
         return stage;

@@ -9,6 +9,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
@@ -99,10 +100,16 @@ public class MultiplayerClientSection implements Section{
             }
         });
 
+        Image background = new Image(new Texture(Gdx.files.internal("backgroundSecond.png")));
+
+        background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        background.setPosition(0,0 );
+
 
 
         Stage stage= new Stage();
 
+        stage.addActor(background);
         stage.addActor(pauseButton);
 
 
@@ -123,10 +130,10 @@ public class MultiplayerClientSection implements Section{
 
     @Override
     public void drawBackground() {
-        Texture background = gv.game.getAssetManager().get("backgroundSecond.png", Texture.class);
+     /*   Texture background = gv.game.getAssetManager().get("backgroundSecond.png", Texture.class);
         background.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         gv.game.getBatch().draw(background, 0, 0, 0, 0, (int)(ARENA_WIDTH / gv.PIXEL_TO_METER), (int) (ARENA_HEIGHT / gv.PIXEL_TO_METER));
-
+*/
     }
 
     private void handleInputs(float delta){
