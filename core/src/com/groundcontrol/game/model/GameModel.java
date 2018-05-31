@@ -22,45 +22,37 @@ import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 public class GameModel {
 
     /**
-     * Player character
-     */
-    private PlayerModel player;
-
-    /**
      * Number of Planets
      */
     private static final int PLANET_COUNT = 7;
-
-
-    /**
-     * Time Left
-     */
-    private float timeLeft = 0;
-
-    /**
-     * Planets
-     */
-    private List<PlanetModel> planets;
-
-    /**
-     * Comets
-     */
-    private List<CometModel> comets;
-
-    /**
-     * Explosions
-     */
-    private List<ExplosionModel> explosions;
-
-
-    Pool<CometModel> cometPoll = new Pool<CometModel>(){
+    Pool<CometModel> cometPoll = new Pool<CometModel>() {
 
         @Override
-        protected CometModel newObject(){
+        protected CometModel newObject() {
             return new CometModel(0, 0, 0);
         }
 
     };
+    /**
+     * Player character
+     */
+    private PlayerModel player;
+    /**
+     * Time Left
+     */
+    private float timeLeft = 0;
+    /**
+     * Planets
+     */
+    private List<PlanetModel> planets;
+    /**
+     * Comets
+     */
+    private List<CometModel> comets;
+    /**
+     * Explosions
+     */
+    private List<ExplosionModel> explosions;
 
     /**
      * Default constructor
@@ -87,17 +79,18 @@ public class GameModel {
      * Updates the model in each step.
      * Checks if the explosions are over, and if so removes them.
      * Checks if the comets are out of bonds, and if so removes them.
+     *
      * @param delta time elapsed after the last step
      */
     public void update(float delta) {
 
         Iterator<ExplosionModel> iterator = this.explosions.iterator();
 
-        while(iterator.hasNext()){
+        while (iterator.hasNext()) {
 
             ExplosionModel em = iterator.next();
 
-            if(em.isExplosionOver(delta)){
+            if (em.isExplosionOver(delta)) {
 
                 iterator.remove();
 
@@ -106,9 +99,9 @@ public class GameModel {
         }
 
 
-        for(CometModel comet : this.comets){
+        for (CometModel comet : this.comets) {
 
-            if( comet.isOutOfBonds(delta))
+            if (comet.isOutOfBonds(delta))
                 comet.setToBeRemoved(true);
 
         }
@@ -117,18 +110,25 @@ public class GameModel {
 
     /**
      * Returns the time that the player still has left
+     *
      * @return time
      */
-    public float getTimeLeft() { return this.timeLeft; }
+    public float getTimeLeft() {
+        return this.timeLeft;
+    }
 
     /**
      * Sets the player's timer
+     *
      * @param time
      */
-    public void setTimeLeft(float time) { this.timeLeft = time;  }
+    public void setTimeLeft(float time) {
+        this.timeLeft = time;
+    }
 
     /**
      * Returns the player model
+     *
      * @return player
      */
     public PlayerModel getPlayer() {
@@ -137,6 +137,7 @@ public class GameModel {
 
     /**
      * Returns a list containing all the planets
+     *
      * @return planet's list
      */
     public List<PlanetModel> getPlanets() {
@@ -145,27 +146,30 @@ public class GameModel {
 
     /**
      * Returns a list containing all the comets
+     *
      * @return comet's list
      */
-    public List<CometModel> getComets(){
+    public List<CometModel> getComets() {
         return comets;
     }
 
     /**
      * Returns a list containing all the explosions
+     *
      * @return explosion's list
      */
-    public List<ExplosionModel> getExplosions(){
+    public List<ExplosionModel> getExplosions() {
         return explosions;
     }
 
     /**
      * Creates a new comet in a given position
+     *
      * @param x - the x position
      * @param y - the y position
      * @return the comet model
      */
-    public CometModel createComet(float x, float y){
+    public CometModel createComet(float x, float y) {
 
         CometModel comet = cometPoll.obtain();
 
@@ -182,18 +186,20 @@ public class GameModel {
 
     /**
      * Adds a new planet to the list
+     *
      * @param model
      */
-    public void addPlanet(PlanetModel model){
+    public void addPlanet(PlanetModel model) {
         planets.add(model);
     }
 
     /**
      * Creates a new explosion in a given position
+     *
      * @param x - x position
      * @param y - y position
      */
-    public void createExplosion(float x, float y){
+    public void createExplosion(float x, float y) {
 
         ExplosionModel explosion = new ExplosionModel(x, y, 0);
 
@@ -206,14 +212,14 @@ public class GameModel {
 
     /**
      * Deletes a model
+     *
      * @param model to be deleted
      */
-    public void removeModel(ElementModel model){
+    public void removeModel(ElementModel model) {
 
-        if (model instanceof  PlanetModel) {
+        if (model instanceof PlanetModel) {
             this.planets.remove(model);
-        }
-        else if (model instanceof CometModel){
+        } else if (model instanceof CometModel) {
             this.comets.remove(model);
             this.cometPoll.free((CometModel) model);
         }
