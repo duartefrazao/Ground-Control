@@ -10,11 +10,19 @@ public abstract class ElementView {
 
     Sprite sprite;
 
+    protected boolean stopFrame;
+
+    public void setStopFrame(){
+        this.stopFrame = true;
+    }
+
+    public void removeStopFrame(){
+        this.stopFrame = false;
+    }
 
     ElementView(GroundControl game){
         sprite = createSprite(game);
     }
-
 
     public abstract Sprite createSprite(GroundControl game);
 

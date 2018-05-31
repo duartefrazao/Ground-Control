@@ -82,7 +82,7 @@ public class MultiplayerServerSection extends GameSection{
     public void transition() {
         PlayerModel player = gv.gameModel.getPlayer();
         PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game, player);
-        viewPlayer.removeStopped();
+        viewPlayer.removeStopFrame();
         Gdx.input.setInputProcessor(this.ip);
 
         gv.currentSection = gv.multiplayerServer;

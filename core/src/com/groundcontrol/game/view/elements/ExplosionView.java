@@ -14,8 +14,6 @@ public class ExplosionView extends ElementView{
 
     private static final float FRAME_TIME = 0.1f;
 
-    private boolean stop = false;
-
     private float stateTime = 0;
 
     private Animation<TextureRegion> explosionAnimation;
@@ -45,19 +43,11 @@ public class ExplosionView extends ElementView{
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 
-    public void setStopped() {
-        this.stop = true;
-    }
-
-    public void removeStopped() {
-        this.stop = false;
-    }
-
 
     @Override
     public void draw(SpriteBatch batch) {
 
-        if (!stop)
+        if (!stopFrame)
             this.stateTime += Gdx.graphics.getDeltaTime();
 
         sprite.setRegion(explosionAnimation.getKeyFrame(stateTime, false));

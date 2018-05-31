@@ -10,14 +10,11 @@ import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.model.elements.CometModel;
-import com.groundcontrol.game.model.elements.ExplosionModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-import com.groundcontrol.game.view.elements.CometView;
 import com.groundcontrol.game.view.elements.ElementView;
-import com.groundcontrol.game.view.elements.ExplosionView;
 import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
 
@@ -80,23 +77,11 @@ public class PauseSection implements Section{
 
         PlayerModel player = gv.gameModel.getPlayer();
         PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
-        viewPlayer.setStopped();
+        viewPlayer.setStopFrame();
 
-        List<ExplosionModel> explosions = gv.gameModel.getExplosions();
-        for(ExplosionModel e : explosions){
-            ExplosionModel expl = e;
-            ExplosionView viewExplosion = (ExplosionView) ViewFactory.makeView(gv.game,expl);
-            viewExplosion.setStopped();
-        }
+        Utils.drawPausedElements(gv.gameModel.getExplosions(), gv);
 
-        List<CometModel> comets = gv.gameModel.getComets();
-        for(CometModel c : comets){
-            CometModel cml = c;
-            CometView Explosion = (CometView) ViewFactory.makeView(gv.game,cml);
-            Explosion.setStopped();
-        }
-
-
+        Utils.drawPausedElements(gv.gameModel.getComets(), gv);
 
         Gdx.input.setInputProcessor(stage);
 

@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.model.elements.CometModel;
+import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.ExplosionModel;
 import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
@@ -102,31 +103,17 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         viewPlayer.update(player);
         viewPlayer.draw(gv.game.getBatch());
 
-        List<PlanetModel> planets = gv.gameModel.getPlanets();
-        for (PlanetModel p : planets) {
-            ElementView view = ViewFactory.makeView(gv.game, p);
-            view.update(p);
-            view.draw(gv.game.getBatch());
-        }
-        List<CometModel> comets = gv.gameModel.getComets();
-        for (CometModel c : comets) {
-            ElementView view = ViewFactory.makeView(gv.game, c);
-            view.update(c);
-            view.draw(gv.game.getBatch());
-        }
-        List<ExplosionModel> explosions = gv.gameModel.getExplosions();
-        for (ExplosionModel e : explosions) {
-            ElementView view = ViewFactory.makeView(gv.game, e);
-            view.update(e);
-            view.draw(gv.game.getBatch());
-        }
+        Utils.drawAllElements(gv.gameModel.getPlanets(), gv);
+        Utils.drawAllElements(gv.gameModel.getComets(), gv);
+        Utils.drawAllElements(gv.gameModel.getExplosions(), gv);
+
     }
 
     @Override
     public void transition() {
         PlayerModel player = gv.gameModel.getPlayer();
         PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game, player);
-        viewPlayer.removeStopped();
+        viewPlayer.removeStopFrame();
         Gdx.input.setInputProcessor(this.ip);
 
         gv.currentSection = gv.gameSection;

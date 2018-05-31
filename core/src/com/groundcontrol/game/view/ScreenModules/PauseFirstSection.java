@@ -8,20 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
-import com.groundcontrol.game.model.elements.CometModel;
-import com.groundcontrol.game.model.elements.ExplosionModel;
-import com.groundcontrol.game.model.elements.PlanetModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
-import com.groundcontrol.game.view.elements.CometView;
 import com.groundcontrol.game.view.elements.ElementView;
-import com.groundcontrol.game.view.elements.ExplosionView;
 import com.groundcontrol.game.view.elements.PlayerView;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
-
-import java.util.List;
 
 public class PauseFirstSection extends PauseSection {
 
@@ -65,21 +58,10 @@ public class PauseFirstSection extends PauseSection {
         viewPlayer.update(player);
         viewPlayer.draw(gv.game.getBatch());
 
-        List<PlanetModel> planets = gv.gameModel.getPlanets();
-        for(PlanetModel p : planets){
-            ElementView view = ViewFactory.makeView(gv.game,p);
-            view.draw(gv.game.getBatch());
-        }
-        List<CometModel> comets = gv.gameModel.getComets();
-        for(CometModel c : comets){
-            ElementView view = ViewFactory.makeView(gv.game, c);
-            view.draw(gv.game.getBatch());
-        }
-        List<ExplosionModel> explosions = gv.gameModel.getExplosions();
-        for(ExplosionModel e : explosions){
-            ElementView view = ViewFactory.makeView(gv.game, e);
-            view.draw(gv.game.getBatch());
-        }
+        Utils.drawAllElements(gv.gameModel.getPlanets(), gv);
+        Utils.drawAllElements(gv.gameModel.getComets(), gv);
+        Utils.drawAllElements(gv.gameModel.getExplosions(), gv);
+
     }
 
     @Override
@@ -87,21 +69,11 @@ public class PauseFirstSection extends PauseSection {
 
         PlayerModel player = gv.gameModel.getPlayer();
         PlayerView viewPlayer = (PlayerView) ViewFactory.makeView(gv.game,player);
-        viewPlayer.setStopped();
+        viewPlayer.setStopFrame();
 
-        List<ExplosionModel> explosions = gv.gameModel.getExplosions();
-        for(ExplosionModel e : explosions){
-            ExplosionModel expl = e;
-            ExplosionView viewExplosion = (ExplosionView) ViewFactory.makeView(gv.game,expl);
-            viewExplosion.setStopped();
-        }
+        Utils.drawPausedElements(gv.gameModel.getExplosions(), gv);
 
-        List<CometModel> comets = gv.gameModel.getComets();
-        for(CometModel c : comets){
-            CometModel cml = c;
-            CometView Explosion = (CometView) ViewFactory.makeView(gv.game,cml);
-            Explosion.setStopped();
-        }
+        Utils.drawPausedElements(gv.gameModel.getComets(), gv);
 
         Gdx.input.setInputProcessor(stage);
 

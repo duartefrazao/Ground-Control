@@ -19,8 +19,6 @@ public class PlayerView extends ElementView {
     private static final float RUNNING_FRAME_TIME = 0.1f;
     private static final float IDLE_FRAME_TIME = 0.12f;
 
-    private boolean stop = false;
-
     private float stateTime = 0;
 
     private boolean flip = true;
@@ -96,18 +94,10 @@ public class PlayerView extends ElementView {
         this.updateCurrentAnimation(model);
     }
 
-    public void setStopped() {
-        this.stop = true;
-    }
-
-    public void removeStopped() {
-        this.stop = false;
-    }
-
     @Override
     public void draw(SpriteBatch batch) {
 
-        if (!stop)
+        if (!stopFrame)
             this.stateTime += Gdx.graphics.getDeltaTime();
 
 

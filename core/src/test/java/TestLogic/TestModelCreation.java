@@ -27,6 +27,7 @@ public class TestModelCreation {
         assertEquals(0,cm.getRotation(),0.1);
     }
 
+
     @Test
     public void testRemoveModel(){
         GameModel gm = new GameModel();
