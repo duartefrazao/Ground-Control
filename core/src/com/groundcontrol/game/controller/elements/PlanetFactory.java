@@ -3,8 +3,16 @@ package com.groundcontrol.game.controller.elements;
 import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.model.elements.PlanetModel;
 
+/**
+ * Creates new planet controllers given the model, using the factory pattern.
+ */
 public class PlanetFactory {
 
+    /**
+     * Creates a new planet controller
+     * @param p planet model
+     * @param world the current world
+     */
     public static void createPlanet(PlanetModel p, World world){
 
         switch ((p.getSize())){

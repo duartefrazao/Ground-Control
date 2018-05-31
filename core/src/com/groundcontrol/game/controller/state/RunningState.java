@@ -5,20 +5,30 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Array;
 import com.groundcontrol.game.controller.elements.PlayerController;
 
+/**
+ * Represents the state in which the player is running around a planet
+ */
 public class RunningState implements PlayerState {
 
     private static int clockWise = 1;
     private static int counterClockWise = -1;
     private float timeInPlanet;
 
+    /**
+     * Class Constructor given the time
+     *
+     * @param time
+     */
     public RunningState(float time) {
         this.timeInPlanet = time;
     }
 
+    @Override
     public float getTime() {
         return this.timeInPlanet;
     }
 
+    @Override
     public void updateTime(PlayerController context, float delta) {
 
         this.timeInPlanet -= delta;
@@ -31,6 +41,7 @@ public class RunningState implements PlayerState {
 
     }
 
+    @Override
     public void handleInput(PlayerController context, InputDecoder.Input input) {
 
         if (input == InputDecoder.Input.IDLE) {
@@ -50,10 +61,12 @@ public class RunningState implements PlayerState {
         }
     }
 
+    @Override
     public void setRotation(PlayerController context, Array<Body> objects) {
         context.setTransform(context.getX(), context.getY(), context.getAngleBetween(context.getPlanet()));
     }
 
+    @Override
     public void applyPullForce(PlayerController context, Array<Body> objects) {
 
         Vector2 force = context.calculatePullForce(context.getPlanet());

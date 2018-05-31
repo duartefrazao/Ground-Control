@@ -2,6 +2,9 @@ package com.groundcontrol.game.controller.gameflow;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Force controller of our world. Gradually increases it over time
+ */
 public class ForceController {
 
     private final static int minimumVy = 6;
@@ -15,6 +18,10 @@ public class ForceController {
     private Vector2 force;
     private double elapsedTime;
 
+    /**
+     * Default Constructor
+     * Creates a new force with a default value
+     */
     public ForceController() {
 
         force = new Vector2(0, -minimumVy);
@@ -23,6 +30,12 @@ public class ForceController {
 
     }
 
+    /**
+     * Updates the current force in each step
+     * @param delta time elapsed after the last step
+     * @param x x component of the new force, given by the view accelerometer
+     * @param y y component of the new force, given by the view accelerometer
+     */
     public void updateForce(float delta, float x, float y) {
 
         elapsedTime += delta;
@@ -33,6 +46,11 @@ public class ForceController {
         force.limit(currentMax);
     }
 
+    /**
+     * Returns a random multiplier of the current force
+     * Used to introduce some dynamic behaviour to our game
+     * @return the random force
+     */
     public Vector2 getForceMult() {
 
         float randomMultiplier = (float) (minMult + Math.random() * (maxMult - minMult));

@@ -4,6 +4,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.model.elements.ElementModel;
 
+/**
+ * Big Planet Controller
+ */
 public class BigPlanetController extends ElementController {
 
     private final static int maxVelocity = 8;
@@ -20,6 +23,11 @@ public class BigPlanetController extends ElementController {
 
     private static float restitution = 0.0f;
 
+    /**
+     * Creates a big planet Controller and add its to the current world.
+     * @param world the current world
+     * @param model the planet model
+     */
     public BigPlanetController(World world, ElementModel model) {
 
         super(world, model, BodyDef.BodyType.DynamicBody);
@@ -61,10 +69,12 @@ public class BigPlanetController extends ElementController {
 
     }
 
+    @Override
     public float getMaxVelocity() {
         return this.maxVelocity;
     }
 
+    @Override
     public float getMaxAngular() {
         return this.maxAngularVelocity;
     }

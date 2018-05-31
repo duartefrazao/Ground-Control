@@ -5,6 +5,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.groundcontrol.game.model.elements.ElementModel;
 
+/**
+ * Comet Controller
+ */
 public class CometController extends ElementController {
 
     private Vector2 initialVelocity = new Vector2((float) (Math.random() + 0.7) * 20, (float) (Math.random() + 0.7) * 20);
@@ -21,6 +24,11 @@ public class CometController extends ElementController {
 
     private static float restitution = 0.3f;
 
+    /**
+     * Creates a new comer Controller and add its to the current world.
+     * @param world the current world
+     * @param model the comet model
+     */
     public CometController(World world, ElementModel model) {
 
         super(world, model, BodyDef.BodyType.DynamicBody);
@@ -47,14 +55,22 @@ public class CometController extends ElementController {
 
     }
 
+    @Override
     public float getMaxVelocity() {
         return this.initialVelocity.len();
     }
 
+    @Override
     public float getMaxAngular() {
         return this.maxAngularVelocity;
     }
 
+    /**
+     * Applies a default initial velocity to the comet.
+     * The velocity direction will be dependant on the region that the comet is created
+     * @param vx_direction
+     * @param vy_direction
+     */
     public void applyInitialVelocity(int vx_direction, int vy_direction) {
 
         this.initialVelocity.x *= vx_direction;
