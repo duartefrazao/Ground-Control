@@ -61,15 +61,33 @@ public class PauseSecondSection extends PauseSection  {
 
     @Override
     public void drawBackground() {
+
     }
 
     @Override
     public Stage createStage() {
+
+        Stage stage= new Stage();
+
+        Image backgroundSec = new Image(new Texture(Gdx.files.internal("backgroundSecond.png")));
+
+        backgroundSec.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        backgroundSec.setPosition(0,0 );
+        stage.addActor(backgroundSec);
+
+
+        Image background = new Image(new Texture(Gdx.files.internal("pauseBack.png")));
+
+        background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth() -Gdx.graphics.getWidth()/5,Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/3);
+        background.setPosition(Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight()/6 );
+        stage.addActor(background);
+
+
         ButtonFactory butFac = new ButtonFactory();
 
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
-        Button resumeButton= butFac.makeButton( gv.game.getAssetManager().get("resume.png",Texture.class),gv.game.getAssetManager().get("resume.png",Texture.class),w/2,2*h/3, (int)(w/2),(int)(h)/4);
+        Button resumeButton= butFac.makeButton( gv.game.getAssetManager().get("resume.png",Texture.class),gv.game.getAssetManager().get("resume.png",Texture.class),w/2,3.2f*h/6, (int)(w/2),(int)(h)/8);
         resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -78,7 +96,7 @@ public class PauseSecondSection extends PauseSection  {
             }
         });
 
-        Button exitButton=butFac.makeButton(gv.game.getAssetManager().get("exitMM.png",Texture.class),gv.game.getAssetManager().get("exitMM.png",Texture.class),w/2,h/3, (int)(w/2),(int)(h)/4);
+        Button exitButton=butFac.makeButton(gv.game.getAssetManager().get("exitMM.png",Texture.class),gv.game.getAssetManager().get("exitMM.png",Texture.class),w/2,2*h/6, (int)(w/2),(int)(h)/8);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -87,14 +105,7 @@ public class PauseSecondSection extends PauseSection  {
             }
         });
 
-        Image background = new Image(new Texture(Gdx.files.internal("backgroundSecond.png")));
 
-        background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        background.setPosition(0,0 );
-
-        Stage stage= new Stage();
-
-        stage.addActor(background);
         stage.addActor(resumeButton);
         stage.addActor(exitButton);
 
@@ -110,4 +121,6 @@ public class PauseSecondSection extends PauseSection  {
     public void setClient(Client client){
         this.client=client;
     }
+
+
 }

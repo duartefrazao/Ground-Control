@@ -22,7 +22,6 @@ public class Receiver  extends Thread{
     @Override
     public void run(){
 
-        System.out.println("Starting receive communication...");
         while(!finished){
 
             try {
@@ -36,16 +35,13 @@ public class Receiver  extends Thread{
                 messagesToReceive.add(msg);
 
             } catch (IOException e) {
-                System.out.println("Caught exception on run() in Receiver");
                 e.printStackTrace();
                 this.finished=true;
             }
         }
-        System.out.println("Ending receive communication");
     }
 
     public void stopCom(){
-        System.out.println("Stopping communication...");
         this.interrupt();
     }
 }

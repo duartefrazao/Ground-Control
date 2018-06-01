@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
@@ -39,9 +40,7 @@ public class PauseFirstSection extends PauseSection {
             if(messageReceived.equals("RESUME"))
                 gv.multiplayerServer.transition();
             else if(messageReceived.equals("EXIT"))
-            {
                 exitToMainMenu();
-            }
         }
     }
 
@@ -74,11 +73,21 @@ public class PauseFirstSection extends PauseSection {
 
     @Override
     public Stage createStage() {
+
+        Stage stage= new Stage();
+
+        Image background = new Image(new Texture(Gdx.files.internal("pauseBack.png")));
+
+        background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth() -Gdx.graphics.getWidth()/5,Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/3);
+        background.setPosition(Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight()/6 );
+        stage.addActor(background);
+
+
         ButtonFactory butFac = new ButtonFactory();
 
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
-        Button resumeButton= butFac.makeButton( gv.game.getAssetManager().get("resume.png",Texture.class),gv.game.getAssetManager().get("resume.png",Texture.class),w/2,2*h/3, (int)(w/2),(int)(h)/4);
+        Button resumeButton= butFac.makeButton( gv.game.getAssetManager().get("resume.png",Texture.class),gv.game.getAssetManager().get("resume.png",Texture.class),w/2,3.2f*h/6, (int)(w/2),(int)(h)/8);
         resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -87,7 +96,7 @@ public class PauseFirstSection extends PauseSection {
             }
         });
 
-        Button exitButton=butFac.makeButton(gv.game.getAssetManager().get("exitMM.png",Texture.class),gv.game.getAssetManager().get("exitMM.png",Texture.class),w/2,h/3, (int)(w/2),(int)(h)/4);
+        Button exitButton=butFac.makeButton(gv.game.getAssetManager().get("exitMM.png",Texture.class),gv.game.getAssetManager().get("exitMM.png",Texture.class),w/2,2*h/6, (int)(w/2),(int)(h)/8);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -95,7 +104,6 @@ public class PauseFirstSection extends PauseSection {
             }
         });
 
-        Stage stage= new Stage();
 
         stage.addActor(resumeButton);
         stage.addActor(exitButton);

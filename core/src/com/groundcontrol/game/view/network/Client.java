@@ -18,18 +18,13 @@ public class Client {
 
 
     public boolean startConnection(String ip, int port)  {
-        System.out.println("Setting up Client");
         try {
             this.clientSocket = new Socket(ip, port);
         } catch (IOException e) {
             System.out.println("Error connecting client to server");
-            //System.out.println(e);
             return false;
         }
 
-        System.out.println("Connection established");
-
-        System.out.println("Starting threads");
         receiver = new Receiver(clientSocket, receiveQueue);
         receiver.start();
         sender = new Sender(clientSocket, sendQueue);
