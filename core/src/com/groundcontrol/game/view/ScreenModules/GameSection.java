@@ -3,6 +3,7 @@ package com.groundcontrol.game.view.ScreenModules;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -38,6 +39,8 @@ public class GameSection implements Section, GestureDetector.GestureListener {
     protected Label timeLabel;
     private DecimalFormat df = new DecimalFormat();
 
+    Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/space_sound.mp3"));
+
     public GameSection(GameView gameView) {
 
         this.gv = gameView;
@@ -49,6 +52,8 @@ public class GameSection implements Section, GestureDetector.GestureListener {
 
         df.setMaximumFractionDigits(2);
         df.setMinimumFractionDigits(2);
+
+        backgroundMusic.setLooping(true);
 
     }
 
@@ -98,6 +103,7 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         ViewFactory.drawAllElements(gv.gameModel.getExplosions(), gv);
 
         if(gv.gameModel.getPlayer().hasLost()){
+            backgroundMusic.stop();
             gv.menuSection.transition();
         }
 
@@ -113,6 +119,8 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         Gdx.input.setInputProcessor(this.ip);
 
         gv.currentSection = gv.gameSection;
+
+        backgroundMusic.play();
 
     }
 
@@ -154,6 +162,7 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         pauseButton.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
+                backgroundMusic.stop();
                 gv.pauseSection.transition();
                 return true;
             }

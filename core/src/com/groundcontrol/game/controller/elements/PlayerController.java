@@ -400,6 +400,10 @@ public class PlayerController extends ElementController {
         return this.lost;
     }
 
+    /**
+     * Sets the lost the condition
+     * @param lost
+     */
     public void setLost(boolean lost){
         this.lost = lost;
     }
