@@ -29,6 +29,7 @@ public class GameSection implements Section, GestureDetector.GestureListener {
     protected InputMultiplexer ip = new InputMultiplexer();
     protected Stage stage;
     protected StateInput currentInput = StateInput.IDLE;
+
     //Time Components
     protected BitmapFont font = new BitmapFont();
     protected Color whiteColor = new Color(Color.WHITE);

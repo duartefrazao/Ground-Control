@@ -27,11 +27,7 @@ public class MultiplayerServerSection extends GameSection{
     @Override
     public void update(float delta) {
 
-        /*
-        if(!Gdx.input.isTouched()){
-            currentInput=StateInput.IDLE;
-        }
-        */
+
 
 
         gv.gameController.handleInput(currentInput);
@@ -64,6 +60,9 @@ public class MultiplayerServerSection extends GameSection{
             {
                 gv.pauseFirstSection.setServer(server);
                 gv.pauseFirstSection.transition();
+            }else if(messageReceived.equals("LOST")){
+                server.stop();
+                gv.menuSection.transition();
             }
             else if(messageReceived.substring(0,2).equals("vx")) {
                 messageReceived=messageReceived.substring(2);
@@ -84,6 +83,22 @@ public class MultiplayerServerSection extends GameSection{
         Gdx.input.setInputProcessor(this.ip);
 
         gv.currentSection = gv.multiplayerServer;
+
+    }
+
+    @Override
+    public void display(float delta) {
+        drawBackground();
+
+        ViewFactory.drawElement(gv.gameModel.getPlayer(), gv);
+
+        ViewFactory.drawAllElements(gv.gameModel.getPlanets(), gv);
+        ViewFactory.drawAllElements(gv.gameModel.getComets(), gv);
+        ViewFactory.drawAllElements(gv.gameModel.getExplosions(), gv);
+
+        if(gv.gameModel.getPlayer().hasLost()){
+            server.sendMessage("LOST");
+        }
 
     }
 
@@ -125,7 +140,7 @@ public class MultiplayerServerSection extends GameSection{
         pauseButton.addListener(new ClickListener(){
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
-                sendPauseMessage();
+                server.sendMessage("PAUSE");
                 gv.pauseFirstSection.setServer(server);
                 gv.pauseFirstSection.transition();
                 return true;
@@ -150,13 +165,5 @@ public class MultiplayerServerSection extends GameSection{
 
     public void setServer(Server server) {
         this.server = server;
-    }
-
-    public void stopServer() {
-        server.stop();
-    }
-
-    public void sendPauseMessage() {
-        server.sendMessage("PAUSE");
     }
 }

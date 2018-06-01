@@ -42,7 +42,7 @@ public class ConnectClientSection implements Section{
         this.game = gv.game;
         loadAssets();
 
-        font.getData().scale(5);
+        font.getData().scale(Gdx.graphics.getHeight()/20);
         stage = createStage();
 
     }
@@ -108,7 +108,8 @@ public class ConnectClientSection implements Section{
         background.setPosition(0,0 );
         stage.addActor(background);
 
-        final String nums[] = {"six","seven","eight","four","five","nine","one","two","three"};
+        final String nums[] = {"seven","eight","nine","four","five","six","one","two","three"};
+        final String numStrings[] ={"7","8","9","4","5","6","1","2","3"};
         ArrayList<Button> buts = new ArrayList<Button>();
 
 
@@ -121,7 +122,7 @@ public class ConnectClientSection implements Section{
             buts.get(i).addListener(new ClickListener(){
                 @Override
                 public void clicked(InputEvent event, float x, float y){
-                    ip = ip + ind;
+                    ip = ip + numStrings[ind];
                 }
             });
             stage.addActor(buts.get(i));
@@ -135,7 +136,7 @@ public class ConnectClientSection implements Section{
             }
         });
 
-        Button dot= buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/point.png",Texture.class),gv.game.getAssetManager().get("Numbers/point.png",Texture.class),  30+w/4,50+1*h/6, (int)(w+h)/10,(int)(w+h)/10);
+        Button dot= buttonFactory.makeButton(gv.game.getAssetManager().get("Numbers/point.png",Texture.class),gv.game.getAssetManager().get("Numbers/point.png",Texture.class),  w/35+w/4,h/18+1*h/6, (int)(w+h)/10,(int)(w+h)/10);
         dot.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){

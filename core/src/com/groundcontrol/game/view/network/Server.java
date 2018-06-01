@@ -16,29 +16,22 @@ public class Server extends Observable {
     private boolean alive;
     private ConcurrentLinkedQueue<String> receiveQueue =  new ConcurrentLinkedQueue<String>();
     private LinkedBlockingQueue<String> sendQueue= new LinkedBlockingQueue<String>();
-    private int portNum = 8500;
 
     public void start(int port) {
-        System.out.println("Setting up server");
         try {
             this.serverSocket = new ServerSocket(port);
-            System.out.println("Here111");
             clientSocket = serverSocket.accept();
         } catch (IOException e) {
             System.out.println("Socket closed while waiting for client");
             return;
         }
 
-        System.out.println("Connection established");
-
-        System.out.println("Starting threads");
         receiver = new Receiver(clientSocket, receiveQueue);
         receiver.start();
         sender = new Sender(clientSocket, sendQueue);
         sender.start();
 
 
-        System.out.println("[Server]Creating communication");
         this.alive = true;
     }
 
@@ -63,7 +56,6 @@ public class Server extends Observable {
     }
 
     public void stop()  {
-        System.out.println("Stopping server");
         while(!sendQueue.isEmpty()){}
         alive=false;
         receiver.stopCom();

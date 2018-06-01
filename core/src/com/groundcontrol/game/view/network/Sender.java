@@ -15,14 +15,12 @@ public class Sender extends Thread {
     public volatile boolean finished=false;
 
     public Sender(Socket clientSocket, LinkedBlockingQueue<String> msgSend) {
-        System.out.println("Creating sender for communication with socket : " + clientSocket.getLocalPort());
         this.clientSocket = clientSocket;
         this.messagesToSend= msgSend;
     }
 
     @Override
     public void run(){
-        System.out.println("Starting sending messages");
         while(!finished){
             try {
 
@@ -32,12 +30,7 @@ public class Sender extends Thread {
                 }
 
                 String msg = messagesToSend.take();
-
-                //System.out.println("Sending " + msg);
-
                 PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream())),true);
-
-               // System.out.println("Sending " + msg);
                 out.println(msg);
 
             }catch (InterruptedException e) {
@@ -50,11 +43,9 @@ public class Sender extends Thread {
 
 
         }
-        System.out.println("Ending sending communication");
     }
 
     public void stopCom(){
-        System.out.println("Stopping communication...");
         this.interrupt();
     }
 }

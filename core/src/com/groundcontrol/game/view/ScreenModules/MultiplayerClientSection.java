@@ -31,12 +31,9 @@ public class MultiplayerClientSection implements Section{
 
     public MultiplayerClientSection(GameView gameView) {
 
-
         this.gv= gameView;
         stage=createStage();
-
         loadAssets();
-
         ip.addProcessor(stage);
     }
 
@@ -61,6 +58,9 @@ public class MultiplayerClientSection implements Section{
             if(messageReceived.equals("PAUSE")){
                 gv.pauseSecondSection.setClient(client);
                 gv.pauseSecondSection.transition();
+            }else if(messageReceived.equals("LOST")){
+                client.stop();
+                gv.menuSection.transition();
             }
 
         }
@@ -100,12 +100,11 @@ public class MultiplayerClientSection implements Section{
             }
         });
 
+
         Image background = new Image(new Texture(Gdx.files.internal("backgroundSecond.png")));
 
         background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         background.setPosition(0,0 );
-
-
 
         Stage stage= new Stage();
 
