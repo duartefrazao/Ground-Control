@@ -10,6 +10,10 @@ import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.model.elements.ElementModel;
 import com.groundcontrol.game.model.elements.PlayerModel;
 
+
+/**
+ * The view of the player and all of it's animations
+ */
 public class PlayerView extends ElementView {
 
     private static final int numberOfRunningStates = 6;
@@ -27,6 +31,8 @@ public class PlayerView extends ElementView {
 
     private Animation<TextureRegion> runningAnimation;
 
+    private Animation<TextureRegion> floatingAnimation;
+
     private Animation<TextureRegion> idleAnimation;
 
     private Animation<TextureRegion> currentAnimation;
@@ -35,17 +41,30 @@ public class PlayerView extends ElementView {
         super(game);
     }
 
-    private Animation<TextureRegion> createRunningAnimation(GroundControl game) {
+    private Animation<TextureRegion> createFloatingAnimation(GroundControl game){
 
-        //Texture runningTexture = game.getAssetManager().get("RunningAssassin.png");
         Texture flyingTexture = game.getAssetManager().get("FlyingAssassin.png");
-        //TextureRegion[][] runRegion = TextureRegion.split(runningTexture, runningTexture.getWidth() / numberOfRunningStates, runningTexture.getHeight());
 
         TextureRegion[][] flyRegion = TextureRegion.split(flyingTexture, flyingTexture.getWidth() / numberOfFlyingStates, flyingTexture.getHeight());
 
         TextureRegion[] frames = new TextureRegion[numberOfFlyingStates];
 
         System.arraycopy(flyRegion[0], 0, frames, 0, numberOfFlyingStates);
+
+        return new Animation<TextureRegion>(RUNNING_FRAME_TIME, frames);
+
+
+    }
+
+    private Animation<TextureRegion> createRunningAnimation(GroundControl game) {
+
+        Texture runningTexture = game.getAssetManager().get("RunningAssassin.png");
+
+        TextureRegion[][] runRegion = TextureRegion.split(runningTexture, runningTexture.getWidth() / numberOfRunningStates, runningTexture.getHeight());
+
+        TextureRegion[] frames = new TextureRegion[numberOfRunningStates];
+
+        System.arraycopy(runRegion[0], 0, frames, 0, numberOfRunningStates);
 
         return new Animation<TextureRegion>(RUNNING_FRAME_TIME, frames);
 
@@ -69,6 +88,7 @@ public class PlayerView extends ElementView {
         Texture texture = game.getAssetManager().get("assassin.png");
         this.runningAnimation = createRunningAnimation(game);
         this.idleAnimation = createIdleAnimation(game);
+        this.floatingAnimation = createFloatingAnimation(game);
         return new Sprite(texture, texture.getWidth(), texture.getHeight());
     }
 
@@ -82,8 +102,8 @@ public class PlayerView extends ElementView {
             case RUNNING:
                 this.currentAnimation = runningAnimation;
                 break;
-            default:
-                this.currentAnimation = idleAnimation;
+            case FLOATING:
+                this.currentAnimation = floatingAnimation;
                 break;
 
         }

@@ -371,7 +371,7 @@ public class PlayerController extends ElementController {
     private void updateMovementState() {
 
         if (!isInPlanet())
-            ((PlayerModel) body.getUserData()).setCurrentState(PlayerModel.animationState.IDLE);
+            ((PlayerModel) body.getUserData()).setCurrentState(PlayerModel.animationState.FLOATING);
         else {
 
             if (Math.abs(this.body.getLinearVelocity().len() - this.getPlanet().getLinearVelocity().len()) > runningRelativeVelocity)

@@ -77,5 +77,5 @@ public class PlayerModel extends ElementModel {
     /**
      * Player possible animations
      */
-    public enum animationState {IDLE, RUNNING}
+    public enum animationState {IDLE, RUNNING, FLOATING}
 }
