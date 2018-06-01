@@ -14,6 +14,8 @@ public class PlayerView extends ElementView {
 
     private static final int numberOfRunningStates = 6;
 
+    private static final int numberOfFlyingStates = 5;
+
     private static final int numberOfIdleStates = 4;
 
     private static final float RUNNING_FRAME_TIME = 0.1f;
@@ -35,12 +37,15 @@ public class PlayerView extends ElementView {
 
     private Animation<TextureRegion> createRunningAnimation(GroundControl game) {
 
-        Texture runningTexture = game.getAssetManager().get("RunningAssassin.png");
-        TextureRegion[][] runRegion = TextureRegion.split(runningTexture, runningTexture.getWidth() / numberOfRunningStates, runningTexture.getHeight());
+        //Texture runningTexture = game.getAssetManager().get("RunningAssassin.png");
+        Texture flyingTexture = game.getAssetManager().get("FlyingAssassin.png");
+        //TextureRegion[][] runRegion = TextureRegion.split(runningTexture, runningTexture.getWidth() / numberOfRunningStates, runningTexture.getHeight());
 
-        TextureRegion[] frames = new TextureRegion[numberOfRunningStates];
+        TextureRegion[][] flyRegion = TextureRegion.split(flyingTexture, flyingTexture.getWidth() / numberOfFlyingStates, flyingTexture.getHeight());
 
-        System.arraycopy(runRegion[0], 0, frames, 0, numberOfRunningStates);
+        TextureRegion[] frames = new TextureRegion[numberOfFlyingStates];
+
+        System.arraycopy(flyRegion[0], 0, frames, 0, numberOfFlyingStates);
 
         return new Animation<TextureRegion>(RUNNING_FRAME_TIME, frames);
 
