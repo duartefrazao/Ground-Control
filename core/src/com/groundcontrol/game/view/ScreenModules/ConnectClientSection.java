@@ -16,13 +16,23 @@ import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.Input.Keys.*;
-import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
-import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
+import static com.badlogic.gdx.Input.Keys.NUM_0;
+import static com.badlogic.gdx.Input.Keys.NUM_1;
+import static com.badlogic.gdx.Input.Keys.NUM_2;
+import static com.badlogic.gdx.Input.Keys.NUM_3;
+import static com.badlogic.gdx.Input.Keys.NUM_4;
+import static com.badlogic.gdx.Input.Keys.NUM_5;
+import static com.badlogic.gdx.Input.Keys.NUM_6;
+import static com.badlogic.gdx.Input.Keys.NUM_7;
+import static com.badlogic.gdx.Input.Keys.NUM_8;
+import static com.badlogic.gdx.Input.Keys.NUM_9;
 
+
+/**
+ * Section responsible for client  (second player) connection view
+ */
 public class ConnectClientSection implements Section{
 
     private final GameView gv;
@@ -40,7 +50,6 @@ public class ConnectClientSection implements Section{
 
         this.gv=gameView;
         this.game = gv.game;
-        loadAssets();
 
         font.getData().scale(Gdx.graphics.getHeight()/20);
         stage = createStage();
@@ -157,8 +166,11 @@ public class ConnectClientSection implements Section{
         connectButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                if(gv.multiplayerClient.connectClient(ip))
+                if(gv.multiplayerClient.connectClient(ip)) {
+                    if(gv.multiplayerClient ==null)
+                        gv.multiplayerClient = new MultiplayerClientSection(gv);
                     gv.multiplayerClient.transition();
+                }
                 else message= "Error connecting to server";
             }
         });
@@ -167,6 +179,8 @@ public class ConnectClientSection implements Section{
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.multiplayerSectionSelector ==null)
+                    gv.multiplayerSectionSelector = new MultiplayerSectionSelector(gv);
                gv.multiplayerSectionSelector.transition();
             }
         });
@@ -179,21 +193,6 @@ public class ConnectClientSection implements Section{
         stage.addActor(correct);
 
         return stage;
-    }
-
-    @Override
-    public void loadAssets() {
-        String nums[] = {"zero","one","two","three","four","five","six","seven","eight","nine","correct","point"};
-
-        for(int i = 0; i < nums.length; i++){
-            gv.game.getAssetManager().load("Numbers/" + nums[i]+ ".png", Texture.class);
-        }
-
-        gv.game.getAssetManager().load("IPAdress_Insert_2ndPlayer.png", Texture.class);
-        gv.game.getAssetManager().load("connect.png", Texture.class);
-        gv.game.getAssetManager().load("start.png", Texture.class);
-
-        gv.game.getAssetManager().finishLoading();
     }
 
     @Override

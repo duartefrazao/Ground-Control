@@ -17,6 +17,9 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for single player game over view
+ */
 public class GameOverSection implements Section{
 
     protected final GameView gv;
@@ -28,7 +31,6 @@ public class GameOverSection implements Section{
         this.gv=gameView;
         this.game = gameView.game;
 
-        loadAssets();
 
         stage = createStage();
     }
@@ -106,13 +108,7 @@ public class GameOverSection implements Section{
         gv.currentSection= gv.gameOverSection;
     }
 
-    @Override
-    public void loadAssets() {
-        gv.game.getAssetManager().load("restart.png", Texture.class);
-        gv.game.getAssetManager().load("exitMM.png", Texture.class);
-        gv.game.getAssetManager().load("gameOver.png", Texture.class);
-        gv.game.getAssetManager().finishLoading();
-    }
+
 
     @Override
     public void drawStages(float delta) {

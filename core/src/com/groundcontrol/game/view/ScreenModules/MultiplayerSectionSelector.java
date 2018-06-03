@@ -17,6 +17,9 @@ import com.groundcontrol.game.view.network.Server;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for player selection
+ */
 public class MultiplayerSectionSelector implements Section{
 
     private final GameView gv;
@@ -32,7 +35,6 @@ public class MultiplayerSectionSelector implements Section{
 
         this.gv=gameView;
         this.game = gv.game;
-        loadAssets();
 
         stage = createStage();
 
@@ -76,6 +78,8 @@ public class MultiplayerSectionSelector implements Section{
         first.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.connectServerSection ==null)
+                    gv.connectServerSection = new ConnectServerSection(gv);
                 gv.connectServerSection.transition();
 
             }
@@ -85,6 +89,8 @@ public class MultiplayerSectionSelector implements Section{
         second.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.connectClientSection ==null)
+                    gv.connectClientSection = new ConnectClientSection(gv);
                 gv.connectClientSection.transition();
             }
         });
@@ -105,15 +111,6 @@ public class MultiplayerSectionSelector implements Section{
         return stage;
     }
 
-    @Override
-    public void loadAssets() {
-        gv.game.getAssetManager().load("background.png", Texture.class);
-        gv.game.getAssetManager().load("exit.png", Texture.class);
-        gv.game.getAssetManager().load("first.png", Texture.class);
-        gv.game.getAssetManager().load("second.png", Texture.class);
-
-        gv.game.getAssetManager().finishLoading();
-    }
 
     @Override
     public void drawStages(float delta) {

@@ -7,6 +7,9 @@ import java.util.Observable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * Networking server
+ */
 public class Server extends Observable {
 
     public ServerSocket serverSocket;
@@ -17,6 +20,11 @@ public class Server extends Observable {
     private ConcurrentLinkedQueue<String> receiveQueue =  new ConcurrentLinkedQueue<String>();
     private LinkedBlockingQueue<String> sendQueue= new LinkedBlockingQueue<String>();
 
+    /**
+     * Starts a connection with a client
+     * @param port of the server
+     * @return if the connection was made sucessfully
+     */
     public void start(int port) {
         try {
             this.serverSocket = new ServerSocket(port);
@@ -35,10 +43,18 @@ public class Server extends Observable {
         this.alive = true;
     }
 
+    /**
+     * Sends message to sendQueue to be sent to client
+     * @param msg message to send to client
+     */
     public void sendMessage(String msg)  {
         sendQueue.add(msg);
     }
 
+    /**
+     * Receives message from client from receiveQueue
+     * @return null if receiveQueue empty, or message if not
+     */
     public String receiveMessage()  {
 
         if(!receiveQueue.isEmpty())
@@ -47,14 +63,24 @@ public class Server extends Observable {
     }
 
 
+    /**
+     * Check to see if both communication threads are working, if not stops server
+     */
     public void tick()  {
         if(receiver.finished || sender.finished) stop();
     }
 
+    /**
+     * Gets server status
+     * @return true if both threads are up
+     */
     public boolean isAlive() {
         return alive;
     }
 
+    /**
+     * Stops the server, terminating threads and finishing communication
+     */
     public void stop()  {
         alive=false;
         receiveQueue.clear();

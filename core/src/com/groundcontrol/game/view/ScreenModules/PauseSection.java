@@ -17,21 +17,23 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for single player pause view
+ */
 public class PauseSection implements Section{
 
     protected final GameView gv;
     protected final GroundControl game;
     protected final Stage stage;
 
-
     public PauseSection (GameView gameView) {
         this.gv=gameView;
         this.game = gameView.game;
 
-        loadAssets();
 
         stage = createStage();
     }
+
 
     @Override
     public void update(float delta) {
@@ -87,6 +89,7 @@ public class PauseSection implements Section{
         resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.gameSection ==null) gv.gameSection = new GameSection(gv);
                 gv.gameSection.transition();
             }
         });
@@ -106,13 +109,6 @@ public class PauseSection implements Section{
         return stage;
     }
 
-    @Override
-    public void loadAssets() {
-        gv.game.getAssetManager().load("resume.png", Texture.class);
-        gv.game.getAssetManager().load("exitMM.png", Texture.class);
-        gv.game.getAssetManager().load("pauseBack.png", Texture.class);
-        gv.game.getAssetManager().finishLoading();
-    }
 
     @Override
     public void drawStages(float delta) {

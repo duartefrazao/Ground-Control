@@ -2,24 +2,20 @@ package com.groundcontrol.game.view.ScreenModules;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 
-import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
-import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
-
+/**
+ * Section responsible for menu view
+ */
 public class MenuSection implements Section{
 
     private Button exitButton;
@@ -33,8 +29,6 @@ public class MenuSection implements Section{
     public MenuSection(GameView gameView){
         this.game = gameView.game;
         this.gv=gameView;
-        loadAssets();
-
         stage = createStage();
     }
 
@@ -73,6 +67,8 @@ public class MenuSection implements Section{
         gameButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.gameSection ==null)
+                    gv.gameSection = new GameSection(gv);
                 gv.gameSection.transition();
 
             }
@@ -82,6 +78,8 @@ public class MenuSection implements Section{
         mpButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.multiplayerSectionSelector ==null)
+                    gv.multiplayerSectionSelector = new MultiplayerSectionSelector(gv);
                 gv.multiplayerSectionSelector.transition();
             }
         });
@@ -103,16 +101,6 @@ public class MenuSection implements Section{
 
     private void exitGame() {
         Gdx.app.exit();
-    }
-
-    @Override
-    public void loadAssets() {
-        this.game.getAssetManager().load("menu_background.png", Texture.class);
-        this.game.getAssetManager().load("exit.png", Texture.class);
-        this.game.getAssetManager().load("start.png", Texture.class);
-        this.game.getAssetManager().load("multiplayer.png", Texture.class);
-        this.game.getAssetManager().load("player.png", Texture.class);
-        this.game.getAssetManager().finishLoading();
     }
 
     @Override

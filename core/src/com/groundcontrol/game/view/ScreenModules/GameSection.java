@@ -24,6 +24,9 @@ import java.text.DecimalFormat;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for single player game and main components for multiplayer
+ */
 public class GameSection implements Section, GestureDetector.GestureListener {
 
     protected GameView gv;
@@ -39,12 +42,11 @@ public class GameSection implements Section, GestureDetector.GestureListener {
     protected Label timeLabel;
     private DecimalFormat df = new DecimalFormat();
 
-    Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/space_sound.mp3"));
+    Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/space_sound.ogg"));
 
     public GameSection(GameView gameView) {
 
         this.gv = gameView;
-        loadAssets();
         stage = createStage();
         stage.addActor(createTimeTable());
         ip.addProcessor(stage);
@@ -62,6 +64,7 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         table.center().top();
         timeLeft = 0;
         font = new BitmapFont();
+        font.getData().setScale(4);
         timeLabel = new Label(Float.toString(timeLeft), new Label.LabelStyle(font, whiteColor));
         table.add(timeLabel).height(Gdx.graphics.getHeight() / 5);
         table.setFillParent(true);
@@ -104,6 +107,8 @@ public class GameSection implements Section, GestureDetector.GestureListener {
 
         if(gv.gameModel.getPlayer().hasLost()){
             backgroundMusic.stop();
+            if(gv.gameOverSection ==null)
+                gv.gameOverSection = new GameOverSection(gv);
             gv.gameOverSection.transition();
         }
 
@@ -163,6 +168,8 @@ public class GameSection implements Section, GestureDetector.GestureListener {
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
                 backgroundMusic.stop();
+                if(gv.pauseSection ==null)
+                    gv.pauseSection = new PauseSection(gv);
                 gv.pauseSection.transition();
                 return true;
             }
@@ -181,41 +188,6 @@ public class GameSection implements Section, GestureDetector.GestureListener {
 
 
         return stage;
-    }
-
-    @Override
-    public void loadAssets() {
-
-        gv.game.getAssetManager().load("Planets/BigPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("Planets/MediumBigPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("Planets/MediumPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("Planets/SmallPlanet.png", Texture.class);
-
-        gv.game.getAssetManager().load("IdleAssassin.png", Texture.class);
-        gv.game.getAssetManager().load("assassin.png", Texture.class);
-        gv.game.getAssetManager().load("RunningAssassin.png", Texture.class);
-        gv.game.getAssetManager().load("FlyingAssassin.png", Texture.class);
-
-        gv.game.getAssetManager().load("Comet/comet.png", Texture.class);
-        gv.game.getAssetManager().load("Comet/Comet_Array.png", Texture.class);
-
-        this.loadExplosion();
-
-        gv.game.getAssetManager().load("background.png", Texture.class);
-        gv.game.getAssetManager().load("Buttons/left.png", Texture.class);
-        gv.game.getAssetManager().load("Buttons/right.png", Texture.class);
-        gv.game.getAssetManager().load("Buttons/pause.png", Texture.class);
-        gv.game.getAssetManager().load("resume.png", Texture.class);
-
-        gv.game.getAssetManager().finishLoading();
-    }
-
-    private void loadExplosion() {
-
-        for (int i = 1; i <= 8; i++) {
-            gv.game.getAssetManager().load("Explosion/explosion[" + i + "].png", Texture.class);
-        }
-
     }
 
     @Override

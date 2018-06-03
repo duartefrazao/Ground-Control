@@ -6,12 +6,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 
+/**
+ * Button factory to hide button implementation details
+ */
 public class ButtonFactory {
 
 
+    /**
+     * Default constructor
+     */
     public ButtonFactory(){
     }
 
+    /**
+     * Method to create buttons
+     */
     public Button makeButton(Texture textureUp,Texture textureDown,float x,float y, int width,int height){
        Button button = new Button(
            new TextureRegionDrawable(new TextureRegion(textureUp)),

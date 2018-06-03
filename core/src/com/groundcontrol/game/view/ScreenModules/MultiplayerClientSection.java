@@ -1,25 +1,21 @@
 package com.groundcontrol.game.view.ScreenModules;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.groundcontrol.game.controller.GameController;
-import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.network.Client;
 
-import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
-import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
-
+/**
+ * Section responsible for multiplayer second player game
+ */
 public class MultiplayerClientSection implements Section{
 
     Client client;
@@ -33,7 +29,6 @@ public class MultiplayerClientSection implements Section{
 
         this.gv= gameView;
         stage=createStage();
-        loadAssets();
         ip.addProcessor(stage);
     }
 
@@ -42,6 +37,8 @@ public class MultiplayerClientSection implements Section{
         if(client.isAlive())
             client.tick();
         else{
+            if(gv.lostConnectionSection ==null)
+                gv.lostConnectionSection = new LostConnectionSection(gv);
             gv.lostConnectionSection.transition();
             client.stop();
         }
@@ -54,11 +51,13 @@ public class MultiplayerClientSection implements Section{
 
         if(messageReceived != null){
             if(messageReceived.equals("PAUSE")){
-                gv.pauseSecondSection.setClient(client);
+                if(gv.pauseSecondSection ==null)
+                    gv.pauseSecondSection = new PauseSecondSection(gv);
                 gv.pauseSecondSection.transition();
+                gv.pauseSecondSection.setClient(client);
             }else if(messageReceived.equals("LOST")){
-                //client.sendMessage("LOST");
-                //client.sendMessages();
+                if(gv.gameOverSecondSection ==null)
+                    gv.gameOverSecondSection = new GameOverSecondSection(gv);
                 gv.gameOverSecondSection.transition();
                 gv.gameOverSecondSection.setClient(client);
             }
@@ -90,8 +89,10 @@ public class MultiplayerClientSection implements Section{
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
                 sendPauseMessage();
-                gv.pauseSecondSection.setClient(client);
+                if(gv.pauseSecondSection ==null)
+                    gv.pauseSecondSection = new PauseSecondSection(gv);
                 gv.pauseSecondSection.transition();
+                gv.pauseSecondSection.setClient(client);
                 return true;
             }
 
@@ -116,11 +117,6 @@ public class MultiplayerClientSection implements Section{
 
     }
 
-    @Override
-    public void loadAssets() {
-        gv.game.getAssetManager().load("backgroundSecond.png", Texture.class);
-        gv.game.getAssetManager().finishLoading();
-    }
 
     @Override
     public void drawStages(float delta) {

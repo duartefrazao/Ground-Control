@@ -30,10 +30,6 @@ public interface Section {
      */
     Stage createStage();
 
-    /**
-     * Loads all assets needed to the section
-     */
-    void loadAssets();
 
     /**
      * Draws all the stages created for the section

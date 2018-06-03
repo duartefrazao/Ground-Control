@@ -13,6 +13,9 @@ import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
 
+/**
+ * Section responsible for multiplayer first player game
+ */
 public class MultiplayerServerSection extends GameSection{
 
 
@@ -34,6 +37,8 @@ public class MultiplayerServerSection extends GameSection{
             server.tick();
         }
         else {
+            if(gv.lostConnectionSection ==null)
+                gv.lostConnectionSection = new LostConnectionSection(gv);
             gv.lostConnectionSection.transition();
             server.stop();
         }
@@ -53,11 +58,11 @@ public class MultiplayerServerSection extends GameSection{
             System.out.println(messageReceived);
             if(messageReceived.equals("PAUSE"))
             {
-                gv.pauseFirstSection.setServer(server);
+                if(gv.pauseFirstSection ==null)
+                    gv.pauseFirstSection = new PauseFirstSection(gv);
                 gv.pauseFirstSection.transition();
+                gv.pauseFirstSection.setServer(server);
             }else if(messageReceived.equals("LOST")){
-                /*gv.menuSection.transition();
-                server.stop();*/
             }
             else if(messageReceived.substring(0,2).equals("vx")) {
                 messageReceived=messageReceived.substring(2);
@@ -93,7 +98,8 @@ public class MultiplayerServerSection extends GameSection{
 
         if(gv.gameModel.getPlayer().hasLost()){
             server.sendMessage("LOST");
-            gv.gameOverFirstSection.transition();
+            if(gv.gameOverFirstSection ==null)
+                gv.gameOverFirstSection = new GameOverFirstSection(gv);
             gv.gameOverFirstSection.setServer(server);
         }
 
@@ -138,8 +144,10 @@ public class MultiplayerServerSection extends GameSection{
             @Override
             public boolean touchDown (InputEvent e, float x, float y, int pointer, int button){
                 server.sendMessage("PAUSE");
-                gv.pauseFirstSection.setServer(server);
+                if(gv.pauseFirstSection ==null)
+                    gv.pauseFirstSection = new PauseFirstSection(gv);
                 gv.pauseFirstSection.transition();
+                gv.pauseFirstSection.setServer(server);
                 return true;
             }
 

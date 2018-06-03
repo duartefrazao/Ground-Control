@@ -12,7 +12,9 @@ import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Client;
 
-
+/**
+ * Section responsible for multiplayer second player game over
+ */
 public class GameOverSecondSection extends GameOverSection{
 
     private Client client;

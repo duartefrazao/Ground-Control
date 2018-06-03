@@ -20,9 +20,9 @@ import com.groundcontrol.game.view.network.ServerConnector;
 import java.io.IOException;
 import java.net.Socket;
 
-import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
-import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
-
+/**
+ * Section responsible for server  (first player) connection view
+ */
 public class ConnectServerSection implements Section{
 
     private final GameView gv;
@@ -43,7 +43,6 @@ public class ConnectServerSection implements Section{
 
         this.gv=gameView;
         this.game = gv.game;
-        loadAssets();
 
         server= new Server();
 
@@ -67,8 +66,10 @@ public class ConnectServerSection implements Section{
     public void update(float delta) {
 
         if(server.isAlive()){
-            gv.multiplayerServer.setServer(server);
+            if(gv.multiplayerServer ==null)
+                gv.multiplayerServer = new MultiplayerServerSection(gv);
             gv.multiplayerServer.transition();
+            gv.multiplayerServer.setServer(server);
         }
 
         Socket s = null;
@@ -152,13 +153,6 @@ public class ConnectServerSection implements Section{
         return table;
     }
 
-    @Override
-    public void loadAssets() {
-        gv.game.getAssetManager().load("IPAdress_Insert.png", Texture.class);
-        gv.game.getAssetManager().load("connect.png", Texture.class);
-
-        gv.game.getAssetManager().finishLoading();
-    }
 
     @Override
     public void drawStages(float delta) {
