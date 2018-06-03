@@ -62,6 +62,7 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         table.center().top();
         timeLeft = 0;
         font = new BitmapFont();
+        font.getData().setScale(4);
         timeLabel = new Label(Float.toString(timeLeft), new Label.LabelStyle(font, whiteColor));
         table.add(timeLabel).height(Gdx.graphics.getHeight() / 5);
         table.setFillParent(true);
