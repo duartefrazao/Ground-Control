@@ -1,0 +1,15 @@
+
+TestLogic
+com.groundcontrol.game
+com.groundcontrol.game.controller
+com.groundcontrol.game.controller.elements
+com.groundcontrol.game.controller.gameflow
+com.groundcontrol.game.controller.state
+com.groundcontrol.game.desktop
+com.groundcontrol.game.model
+com.groundcontrol.game.model.elements
+com.groundcontrol.game.view
+com.groundcontrol.game.view.ScreenModules
+com.groundcontrol.game.view.UiFactory
+com.groundcontrol.game.view.elements
+com.groundcontrol.game.view.network
