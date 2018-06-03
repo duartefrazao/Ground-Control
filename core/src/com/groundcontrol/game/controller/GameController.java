@@ -1,7 +1,6 @@
 package com.groundcontrol.game.controller;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -98,26 +97,17 @@ public class GameController implements ContactListener {
      */
     private float timeToNextComet;
 
-    /**
-     * Game sounds
-     */
-    private Sound sound;
 
     /**
      * List of planets to add in each step after they collide with a comet
      */
     private List<PlanetModel> planetsToAdd = new ArrayList<PlanetModel>();
-    //private final Music music;
-
     /**
      * Class constructor specifying the game Model to be used
      *
      * @param gameModel
      */
     public GameController(GameModel gameModel) {
-
-        //music = Gdx.audio.newMusic(Gdx.files.internal("Sounds/som.mp3"));
-        sound = Gdx.audio.newSound(Gdx.files.internal("Sounds/som3.mp3"));
 
         world = new World(new Vector2(0, 0), true);
 
