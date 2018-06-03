@@ -25,6 +25,7 @@ public class Client {
             return false;
         }
 
+
         receiver = new Receiver(clientSocket, receiveQueue);
         receiver.start();
         sender = new Sender(clientSocket, sendQueue);
@@ -58,6 +59,8 @@ public class Client {
     public void stop() {
         while(!sendQueue.isEmpty()){}
         this.alive=false;
+        receiveQueue.clear();
+        sendQueue.clear();
         receiver.stopCom();
         sender.stopCom();
         try {
@@ -65,5 +68,10 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void sendMessages() {
+        while(!sendQueue.isEmpty()){}
+
     }
 }

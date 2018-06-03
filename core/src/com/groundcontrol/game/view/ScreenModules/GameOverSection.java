@@ -17,14 +17,14 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
-public class PauseSection implements Section{
+public class GameOverSection implements Section{
 
     protected final GameView gv;
     protected final GroundControl game;
     protected final Stage stage;
 
 
-    public PauseSection (GameView gameView) {
+    public GameOverSection (GameView gameView) {
         this.gv=gameView;
         this.game = gameView.game;
 
@@ -51,28 +51,12 @@ public class PauseSection implements Section{
         ViewFactory.drawAllElements(gv.gameModel.getExplosions(), gv);
     }
 
-
-    @Override
-    public void transition() {
-
-        ViewFactory.updatePause(gv.gameModel.getPlayer(), gv, true);
-
-        ViewFactory.updatePauseElements(gv.gameModel.getExplosions(), gv, true);
-
-        ViewFactory.updatePauseElements(gv.gameModel.getComets(), gv, true);
-
-        Gdx.input.setInputProcessor(stage);
-
-        gv.currentSection= gv.pauseSection;
-    }
-
-
     @Override
     public Stage createStage() {
 
         Stage stage= new Stage();
 
-        Image background = new Image(new Texture(Gdx.files.internal("pauseBack.png")));
+        Image background = new Image(new Texture(Gdx.files.internal("gameOver.png")));
 
         background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth() -Gdx.graphics.getWidth()/5,Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/3);
         background.setPosition(Gdx.graphics.getWidth()/10,Gdx.graphics.getHeight()/6 );
@@ -83,10 +67,12 @@ public class PauseSection implements Section{
 
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
-        Button resumeButton= butFac.makeButton( gv.game.getAssetManager().get("resume.png",Texture.class),gv.game.getAssetManager().get("resume.png",Texture.class),w/2,3.2f*h/6, (int)(w/2),(int)(h)/8);
+        Button resumeButton= butFac.makeButton( gv.game.getAssetManager().get("restart.png",Texture.class),gv.game.getAssetManager().get("restart.png",Texture.class),w/2,3.2f*h/6, (int)(w/2),(int)(h)/8);
         resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                gv.gameModel=new GameModel();
+                gv.gameController = new GameController(gv.gameModel);
                 gv.gameSection.transition();
             }
         });
@@ -107,10 +93,24 @@ public class PauseSection implements Section{
     }
 
     @Override
+    public void transition() {
+
+        ViewFactory.updatePause(gv.gameModel.getPlayer(), gv, true);
+
+        ViewFactory.updatePauseElements(gv.gameModel.getExplosions(), gv, true);
+
+        ViewFactory.updatePauseElements(gv.gameModel.getComets(), gv, true);
+
+        Gdx.input.setInputProcessor(stage);
+
+        gv.currentSection= gv.gameOverSection;
+    }
+
+    @Override
     public void loadAssets() {
-        gv.game.getAssetManager().load("resume.png", Texture.class);
+        gv.game.getAssetManager().load("restart.png", Texture.class);
         gv.game.getAssetManager().load("exitMM.png", Texture.class);
-        gv.game.getAssetManager().load("pauseBack.png", Texture.class);
+        gv.game.getAssetManager().load("gameOver.png", Texture.class);
         gv.game.getAssetManager().finishLoading();
     }
 

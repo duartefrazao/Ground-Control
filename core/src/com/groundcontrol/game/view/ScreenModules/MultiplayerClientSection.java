@@ -42,10 +42,8 @@ public class MultiplayerClientSection implements Section{
         if(client.isAlive())
             client.tick();
         else{
+            gv.lostConnectionSection.transition();
             client.stop();
-            gv.gameModel=new GameModel();
-            gv.gameController = new GameController(gv.gameModel);
-            gv.menuSection.transition();
         }
 
 
@@ -59,8 +57,10 @@ public class MultiplayerClientSection implements Section{
                 gv.pauseSecondSection.setClient(client);
                 gv.pauseSecondSection.transition();
             }else if(messageReceived.equals("LOST")){
-                client.stop();
-                gv.menuSection.transition();
+                //client.sendMessage("LOST");
+                //client.sendMessages();
+                gv.gameOverSecondSection.transition();
+                gv.gameOverSecondSection.setClient(client);
             }
 
         }
@@ -145,7 +145,6 @@ public class MultiplayerClientSection implements Section{
 
             float vx = Gdx.input.getAccelerometerX();
             float vy = Gdx.input.getAccelerometerY();
-            System.out.println("Sending .,.");
             client.sendMessage("vx"+Float.toString(vx));
             client.sendMessage("vy"+Float.toString(vy));
         }

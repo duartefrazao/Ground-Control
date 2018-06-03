@@ -45,17 +45,6 @@ public class PauseFirstSection extends PauseSection {
     }
 
 
-    @Override
-    public void display(float delta) {
-        drawBackground();
-
-        ViewFactory.drawElement(gv.gameModel.getPlayer(), gv);
-
-        ViewFactory.drawAllElements(gv.gameModel.getPlanets(), gv);
-        ViewFactory.drawAllElements(gv.gameModel.getComets(), gv);
-        ViewFactory.drawAllElements(gv.gameModel.getExplosions(), gv);
-
-    }
 
     @Override
     public void transition() {
@@ -101,6 +90,7 @@ public class PauseFirstSection extends PauseSection {
             @Override
             public void clicked(InputEvent event, float x, float y){
                 server.sendMessage("EXIT");
+                exitToMainMenu();
             }
         });
 
@@ -112,8 +102,8 @@ public class PauseFirstSection extends PauseSection {
     }
 
     public void exitToMainMenu(){
-        server.stop();
         gv.menuSection.transition();
+        server.stop();
     }
 
 

@@ -27,9 +27,6 @@ public class MultiplayerServerSection extends GameSection{
     @Override
     public void update(float delta) {
 
-
-
-
         gv.gameController.handleInput(currentInput);
 
 
@@ -37,10 +34,8 @@ public class MultiplayerServerSection extends GameSection{
             server.tick();
         }
         else {
+            gv.lostConnectionSection.transition();
             server.stop();
-            gv.gameModel=new GameModel();
-            gv.gameController = new GameController(gv.gameModel);
-            gv.menuSection.transition();
         }
 
         receiveInputs(delta);
@@ -61,8 +56,8 @@ public class MultiplayerServerSection extends GameSection{
                 gv.pauseFirstSection.setServer(server);
                 gv.pauseFirstSection.transition();
             }else if(messageReceived.equals("LOST")){
-                server.stop();
-                gv.menuSection.transition();
+                /*gv.menuSection.transition();
+                server.stop();*/
             }
             else if(messageReceived.substring(0,2).equals("vx")) {
                 messageReceived=messageReceived.substring(2);
@@ -98,6 +93,8 @@ public class MultiplayerServerSection extends GameSection{
 
         if(gv.gameModel.getPlayer().hasLost()){
             server.sendMessage("LOST");
+            gv.gameOverFirstSection.transition();
+            gv.gameOverFirstSection.setServer(server);
         }
 
     }

@@ -8,7 +8,11 @@ import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
 import com.groundcontrol.game.view.ScreenModules.ConnectServerSection;
+import com.groundcontrol.game.view.ScreenModules.GameOverFirstSection;
+import com.groundcontrol.game.view.ScreenModules.GameOverSecondSection;
+import com.groundcontrol.game.view.ScreenModules.GameOverSection;
 import com.groundcontrol.game.view.ScreenModules.GameSection;
+import com.groundcontrol.game.view.ScreenModules.LostConnectionSection;
 import com.groundcontrol.game.view.ScreenModules.MenuSection;
 import com.groundcontrol.game.view.ScreenModules.MultiplayerClientSection;
 import com.groundcontrol.game.view.ScreenModules.MultiplayerSectionSelector;
@@ -51,11 +55,15 @@ public class GameView extends ScreenAdapter {
     public final ConnectServerSection connectServerSection;
     public final MenuSection menuSection;
     public final PauseSection pauseSection;
-    public  final MultiplayerSectionSelector multiplayerSectionSelector;
+    public final MultiplayerSectionSelector multiplayerSectionSelector;
     public  MultiplayerServerSection multiplayerServer;
     public  MultiplayerClientSection multiplayerClient;
     public PauseSecondSection pauseSecondSection;
     public PauseFirstSection pauseFirstSection;
+    public GameOverSection gameOverSection;
+    public LostConnectionSection lostConnectionSection;
+    public GameOverFirstSection gameOverFirstSection;
+    public GameOverSecondSection gameOverSecondSection;
 
 
 
@@ -81,6 +89,9 @@ public class GameView extends ScreenAdapter {
         this.multiplayerClient= new MultiplayerClientSection(this);
         this.pauseSecondSection = new PauseSecondSection(this);
         this.pauseFirstSection = new PauseFirstSection(this);
+        this.gameOverSection = new GameOverSection(this);
+        this.gameOverFirstSection = new GameOverFirstSection(this);
+        this.gameOverSecondSection = new GameOverSecondSection(this);
 
 
         menuSection.transition();

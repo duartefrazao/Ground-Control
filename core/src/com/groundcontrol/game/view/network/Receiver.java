@@ -26,11 +26,12 @@ public class Receiver  extends Thread{
 
             try {
 
+
                 BufferedReader br = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 String msg = br.readLine();
                 if(messagesToReceive==null || msg==null){
                     this.finished=true;
-                    return;
+                    return ;
                 }
                 messagesToReceive.add(msg);
 

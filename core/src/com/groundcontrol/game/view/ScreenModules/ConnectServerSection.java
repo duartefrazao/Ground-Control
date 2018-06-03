@@ -86,6 +86,8 @@ public class ConnectServerSection implements Section{
         if(!serverIP.equals("")) {
             message=""+ serverIP;
             this.ipLabel.setText(message);
+        }else{
+            this.ipLabel.setText("Couldn't get device ip");
         }
     }
 
@@ -119,7 +121,7 @@ public class ConnectServerSection implements Section{
             }
         });
 
-        Image background = new Image(new Texture(Gdx.files.internal("background.png")));
+        Image background = new Image(new Texture(Gdx.files.internal("IPAdress_Insert.png")));
 
         background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         background.setPosition(0,0 );
@@ -152,8 +154,7 @@ public class ConnectServerSection implements Section{
 
     @Override
     public void loadAssets() {
-        gv.game.getAssetManager().load("background.png", Texture.class);
-        gv.game.getAssetManager().load("exit.png", Texture.class);
+        gv.game.getAssetManager().load("IPAdress_Insert.png", Texture.class);
         gv.game.getAssetManager().load("connect.png", Texture.class);
 
         gv.game.getAssetManager().finishLoading();

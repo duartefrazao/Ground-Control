@@ -49,7 +49,7 @@ public class PauseSecondSection extends PauseSection  {
 
     @Override
     public void display(float delta){
-        drawBackground();
+
     }
 
     @Override

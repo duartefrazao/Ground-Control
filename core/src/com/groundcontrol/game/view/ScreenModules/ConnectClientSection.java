@@ -102,7 +102,7 @@ public class ConnectClientSection implements Section{
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
         Stage stage= new Stage();
-        Image background = new Image(new Texture(Gdx.files.internal("background.png")));
+        Image background = new Image(new Texture(Gdx.files.internal("IPAdress_Insert_2ndPlayer.png")));
 
         background.setBounds(Gdx.graphics.getWidth(),0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         background.setPosition(0,0 );
@@ -153,7 +153,7 @@ public class ConnectClientSection implements Section{
             }
         });
 
-        Button connectButton= buttonFactory.makeButton( gv.game.getAssetManager().get("connect.png",Texture.class),gv.game.getAssetManager().get("connect.png",Texture.class),3*w/5,5*h/6, (int)(w+h)/10,(int)(w+h)/10);
+        Button connectButton= buttonFactory.makeButton( gv.game.getAssetManager().get("connect.png",Texture.class),gv.game.getAssetManager().get("connect.png",Texture.class),4*w/6,4.8f*h/6, (int)(w+h)/15,(int)(w+h)/20);
         connectButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -163,11 +163,11 @@ public class ConnectClientSection implements Section{
             }
         });
 
-        Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/5,5*h/6, (int)(w+h)/10,(int)(w+h)/10);
+        Button exitButton=buttonFactory.makeButton(gv.game.getAssetManager().get("exit.png",Texture.class),gv.game.getAssetManager().get("exit.png",Texture.class),2*w/6,4.8f*h/6, (int)(w+h)/15,(int)(w+h)/20);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-               gv.menuSection.transition();
+               gv.multiplayerSectionSelector.transition();
             }
         });
 
@@ -189,9 +189,8 @@ public class ConnectClientSection implements Section{
             gv.game.getAssetManager().load("Numbers/" + nums[i]+ ".png", Texture.class);
         }
 
-        gv.game.getAssetManager().load("background.png", Texture.class);
+        gv.game.getAssetManager().load("IPAdress_Insert_2ndPlayer.png", Texture.class);
         gv.game.getAssetManager().load("connect.png", Texture.class);
-        gv.game.getAssetManager().load("exit.png", Texture.class);
         gv.game.getAssetManager().load("start.png", Texture.class);
 
         gv.game.getAssetManager().finishLoading();

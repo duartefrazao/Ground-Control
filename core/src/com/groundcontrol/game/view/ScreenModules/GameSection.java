@@ -104,7 +104,7 @@ public class GameSection implements Section, GestureDetector.GestureListener {
 
         if(gv.gameModel.getPlayer().hasLost()){
             backgroundMusic.stop();
-            gv.menuSection.transition();
+            gv.gameOverSection.transition();
         }
 
     }
@@ -205,7 +205,6 @@ public class GameSection implements Section, GestureDetector.GestureListener {
         gv.game.getAssetManager().load("Buttons/left.png", Texture.class);
         gv.game.getAssetManager().load("Buttons/right.png", Texture.class);
         gv.game.getAssetManager().load("Buttons/pause.png", Texture.class);
-        gv.game.getAssetManager().load("pauseScreen.png", Texture.class);
         gv.game.getAssetManager().load("resume.png", Texture.class);
 
         gv.game.getAssetManager().finishLoading();

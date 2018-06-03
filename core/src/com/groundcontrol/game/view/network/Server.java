@@ -56,8 +56,9 @@ public class Server extends Observable {
     }
 
     public void stop()  {
-        while(!sendQueue.isEmpty()){}
         alive=false;
+        receiveQueue.clear();
+        sendQueue.clear();
         receiver.stopCom();
         sender.stopCom();
         try {
