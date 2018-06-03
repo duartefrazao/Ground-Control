@@ -13,33 +13,33 @@
 
 ### MVC 
 
-![MVC schema](/Images/mvc.png)
+![MVC schema](/ImagesFinal/mvc.png)
 
 
 
 ### Model
 
-![Model schema](/Images/model.png)
+![Model schema](/ImagesFinal/model.png)
 
 
 ### View
 
-![View schema](/Images/view.png)
+![View schema](/ImagesFinal/view.png)
 
 
 ### Controller
 
-![Controller schema](/Images/controller.png)
+![Controller schema](/ImagesFinal/controller.png)
 
 ## Design of behavioural aspects
 
-![State machine](/Images/statemachine.png)
+![State machine](/ImagesFinal/statemachine.png)
 
 ## Design Patterns
 
 ### MVC (Model-View-Controller)
 
-![MVC pattern](/Images/mvcpattern.png)
+![MVC pattern](/ImagesFinal/mvcpattern.png)
 
 #### Why and How?
 
@@ -54,7 +54,7 @@
 
 ### Observer 
 
-![Observer pattern](/Images/observer.png)
+![Observer pattern](/ImagesFinal/observer.png)
 
 #### Why and How?
   
@@ -77,19 +77,19 @@
 
   In each frame, the view calls upon a factory, View Factory, given some specifications, to obtain the view it needs to draw (the product of the factory). Makes the code simpler by creating different objects without exposing the logic behind it.
 
-  ![Factory pattern](/Images/factory.png)
+  ![Factory pattern](/ImagesFinal/factory.png)
 
   ##### MethodFactory (2)
   
   Deals with the problem of creating objects without having to specify the exact class of the object that will be created. The creation of objects it’s done by calling a factory method which is defined in the base class and overridden by it’s derived classes. In our case, the base class tells that there should be a way to create a sprite and every children defines it.
 
-![Factory method pattern](/Images/methodfactory.png)
+![Factory method pattern](/ImagesFinal/methodfactory.png)
   
   
 
 ### FlyWeight 
 
-![Flyweight pattern](/Images/flyweight.png)
+![Flyweight pattern](/ImagesFinal/flyweight.png)
 
 #### Why and How?
   
@@ -104,7 +104,7 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
 
 ### State 
 
-![State pattern](/Images/state.png)
+![State pattern](/ImagesFinal/state.png)
 
 #### Why and How?
   
@@ -117,7 +117,7 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
   
 ### Game Loop 
 
-![Game Loop pattern](/Images/gameloop.png)
+![Game Loop pattern](/ImagesFinal/gameloop.png)
 
 #### Why and How?
 
@@ -131,7 +131,7 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
 
 ### Main Menu
 
-![Main menu mock up](/Images/menu.png)
+![Main menu mock up](/ImagesFinal/menu.png)
 
 #### Main Functionalities
 
@@ -143,7 +143,7 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
 
 ### Game (First Player)
 
-![Game mock-up](/Images/firstPlayer.png)
+![Game mock-up](/ImagesFinal/firstPlayer.png)
 
 #### Main Functionalities
 
@@ -154,7 +154,7 @@ This screen corresponds to a single player game or the screen from the first pla
 
 ### Game (Second Player)
 
-![Game mock-up](/Images/secondPlayer.png)
+![Game mock-up](/ImagesFinal/secondPlayer.png)
 
 #### Main Functionalities
 
@@ -164,7 +164,7 @@ This screen corresponds to the second player in a multi player game.
 
 ### Pause
 
-![Pause mock-up](/Images/pause.png)
+![Pause mock-up](/ImagesFinal/pause.png)
 
 #### Main Functionalities
 
