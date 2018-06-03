@@ -249,7 +249,7 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
 
 ## Last considerations
 
-The project was equally divided by the group, as per hours we put into the project we think that it averages 150 hours each.
+The project was equally divided by the group, as per hours we put into the project we think that it averages 150 hours total.
 
 
 
