@@ -41,14 +41,7 @@ public class LostConnectionSection implements Section {
     @Override
     public void display(float delta) {
         drawBackground();
-
-        ViewFactory.drawElement(gv.gameModel.getPlayer(), gv);
-
-        ViewFactory.drawAllElements(gv.gameModel.getPlanets(), gv);
-
-        ViewFactory.drawAllElements(gv.gameModel.getComets(), gv);
-
-        ViewFactory.drawAllElements(gv.gameModel.getExplosions(), gv);
+        
     }
 
     @Override
