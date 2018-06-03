@@ -2,14 +2,20 @@
 
 |Table of Contents|
 |:---------------:|
+|[Introduction](#introduction)|
 |[How to install](#how-to-install)|
 |[GUI Design and Main Functionalities](#gui-design-and-main-functionalities)|
 |[Package and class diagram (UML)](#package-and-class-diagram-uml)|
 |[Design of behavioural aspects](#design-of-behavioural-aspects)|
 |[Design Patterns](#design-patterns)|
 |[Test Design](#test-design)|
+|[Last considerations](#last-considerations)|
 
-## How to instal
+## Introduction
+
+Ground Control was developed by Duarte Frazão and Pedro Costa during the UC LPOO, it features a single player mode where the player needs to survive while it floats in space, jumping between planets and changing gravity. It also has multi player where the second player handles the gravity and helps or tries to make the other player lose. 
+
+## How to install
 
 ### To run the JAR:
   Although the game was developed for android we also generated a .jar file, simply download the file from the executables folder and double click it. 
@@ -241,6 +247,9 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
 * Comets disappearing after some time. 
 * Randomized planet size and type creation.
 
+## Last considerations
+
+The project was equally divided by the group, as per hours we put into the project we think that it averages 150 hours each.
 
 
 
