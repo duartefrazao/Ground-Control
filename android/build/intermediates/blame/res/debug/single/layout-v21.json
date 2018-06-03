@@ -4,10 +4,6 @@
         "source": "/home/dbqp/.android/build-cache/c2f8b569fac13e3bc89933ed9793d5c085f990a8/output/res/layout-v21/notification_template_custom_big.xml"
     },
     {
-        "merged": "/home/dbqp/Documents/Github/Ground-Control/android/build/intermediates/res/merged/debug/layout-v21/place_autocomplete_fragment.xml",
-        "source": "/home/dbqp/.android/build-cache/813f6895ad99d8157e1df097356c67de516da027/output/res/layout-v21/place_autocomplete_fragment.xml"
-    },
-    {
         "merged": "/home/dbqp/Documents/Github/Ground-Control/android/build/intermediates/res/merged/debug/layout-v21/notification_action_tombstone.xml",
         "source": "/home/dbqp/.android/build-cache/c2f8b569fac13e3bc89933ed9793d5c085f990a8/output/res/layout-v21/notification_action_tombstone.xml"
     },

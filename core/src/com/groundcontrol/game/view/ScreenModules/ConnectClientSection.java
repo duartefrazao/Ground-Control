@@ -166,9 +166,9 @@ public class ConnectClientSection implements Section{
         connectButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.multiplayerClient ==null)
+                    gv.multiplayerClient = new MultiplayerClientSection(gv);
                 if(gv.multiplayerClient.connectClient(ip)) {
-                    if(gv.multiplayerClient ==null)
-                        gv.multiplayerClient = new MultiplayerClientSection(gv);
                     gv.multiplayerClient.transition();
                 }
                 else message= "Error connecting to server";
