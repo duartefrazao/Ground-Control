@@ -39,7 +39,7 @@ public class GameSection implements Section, GestureDetector.GestureListener {
     protected Label timeLabel;
     private DecimalFormat df = new DecimalFormat();
 
-    Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/space_sound.mp3"));
+    Music backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("Sounds/space_sound.ogg"));
 
     public GameSection(GameView gameView) {
 
