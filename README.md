@@ -17,11 +17,6 @@ Ground Control was developed by Duarte Frazão and Pedro Costa during the UC LPO
 
 ## How to install
 
-### To run the JAR:
-  Although the game was developed for android we also generated a .jar file, simply download the file from the executables folder and double click it. 
-  If, for some reason, that doesn't work you can always run it from the command line by opening a terminal where you have downloaded the file and run the command "java -jar Ground-Control.jar".
-
-
 ### To run the APK:
 Download the file from the executables folder to your smartphone and install it. In order to do that, you must enable "Unkown Sources" on your phone settings to install it
 Please note that if you have any background app running that changes something on the display of your phone, like a blue light filter, sometimes you are not able to install the app; you must stop that app from running and then try to install it again.
