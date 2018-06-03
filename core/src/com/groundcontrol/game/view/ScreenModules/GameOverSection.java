@@ -17,6 +17,9 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for single player game over view
+ */
 public class GameOverSection implements Section{
 
     protected final GameView gv;

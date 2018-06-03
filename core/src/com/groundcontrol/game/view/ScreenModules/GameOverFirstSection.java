@@ -12,6 +12,9 @@ import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
 
+/**
+ * Section responsible for multiplayer first player game over
+ */
 public class GameOverFirstSection extends GameOverSection{
     private Server server;
 

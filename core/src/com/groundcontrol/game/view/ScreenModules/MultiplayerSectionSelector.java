@@ -17,6 +17,9 @@ import com.groundcontrol.game.view.network.Server;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for player selection
+ */
 public class MultiplayerSectionSelector implements Section{
 
     private final GameView gv;

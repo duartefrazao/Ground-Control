@@ -17,6 +17,9 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for single player pause view
+ */
 public class PauseSection implements Section{
 
     protected final GameView gv;

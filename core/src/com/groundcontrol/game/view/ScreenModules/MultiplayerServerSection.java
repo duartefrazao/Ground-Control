@@ -13,6 +13,9 @@ import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import com.groundcontrol.game.view.elements.ViewFactory;
 import com.groundcontrol.game.view.network.Server;
 
+/**
+ * Section responsible for multiplayer first player game
+ */
 public class MultiplayerServerSection extends GameSection{
 
 
@@ -56,8 +59,6 @@ public class MultiplayerServerSection extends GameSection{
                 gv.pauseFirstSection.setServer(server);
                 gv.pauseFirstSection.transition();
             }else if(messageReceived.equals("LOST")){
-                /*gv.menuSection.transition();
-                server.stop();*/
             }
             else if(messageReceived.substring(0,2).equals("vx")) {
                 messageReceived=messageReceived.substring(2);

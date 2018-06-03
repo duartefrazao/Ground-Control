@@ -92,6 +92,7 @@ public class GameView extends ScreenAdapter {
         this.gameOverSection = new GameOverSection(this);
         this.gameOverFirstSection = new GameOverFirstSection(this);
         this.gameOverSecondSection = new GameOverSecondSection(this);
+        this.lostConnectionSection = new LostConnectionSection(this);
 
 
         menuSection.transition();

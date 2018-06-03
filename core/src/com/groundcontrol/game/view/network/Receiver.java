@@ -7,6 +7,9 @@ import java.net.Socket;
 import java.nio.Buffer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * Thread responsible for receiving messages
+ */
 public class Receiver  extends Thread{
 
     private Socket clientSocket;
@@ -14,11 +17,19 @@ public class Receiver  extends Thread{
     public volatile boolean finished =false;
 
 
+    /**
+     * Constructor
+     * @param clientSocket Client connected
+     * @param messagesToReceive Queue to send messages received
+     */
     public Receiver(Socket clientSocket, ConcurrentLinkedQueue<String> messagesToReceive) {
         this.clientSocket= clientSocket;
         this.messagesToReceive=messagesToReceive;
     }
 
+    /**
+     * Thread cycle to receive messages while connection is up
+     */
     @Override
     public void run(){
 
@@ -42,6 +53,9 @@ public class Receiver  extends Thread{
         }
     }
 
+    /**
+     * Forces end of the thread
+     */
     public void stopCom(){
         this.interrupt();
     }
