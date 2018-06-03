@@ -2,11 +2,115 @@
 
 |Table of Contents|
 |:---------------:|
+|[How to install](#how-to-install)|
+|[GUI Design and Main Functionalities](#gui-design-and-main-functionalities)|
 |[Package and class diagram (UML)](#package-and-class-diagram-uml)|
 |[Design of behavioural aspects](#design-of-behavioural-aspects)|
 |[Design Patterns](#design-patterns)|
-|[GUI Design and Main Functionalities](#gui-design-and-main-functionalities)|
 |[Test Design](#test-design)|
+
+## How to instal
+
+### To run the JAR:
+  Although the game was developed for android we also generated a .jar file, simply download the file from the executables folder and double click it. 
+  If, for some reason, that doesn't work you can always run it from the command line by opening a terminal where you have downloaded the file and run the command "java -jar Ground-Control.jar".
+
+
+### To run the APK:
+Download the file from the executables folder to your smartphone and install it. In order to do that, you must enable "Unkown Sources" on your phone settings to install it
+Please note that if you have any background app running that changes something on the display of your phone, like a blue light filter, sometimes you are not able to install the app; you must stop that app from running and then try to install it again.
+
+
+## GUI Design and Main Functionalities 
+
+### Main Menu
+
+![Main menu](/ImagesFinal/menu.png)
+
+#### Main Functionalities
+
+* Enter a single player game
+* Enter a multi player game
+* Exit game
+
+
+### Game (First Player)
+
+![Game ](/ImagesFinal/firstPlayer.png)
+
+#### Main Functionalities
+
+This screen corresponds to a single player game or the screen from the first player in multiplayer.
+
+* Play the game, walking left/right and jumping 
+* Pause the game and enter the pause screen
+
+### Game (Second Player)
+
+![Game](/ImagesFinal/secondPlayer.png)
+
+#### Main Functionalities
+
+This screen corresponds to the second player in a multi player game.
+
+* This player affects the game of the first player by using the accelerometer to change the gravity of the game.
+* Pause the game and enter the pause screen
+
+### Pause
+
+![Pause](/ImagesFinal/pause.png)
+
+#### Main Functionalities
+
+* Exit to main menu
+* Continue the game
+
+
+### Player Selector
+
+![Selector](/ImagesFinal/selector.png)
+
+#### Main Functionalities
+
+* Exit to main menu
+* Connect as first player
+* Connect as second player
+
+### First Player Connection
+
+![Connection First](/ImagesFinal/connectionFirst.png)
+
+#### Main Functionalities
+
+* Exit to main menu
+* Wait for a client to connect and start the game
+
+### First Player Connection
+
+![First Player Connection](/ImagesFinal/connectionSecond.png)
+
+#### Main Functionalities
+
+* Exit to main menu
+* Enter server ip 
+* Connect to server
+
+### Game Over
+
+![GameOver](/ImagesFinal/gameOver.png)
+
+#### Main Functionalities
+
+* Exit to main menu
+* Restart
+
+### Lost Connection
+
+![Lost Connection](/ImagesFinal/lostConnection.png)
+
+#### Main Functionalities
+
+* Exit to main menu
 
 
 ## Package and class diagram (UML)
@@ -126,96 +230,6 @@ Participating Classes: View Factory; ElementView and all sub-classes; Game View.
   
   Participating classes: GameView; GameController; GameModel.
 
-## GUI Design and Main Functionalities 
-
-### Main Menu
-
-![Main menu](/ImagesFinal/menu.png)
-
-#### Main Functionalities
-
-* Enter a single player game
-* Enter a multi player game
-* Exit game
-
-
-### Game (First Player)
-
-![Game ](/ImagesFinal/firstPlayer.png)
-
-#### Main Functionalities
-
-This screen corresponds to a single player game or the screen from the first player in multiplayer.
-
-* Play the game, walking left/right and jumping 
-* Pause the game and enter the pause screen
-
-### Game (Second Player)
-
-![Game](/ImagesFinal/secondPlayer.png)
-
-#### Main Functionalities
-
-This screen corresponds to the second player in a multi player game.
-
-* This player affects the game of the first player by using the accelerometer to change the gravity of the game.
-* Pause the game and enter the pause screen
-
-### Pause
-
-![Pause](/ImagesFinal/pause.png)
-
-#### Main Functionalities
-
-* Exit to main menu
-* Continue the game
-
-
-### Player Selector
-
-![Selector](/ImagesFinal/selector.png)
-
-#### Main Functionalities
-
-* Exit to main menu
-* Connect as first player
-* Connect as second player
-
-### First Player Connection
-
-![Connection First](/ImagesFinal/connectionFirst.png)
-
-#### Main Functionalities
-
-* Exit to main menu
-* Wait for a client to connect and start the game
-
-### First Player Connection
-
-![First Player Connection](/ImagesFinal/connectionSecond.png)
-
-#### Main Functionalities
-
-* Exit to main menu
-* Enter server ip 
-* Connect to server
-
-### Game Over
-
-![GameOver](/ImagesFinal/gameOver.png)
-
-#### Main Functionalities
-
-* Exit to main menu
-* Restart
-
-### Lost Connection
-
-![Lost Connection](/ImagesFinal/lostConnection.png)
-
-#### Main Functionalities
-
-* Exit to main menu
 
 ## Test Design
 
@@ -226,6 +240,7 @@ This screen corresponds to the second player in a multi player game.
 * Correct game model update cycle.
 * Comets disappearing after some time. 
 * Randomized planet size and type creation.
+
 
 
 
