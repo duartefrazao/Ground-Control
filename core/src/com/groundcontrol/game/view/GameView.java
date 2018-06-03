@@ -82,25 +82,6 @@ public class GameView extends ScreenAdapter {
 
         this.loadAssets();
 
-        System.out.println("creatin sections");
-
-        /*this.menuSection= new MenuSection(this);
-        this.gameSection= new GameSection(this);
-        this.connectClientSection= new ConnectClientSection(this);
-        this.connectServerSection= new ConnectServerSection(this);
-        this.pauseSection= new PauseSection(this);
-        this.multiplayerSectionSelector= new MultiplayerSectionSelector(this);
-        this.multiplayerServer= new MultiplayerServerSection(this);
-        this.multiplayerClient= new MultiplayerClientSection(this);
-        this.pauseSecondSection = new PauseSecondSection(this);
-        this.pauseFirstSection = new PauseFirstSection(this);
-        this.gameOverSection = new GameOverSection(this);
-        this.gameOverFirstSection = new GameOverFirstSection(this);
-        this.gameOverSecondSection = new GameOverSecondSection(this);
-        this.lostConnectionSection = new LostConnectionSection(this);*/
-
-        System.out.println("finished");
-
         this.menuSection= new MenuSection(this);
         menuSection.transition();
 
