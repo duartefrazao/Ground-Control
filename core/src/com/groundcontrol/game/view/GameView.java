@@ -52,11 +52,11 @@ public class GameView extends ScreenAdapter {
     public Section currentSection;
 
     public GameSection gameSection;
-    public final ConnectClientSection connectClientSection;
-    public final ConnectServerSection connectServerSection;
-    public final MenuSection menuSection;
-    public final PauseSection pauseSection;
-    public final MultiplayerSectionSelector multiplayerSectionSelector;
+    public  ConnectClientSection connectClientSection;
+    public  ConnectServerSection connectServerSection;
+    public  MenuSection menuSection;
+    public  PauseSection pauseSection;
+    public  MultiplayerSectionSelector multiplayerSectionSelector;
     public  MultiplayerServerSection multiplayerServer;
     public  MultiplayerClientSection multiplayerClient;
     public PauseSecondSection pauseSecondSection;
@@ -84,7 +84,7 @@ public class GameView extends ScreenAdapter {
 
         System.out.println("creatin sections");
 
-        this.menuSection= new MenuSection(this);
+        /*this.menuSection= new MenuSection(this);
         this.gameSection= new GameSection(this);
         this.connectClientSection= new ConnectClientSection(this);
         this.connectServerSection= new ConnectServerSection(this);
@@ -97,11 +97,11 @@ public class GameView extends ScreenAdapter {
         this.gameOverSection = new GameOverSection(this);
         this.gameOverFirstSection = new GameOverFirstSection(this);
         this.gameOverSecondSection = new GameOverSecondSection(this);
-        this.lostConnectionSection = new LostConnectionSection(this);
+        this.lostConnectionSection = new LostConnectionSection(this);*/
 
         System.out.println("finished");
 
-
+        this.menuSection= new MenuSection(this);
         menuSection.transition();
 
 

@@ -43,7 +43,6 @@ public class ConnectServerSection implements Section{
 
         this.gv=gameView;
         this.game = gv.game;
-        loadAssets();
 
         server= new Server();
 
@@ -67,8 +66,10 @@ public class ConnectServerSection implements Section{
     public void update(float delta) {
 
         if(server.isAlive()){
-            gv.multiplayerServer.setServer(server);
+            if(gv.multiplayerServer ==null)
+                gv.multiplayerServer = new MultiplayerServerSection(gv);
             gv.multiplayerServer.transition();
+            gv.multiplayerServer.setServer(server);
         }
 
         Socket s = null;
@@ -152,9 +153,6 @@ public class ConnectServerSection implements Section{
         return table;
     }
 
-    @Override
-    public void loadAssets() {
-    }
 
     @Override
     public void drawStages(float delta) {

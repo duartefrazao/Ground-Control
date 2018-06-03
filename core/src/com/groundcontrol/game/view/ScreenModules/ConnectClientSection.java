@@ -50,7 +50,6 @@ public class ConnectClientSection implements Section{
 
         this.gv=gameView;
         this.game = gv.game;
-        loadAssets();
 
         font.getData().scale(Gdx.graphics.getHeight()/20);
         stage = createStage();
@@ -167,8 +166,11 @@ public class ConnectClientSection implements Section{
         connectButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
-                if(gv.multiplayerClient.connectClient(ip))
+                if(gv.multiplayerClient.connectClient(ip)) {
+                    if(gv.multiplayerClient ==null)
+                        gv.multiplayerClient = new MultiplayerClientSection(gv);
                     gv.multiplayerClient.transition();
+                }
                 else message= "Error connecting to server";
             }
         });
@@ -177,6 +179,8 @@ public class ConnectClientSection implements Section{
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.multiplayerSectionSelector ==null)
+                    gv.multiplayerSectionSelector = new MultiplayerSectionSelector(gv);
                gv.multiplayerSectionSelector.transition();
             }
         });
@@ -189,10 +193,6 @@ public class ConnectClientSection implements Section{
         stage.addActor(correct);
 
         return stage;
-    }
-
-    @Override
-    public void loadAssets() {
     }
 
     @Override

@@ -31,7 +31,6 @@ public class GameOverSection implements Section{
         this.gv=gameView;
         this.game = gameView.game;
 
-        loadAssets();
 
         stage = createStage();
     }
@@ -109,9 +108,7 @@ public class GameOverSection implements Section{
         gv.currentSection= gv.gameOverSection;
     }
 
-    @Override
-    public void loadAssets() {
-    }
+
 
     @Override
     public void drawStages(float delta) {

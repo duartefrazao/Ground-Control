@@ -47,7 +47,6 @@ public class GameSection implements Section, GestureDetector.GestureListener {
     public GameSection(GameView gameView) {
 
         this.gv = gameView;
-        loadAssets();
         stage = createStage();
         stage.addActor(createTimeTable());
         ip.addProcessor(stage);
@@ -108,6 +107,8 @@ public class GameSection implements Section, GestureDetector.GestureListener {
 
         if(gv.gameModel.getPlayer().hasLost()){
             backgroundMusic.stop();
+            if(gv.gameOverSection ==null)
+                gv.gameOverSection = new GameOverSection(gv);
             gv.gameOverSection.transition();
         }
 
@@ -167,6 +168,8 @@ public class GameSection implements Section, GestureDetector.GestureListener {
             @Override
             public boolean touchDown(InputEvent e, float x, float y, int pointer, int button) {
                 backgroundMusic.stop();
+                if(gv.pauseSection ==null)
+                    gv.pauseSection = new PauseSection(gv);
                 gv.pauseSection.transition();
                 return true;
             }
@@ -185,10 +188,6 @@ public class GameSection implements Section, GestureDetector.GestureListener {
 
 
         return stage;
-    }
-
-    @Override
-    public void loadAssets() {
     }
 
     @Override

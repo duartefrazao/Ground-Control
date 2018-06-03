@@ -30,8 +30,6 @@ public class LostConnectionSection implements Section {
         this.gv=gameView;
         this.game = gameView.game;
 
-        loadAssets();
-
         stage = createStage();
     }
 
@@ -99,10 +97,6 @@ public class LostConnectionSection implements Section {
 
         gv.currentSection= gv.lostConnectionSection
         ;
-    }
-
-    @Override
-    public void loadAssets() {
     }
 
     @Override

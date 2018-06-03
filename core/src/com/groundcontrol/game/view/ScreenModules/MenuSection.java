@@ -29,8 +29,6 @@ public class MenuSection implements Section{
     public MenuSection(GameView gameView){
         this.game = gameView.game;
         this.gv=gameView;
-        loadAssets();
-
         stage = createStage();
     }
 
@@ -69,6 +67,8 @@ public class MenuSection implements Section{
         gameButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.gameSection ==null)
+                    gv.gameSection = new GameSection(gv);
                 gv.gameSection.transition();
 
             }
@@ -78,6 +78,8 @@ public class MenuSection implements Section{
         mpButton .addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.multiplayerSectionSelector ==null)
+                    gv.multiplayerSectionSelector = new MultiplayerSectionSelector(gv);
                 gv.multiplayerSectionSelector.transition();
             }
         });
@@ -99,10 +101,6 @@ public class MenuSection implements Section{
 
     private void exitGame() {
         Gdx.app.exit();
-    }
-
-    @Override
-    public void loadAssets() {
     }
 
     @Override

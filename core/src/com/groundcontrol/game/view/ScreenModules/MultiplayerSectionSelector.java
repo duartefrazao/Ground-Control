@@ -35,7 +35,6 @@ public class MultiplayerSectionSelector implements Section{
 
         this.gv=gameView;
         this.game = gv.game;
-        loadAssets();
 
         stage = createStage();
 
@@ -79,6 +78,8 @@ public class MultiplayerSectionSelector implements Section{
         first.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.connectServerSection ==null)
+                    gv.connectServerSection = new ConnectServerSection(gv);
                 gv.connectServerSection.transition();
 
             }
@@ -88,6 +89,8 @@ public class MultiplayerSectionSelector implements Section{
         second.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.connectClientSection ==null)
+                    gv.connectClientSection = new ConnectClientSection(gv);
                 gv.connectClientSection.transition();
             }
         });
@@ -108,10 +111,6 @@ public class MultiplayerSectionSelector implements Section{
         return stage;
     }
 
-    @Override
-    public void loadAssets() {
-
-    }
 
     @Override
     public void drawStages(float delta) {

@@ -26,15 +26,14 @@ public class PauseSection implements Section{
     protected final GroundControl game;
     protected final Stage stage;
 
-
     public PauseSection (GameView gameView) {
         this.gv=gameView;
         this.game = gameView.game;
 
-        loadAssets();
 
         stage = createStage();
     }
+
 
     @Override
     public void update(float delta) {
@@ -90,6 +89,7 @@ public class PauseSection implements Section{
         resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
+                if(gv.gameSection ==null) gv.gameSection = new GameSection(gv);
                 gv.gameSection.transition();
             }
         });
@@ -109,9 +109,6 @@ public class PauseSection implements Section{
         return stage;
     }
 
-    @Override
-    public void loadAssets() {
-    }
 
     @Override
     public void drawStages(float delta) {
