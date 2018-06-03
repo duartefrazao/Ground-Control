@@ -16,6 +16,9 @@ import com.groundcontrol.game.view.network.Client;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for multiplayer second player pause view
+ */
 public class PauseSecondSection extends PauseSection  {
 
     Client client;

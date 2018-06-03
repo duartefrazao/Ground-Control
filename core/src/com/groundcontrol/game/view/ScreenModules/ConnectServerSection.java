@@ -23,6 +23,9 @@ import java.net.Socket;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for server  (first player) connection view
+ */
 public class ConnectServerSection implements Section{
 
     private final GameView gv;

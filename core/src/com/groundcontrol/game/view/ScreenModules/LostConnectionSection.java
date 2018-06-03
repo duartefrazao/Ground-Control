@@ -17,6 +17,9 @@ import com.groundcontrol.game.view.elements.ViewFactory;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for lost connection view
+ */
 public class LostConnectionSection implements Section {
     protected final GameView gv;
     protected final GroundControl game;
@@ -66,7 +69,7 @@ public class LostConnectionSection implements Section {
 
         float w=Gdx.graphics.getWidth(), h=Gdx.graphics.getHeight();
 
-        Button exitButton= butFac.makeButton( gv.game.getAssetManager().get("exitMM.png",Texture.class),gv.game.getAssetManager().get("exitMM.png",Texture.class),w/2,3.2f*h/6, (int)(w/2),(int)(h)/8);
+        Button exitButton= butFac.makeButton( gv.game.getAssetManager().get("exitMM.png",Texture.class),gv.game.getAssetManager().get("exitMM.png",Texture.class),w/2,2.4f*h/6, (int)(w/2),(int)(h)/8);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y){
@@ -94,7 +97,8 @@ public class LostConnectionSection implements Section {
 
         Gdx.input.setInputProcessor(stage);
 
-        gv.currentSection= gv.gameOverSection;
+        gv.currentSection= gv.lostConnectionSection
+        ;
     }
 
     @Override

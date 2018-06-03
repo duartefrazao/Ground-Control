@@ -23,6 +23,10 @@ import static com.badlogic.gdx.Input.Keys.*;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+
+/**
+ * Section responsible for client  (second player) connection view
+ */
 public class ConnectClientSection implements Section{
 
     private final GameView gv;

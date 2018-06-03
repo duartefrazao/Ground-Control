@@ -20,6 +20,9 @@ import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for menu view
+ */
 public class MenuSection implements Section{
 
     private Button exitButton;

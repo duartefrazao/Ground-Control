@@ -24,6 +24,9 @@ import java.text.DecimalFormat;
 import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
 import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
 
+/**
+ * Section responsible for single player game and main components for multiplayer
+ */
 public class GameSection implements Section, GestureDetector.GestureListener {
 
     protected GameView gv;
