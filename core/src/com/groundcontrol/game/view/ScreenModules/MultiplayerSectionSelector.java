@@ -110,12 +110,7 @@ public class MultiplayerSectionSelector implements Section{
 
     @Override
     public void loadAssets() {
-        gv.game.getAssetManager().load("background.png", Texture.class);
-        gv.game.getAssetManager().load("exit.png", Texture.class);
-        gv.game.getAssetManager().load("first.png", Texture.class);
-        gv.game.getAssetManager().load("second.png", Texture.class);
 
-        gv.game.getAssetManager().finishLoading();
     }
 
     @Override

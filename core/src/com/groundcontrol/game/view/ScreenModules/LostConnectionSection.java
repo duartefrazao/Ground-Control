@@ -103,9 +103,6 @@ public class LostConnectionSection implements Section {
 
     @Override
     public void loadAssets() {
-        gv.game.getAssetManager().load("exitMM.png", Texture.class);
-        gv.game.getAssetManager().load("connection.png", Texture.class);
-        gv.game.getAssetManager().finishLoading();
     }
 
     @Override

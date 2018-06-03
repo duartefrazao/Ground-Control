@@ -111,10 +111,6 @@ public class PauseSection implements Section{
 
     @Override
     public void loadAssets() {
-        gv.game.getAssetManager().load("resume.png", Texture.class);
-        gv.game.getAssetManager().load("exitMM.png", Texture.class);
-        gv.game.getAssetManager().load("pauseBack.png", Texture.class);
-        gv.game.getAssetManager().finishLoading();
     }
 
     @Override

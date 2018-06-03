@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.controller.GameController;
 import com.groundcontrol.game.model.GameModel;
@@ -79,6 +80,10 @@ public class GameView extends ScreenAdapter {
     public GameView(GroundControl game, GameModel gameModel, GameController gameController){
         this.game= game;
 
+        this.loadAssets();
+
+        System.out.println("creatin sections");
+
         this.menuSection= new MenuSection(this);
         this.gameSection= new GameSection(this);
         this.connectClientSection= new ConnectClientSection(this);
@@ -94,11 +99,12 @@ public class GameView extends ScreenAdapter {
         this.gameOverSecondSection = new GameOverSecondSection(this);
         this.lostConnectionSection = new LostConnectionSection(this);
 
+        System.out.println("finished");
+
 
         menuSection.transition();
 
 
-        currentSection.loadAssets();
         this.gameModel=gameModel;
         this.gameController=gameController;
         camera = createCamera();
@@ -125,6 +131,77 @@ public class GameView extends ScreenAdapter {
         currentSection.display(delta);
         game.getBatch().end();
         currentSection.drawStages(delta);
+    }
+
+
+    private void loadAssets(){
+
+        String nums[] = {"zero","one","two","three","four","five","six","seven","eight","nine","correct","point"};
+
+        for(int i = 0; i < nums.length; i++){
+            game.getAssetManager().load("Numbers/" + nums[i]+ ".png", Texture.class);
+        }
+
+        game.getAssetManager().load("IPAdress_Insert_2ndPlayer.png", Texture.class);
+        game.getAssetManager().load("connect.png", Texture.class);
+        game.getAssetManager().load("start.png", Texture.class);
+
+        game.getAssetManager().load("IPAdress_Insert.png", Texture.class);
+
+        game.getAssetManager().load("restart.png", Texture.class);
+        game.getAssetManager().load("exitMM.png", Texture.class);
+        game.getAssetManager().load("gameOver.png", Texture.class);
+
+        game.getAssetManager().load("menu_background.png", Texture.class);
+        game.getAssetManager().load("exit.png", Texture.class);
+        game.getAssetManager().load("multiplayer.png", Texture.class);
+
+        game.getAssetManager().load("backgroundSecond.png", Texture.class);
+
+        game.getAssetManager().load("exit.png", Texture.class);
+        game.getAssetManager().load("first.png", Texture.class);
+        game.getAssetManager().load("second.png", Texture.class);
+
+
+        game.getAssetManager().load("pauseBack.png", Texture.class);
+
+        this.loadGameAssets();
+
+        game.getAssetManager().finishLoading();
+
+    }
+
+    private void loadGameAssets(){
+
+        game.getAssetManager().load("Planets/BigPlanet.png", Texture.class);
+        game.getAssetManager().load("Planets/MediumBigPlanet.png", Texture.class);
+        game.getAssetManager().load("Planets/MediumPlanet.png", Texture.class);
+        game.getAssetManager().load("Planets/SmallPlanet.png", Texture.class);
+
+        game.getAssetManager().load("IdleAssassin.png", Texture.class);
+        game.getAssetManager().load("assassin.png", Texture.class);
+        game.getAssetManager().load("RunningAssassin.png", Texture.class);
+        game.getAssetManager().load("FlyingAssassin.png", Texture.class);
+
+        game.getAssetManager().load("Comet/comet.png", Texture.class);
+        game.getAssetManager().load("Comet/Comet_Array.png", Texture.class);
+
+        this.loadExplosion();
+
+        game.getAssetManager().load("background.png", Texture.class);
+        game.getAssetManager().load("Buttons/left.png", Texture.class);
+        game.getAssetManager().load("Buttons/right.png", Texture.class);
+        game.getAssetManager().load("Buttons/pause.png", Texture.class);
+        game.getAssetManager().load("resume.png", Texture.class);
+
+    }
+
+    private void loadExplosion() {
+
+        for (int i = 1; i <= 8; i++) {
+            game.getAssetManager().load("Explosion/explosion[" + i + "].png", Texture.class);
+        }
+
     }
 
 }

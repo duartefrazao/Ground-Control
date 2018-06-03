@@ -114,8 +114,6 @@ public class MultiplayerClientSection implements Section{
 
     @Override
     public void loadAssets() {
-        gv.game.getAssetManager().load("backgroundSecond.png", Texture.class);
-        gv.game.getAssetManager().finishLoading();
     }
 
     @Override

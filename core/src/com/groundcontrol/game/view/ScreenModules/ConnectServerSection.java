@@ -20,9 +20,6 @@ import com.groundcontrol.game.view.network.ServerConnector;
 import java.io.IOException;
 import java.net.Socket;
 
-import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
-import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
-
 /**
  * Section responsible for server  (first player) connection view
  */
@@ -157,10 +154,6 @@ public class ConnectServerSection implements Section{
 
     @Override
     public void loadAssets() {
-        gv.game.getAssetManager().load("IPAdress_Insert.png", Texture.class);
-        gv.game.getAssetManager().load("connect.png", Texture.class);
-
-        gv.game.getAssetManager().finishLoading();
     }
 
     @Override

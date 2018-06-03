@@ -189,37 +189,6 @@ public class GameSection implements Section, GestureDetector.GestureListener {
 
     @Override
     public void loadAssets() {
-
-        gv.game.getAssetManager().load("Planets/BigPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("Planets/MediumBigPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("Planets/MediumPlanet.png", Texture.class);
-        gv.game.getAssetManager().load("Planets/SmallPlanet.png", Texture.class);
-
-        gv.game.getAssetManager().load("IdleAssassin.png", Texture.class);
-        gv.game.getAssetManager().load("assassin.png", Texture.class);
-        gv.game.getAssetManager().load("RunningAssassin.png", Texture.class);
-        gv.game.getAssetManager().load("FlyingAssassin.png", Texture.class);
-
-        gv.game.getAssetManager().load("Comet/comet.png", Texture.class);
-        gv.game.getAssetManager().load("Comet/Comet_Array.png", Texture.class);
-
-        this.loadExplosion();
-
-        gv.game.getAssetManager().load("background.png", Texture.class);
-        gv.game.getAssetManager().load("Buttons/left.png", Texture.class);
-        gv.game.getAssetManager().load("Buttons/right.png", Texture.class);
-        gv.game.getAssetManager().load("Buttons/pause.png", Texture.class);
-        gv.game.getAssetManager().load("resume.png", Texture.class);
-
-        gv.game.getAssetManager().finishLoading();
-    }
-
-    private void loadExplosion() {
-
-        for (int i = 1; i <= 8; i++) {
-            gv.game.getAssetManager().load("Explosion/explosion[" + i + "].png", Texture.class);
-        }
-
     }
 
     @Override

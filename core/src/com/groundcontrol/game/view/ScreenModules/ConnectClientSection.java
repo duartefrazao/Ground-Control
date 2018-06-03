@@ -16,12 +16,18 @@ import com.groundcontrol.game.GroundControl;
 import com.groundcontrol.game.view.GameView;
 import com.groundcontrol.game.view.UiFactory.ButtonFactory;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import static com.badlogic.gdx.Input.Keys.*;
-import static com.groundcontrol.game.controller.GameController.ARENA_HEIGHT;
-import static com.groundcontrol.game.controller.GameController.ARENA_WIDTH;
+import static com.badlogic.gdx.Input.Keys.NUM_0;
+import static com.badlogic.gdx.Input.Keys.NUM_1;
+import static com.badlogic.gdx.Input.Keys.NUM_2;
+import static com.badlogic.gdx.Input.Keys.NUM_3;
+import static com.badlogic.gdx.Input.Keys.NUM_4;
+import static com.badlogic.gdx.Input.Keys.NUM_5;
+import static com.badlogic.gdx.Input.Keys.NUM_6;
+import static com.badlogic.gdx.Input.Keys.NUM_7;
+import static com.badlogic.gdx.Input.Keys.NUM_8;
+import static com.badlogic.gdx.Input.Keys.NUM_9;
 
 
 /**
@@ -187,17 +193,6 @@ public class ConnectClientSection implements Section{
 
     @Override
     public void loadAssets() {
-        String nums[] = {"zero","one","two","three","four","five","six","seven","eight","nine","correct","point"};
-
-        for(int i = 0; i < nums.length; i++){
-            gv.game.getAssetManager().load("Numbers/" + nums[i]+ ".png", Texture.class);
-        }
-
-        gv.game.getAssetManager().load("IPAdress_Insert_2ndPlayer.png", Texture.class);
-        gv.game.getAssetManager().load("connect.png", Texture.class);
-        gv.game.getAssetManager().load("start.png", Texture.class);
-
-        gv.game.getAssetManager().finishLoading();
     }
 
     @Override
